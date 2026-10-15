@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "title_prefix": "Linear Spanks Milestone Runtime",
+  "document_title_pattern": "Linear Spanks Milestone Runtime — <milestone-id>",
+  "document_marker": "linear-spanks:milestone-runtime",
+  "fallback_comment_marker": "linear-spanks:milestone-runtime-fallback",
+  "description_marker": "linear-spanks:milestone-runtime-ref",
+  "description_reference": {
+    "required_fields": [
+      "schema_version",
+      "runtime_id",
+      "milestone_id",
+      "revision",
+      "storage_source",
+      "projection_hash"
+    ],
+    "preserve_human_description": true
+  },
+  "singleton": true,
+  "sources_of_truth": {
+    "derived_state": ["live-issues", "immutable-receipts"],
+    "projection": ["runtime-artifact", "description-marker"]
+  },
+  "storage": {
+    "preferred": "document",
+    "fallback": "managed-comment",
+    "promote_matching_comment_when_documents_available": true,
+    "conflict_result": "MILESTONE_RUNTIME_STATE_CONFLICT",
+    "lazy_legacy_migration": true
+  },
+  "runtime_required_fields": [
+    "schema_version",
+    "runtime_id",
+    "project_id",
+    "milestone_id",
+    "revision",
+    "storage_source",
+    "projection_hash",
+    "policy_binding",
+    "active_wave",
+    "plan_validity",
+    "review_coverage",
+    "human_repair",
+    "last_event",
+    "event_count",
+    "updated_at"
+  ],
+  "storage_sources": ["document", "managed-comment"],
+  "plan": {
+    "schema_version": 2,
+    "required_bindings": [
+      "trace_source_head",
+      "target_file_hashes",
+      "consumed_surface_hashes",
+      "dependency_receipt_hashes",
+      "acceptance_contract_hash",
+      "execution_footprint"
+    ],
+    "consumed_surface_file_fallback": true,
+    "drift_classes": ["valid", "safe-refresh", "material"],
+    "safe_refresh_fields": [
+      "repository_evidence",
+      "target_file_hashes",
+      "target_details",
+      "steps",
+      "verification_commands",
+      "execution_footprint"
+    ],
+    "material_fields": [
+      "scope",
+      "acceptance_contract_hash",
+      "dependencies",
+      "consumed_surface_hashes",
+      "authorization",
+      "migration_policy",
+      "product_decisions",
+      "project_policy"
+    ]
+  },
+  "next_wave": {
+    "later_task_plan_revision": 0,
+    "later_task_status": "Unplanned",
+    "selected_task_status": "Backlog",
+    "requires_review_coverage": true,
+    "zero_revision_nodes_are_conservative": true
+  },
+  "autopilot": {
+    "default_max_events": 20,
+    "hard_max_events": 100,
+    "default_until": ["approval-required", "blocked", "milestone-done"],
+    "fresh_session_per_event": true,
+    "receipt_read_back_per_event": true,
+    "isolated_worktree_is_idempotent_assertion": true,
+    "automatic_operations": [
+      "safe-plan-refresh",
+      "normal-linear-comments-and-statuses",
+      "bounded-active-task-repair",
+      "tests",
+      "disposable-local-migration-run",
+      "unambiguous-cache-reconciliation"
+    ],
+    "gated_operations": [
+      "new-task",
+      "scope-change",
+      "dependency-change",
+      "product-change",
+      "authorization-change",
+      "migration-or-schema-source-change",
+      "external-irreversible-write",
+      "model-selection",
+      "integration",
+      "merge",
+      "push"
+    ],
+    "expiry_fields": [
+      "scope",
+      "acceptance",
+      "dependencies",
+      "authorization",
+      "migration_policy",
+      "project_policy"
+    ],
+    "policy_required_fields": [
+      "schema_version",
+      "policy_id",
+      "milestone_id",
+      "revision",
+      "binding",
+      "policy_hash",
+      "persisted",
+      "read_back",
+      "updated_at"
+    ]
+  },
+  "findings": {
+    "command": "report-milestone-findings",
+    "batch_is_idempotent_by_session_id": true,
+    "one_owner_or_one_managed_repair_task": true,
+    "preserve_gate_and_checklist_history": true,
+    "return_stage": "implementing",
+    "requires_machine_reverification": true,
+    "requires_fresh_human_checklist": true,
+    "surface_scoped_plan_invalidation": true,
+    "session_conflict_result": "MILESTONE_FINDINGS_SESSION_CONFLICT"
+  }
+}

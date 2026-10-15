@@ -1,0 +1,4 @@
+interface:
+  display_name: "Exec Refactoring"
+  short_description: "Help with Exec Refactoring tasks"
+  default_prompt: "Use $exec-refactoring to apply its execution checks to this task."

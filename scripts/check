@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+REPO_ROOT=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
+UV_COMMAND=${UV_BIN:-uv}
+
+if ! command -v "$UV_COMMAND" >/dev/null 2>&1 && [[ ! -x "$UV_COMMAND" ]]; then
+  printf 'uv is required; install the version allowed by pyproject.toml or set UV_BIN.\n' >&2
+  exit 4
+fi
+
+export PYTHONDONTWRITEBYTECODE=1
+
+cd "$REPO_ROOT"
+bash -n scripts/update-skills
+
+"$UV_COMMAND" run --frozen --group dev ruff format --check \
+  skills/linear-spanks/scripts/linear_spanks \
+  skills/linear-spanks/scripts/linear_spanks_cli.py \
+  skills/linear-spanks/scripts/configure_model_routing.py \
+  skills/linear-spanks/scripts/generate_command_catalog.py \
+  skills/linear-spanks/scripts/workflow_contract.py \
+  scripts/install-skills scripts/install-caveman scripts/benchmark-context scripts/benchmark-envelope scripts/benchmark-workflow tests
+"$UV_COMMAND" run --frozen --group dev ruff check \
+  skills/linear-spanks/scripts/linear_spanks \
+  skills/linear-spanks/scripts/linear_spanks_cli.py \
+  skills/linear-spanks/scripts/configure_model_routing.py \
+  skills/linear-spanks/scripts/generate_command_catalog.py \
+  skills/linear-spanks/scripts/workflow_contract.py \
+  scripts/install-skills scripts/install-caveman scripts/benchmark-context scripts/benchmark-envelope scripts/benchmark-workflow tests
+"$UV_COMMAND" run --frozen --group dev mypy
+
+python3 skills/linear-spanks/scripts/linear_spanks_cli.py contracts validate >/dev/null
+python3 skills/linear-spanks/scripts/linear_spanks_cli.py docs check >/dev/null
+python3 skills/linear-spanks/scripts/linear_spanks_cli.py docs links >/dev/null
+
+export COVERAGE_PROCESS_START="$REPO_ROOT/pyproject.toml"
+export COVERAGE_FILE="$REPO_ROOT/.coverage"
+export PYTHONPATH="$REPO_ROOT/scripts/coverage_bootstrap${PYTHONPATH:+:$PYTHONPATH}"
+
+"$UV_COMMAND" run --frozen --group dev coverage erase
+"$UV_COMMAND" run --frozen --group dev coverage run --parallel-mode -m unittest discover -s tests
+"$UV_COMMAND" run --frozen --group dev coverage combine --quiet
+"$UV_COMMAND" run --frozen --group dev coverage report
+
+python3 scripts/benchmark-context
+python3 scripts/benchmark-envelope
+python3 scripts/benchmark-workflow

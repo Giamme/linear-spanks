@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tech Node"
+  short_description: "Help with Tech Node tasks"
+  default_prompt: "Use $tech-node to apply project-compatible technology guidance."

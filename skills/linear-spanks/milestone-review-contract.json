@@ -1,0 +1,136 @@
+{
+  "schema_version": 2,
+  "commands": [
+    "run-milestone",
+    "run-milestone-loop",
+    "review-milestone"
+  ],
+  "modes": [
+    "legacy",
+    "next-wave",
+    "incremental"
+  ],
+  "batching": {
+    "max_tasks_per_batch": 16,
+    "max_packet_tokens": 60000,
+    "ordering": [
+      "milestone_task_list",
+      "linear_priority",
+      "dependency_fan_out_desc",
+      "creation_time",
+      "issue_id"
+    ]
+  },
+  "invocation_budget": {
+    "max_model_turns": 8,
+    "max_active_context_tokens": 200000,
+    "max_cumulative_input_tokens": 4000000,
+    "stop_new_reads_percent": 80,
+    "native_token_telemetry": "hard-when-available"
+  },
+  "phase_budget": {
+    "tokens_per_planned_batch": 700000,
+    "finalization_tokens": 700000,
+    "formula": "tokens_per_planned_batch * planned_batches + finalization_tokens"
+  },
+  "session_boundary": "single-review-batch",
+  "same_session_result": "FRESH_CONTEXT_REQUIRED",
+  "overflow_result": "CONTEXT_OVERFLOW",
+  "drift_result": "MILESTONE_REVIEW_DRIFT",
+  "coverage": {
+    "initial": [
+      "complete-stable-task-contract",
+      "complete-dependency-contract",
+      "first-wave"
+    ],
+    "incremental": [
+      "changed-tasks",
+      "material-dependency-neighbours",
+      "overlapping-footprints",
+      "affected-final-sinks"
+    ],
+    "required_counts": [
+      "changed",
+      "adjacent",
+      "unchanged"
+    ],
+    "required_hashes": [
+      "task-contract",
+      "dependency-graph",
+      "coverage"
+    ],
+    "selected_tasks_require_current_coverage": true,
+    "plan_changes": "optional full per-task plan/current bindings; classify drift, preserve unaffected review coverage"
+  },
+  "checkpoint": {
+    "statuses": [
+      "batch-complete",
+      "ready-to-finalize"
+    ],
+    "required_fields": [
+      "schema_version",
+      "receipt_id",
+      "review_id",
+      "session_id",
+      "project_id",
+      "milestone_id",
+      "entry_command",
+      "mode",
+      "marker_revision",
+      "matrix_hash",
+      "dependency_graph_hash",
+      "coverage_hash",
+      "ordered_task_ids",
+      "covered_task_ids",
+      "remaining_task_ids",
+      "changed_task_ids",
+      "adjacent_task_ids",
+      "unchanged_task_ids",
+      "task_revisions",
+      "plan_revisions",
+      "batch_index",
+      "cumulative_findings",
+      "previous_receipt_id",
+      "budget",
+      "idempotency_key",
+      "status",
+      "timestamp",
+      "next_command",
+      "checkpoint_read_back"
+    ],
+    "budget_fields": [
+      "model_turns",
+      "active_context_tokens",
+      "cumulative_input_tokens",
+      "phase_cumulative_input_tokens",
+      "planned_batches",
+      "telemetry_available"
+    ],
+    "finding_fields": [
+      "finding_id",
+      "severity",
+      "summary",
+      "task_ids",
+      "source_revisions"
+    ]
+  },
+  "finalization": {
+    "required_fields": [
+      "checkpoint",
+      "current_marker_revision",
+      "current_matrix_hash",
+      "current_dependency_graph_hash",
+      "current_coverage_hash",
+      "current_source_revisions",
+      "model_turns",
+      "active_context_tokens",
+      "cumulative_input_tokens",
+      "phase_cumulative_input_tokens",
+      "telemetry_available",
+      "findings_persisted",
+      "marker_advanced",
+      "durable_read_back",
+      "next_command"
+    ]
+  }
+}

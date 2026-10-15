@@ -1,0 +1,164 @@
+{
+  "schema_version": 1,
+  "source_revision_semantics": "trace-only when an authoritative plan drift check returns valid; safe-refresh and material drift require refreshed repository evidence",
+  "default_tier": "medium",
+  "tiers": ["fast", "medium", "heavy"],
+  "token_estimate": "ceil(utf8_characters / 4)",
+  "profiles": {
+    "fast": {
+      "max_input_tokens": 8000,
+      "max_repository_files": 24,
+      "max_source_bytes": 50000,
+      "max_batches": 2,
+      "max_files_per_batch": 12,
+      "max_git_commits": 20,
+      "max_manifest_files": 6,
+      "max_test_files": 8,
+      "max_capsule_tokens": 2000
+    },
+    "medium": {
+      "max_input_tokens": 12000,
+      "max_repository_files": 160,
+      "max_source_bytes": 600000,
+      "max_batches": 16,
+      "max_files_per_batch": 20,
+      "max_git_commits": 100,
+      "max_manifest_files": 12,
+      "max_test_files": 32,
+      "max_capsule_tokens": 10000
+    },
+    "heavy": {
+      "max_input_tokens": 120000,
+      "max_repository_files": 1000,
+      "max_source_bytes": 3000000,
+      "max_batches": 64,
+      "max_files_per_batch": 80,
+      "max_git_commits": 1000,
+      "max_manifest_files": 30,
+      "max_test_files": 200,
+      "max_capsule_tokens": 120000
+    }
+  },
+  "metric_measurements": {
+    "max_repository_files": "count",
+    "max_source_bytes": "utf8_bytes",
+    "max_batches": "count",
+    "max_files_per_batch": "count",
+    "max_git_commits": "count",
+    "max_manifest_files": "count",
+    "max_test_files": "count",
+    "max_capsule_tokens": "tokens"
+  },
+  "stages": ["inventory", "shard-analysis", "synthesis", "preview", "apply", "complete"],
+  "checkpoint": {
+    "required_fields": [
+      "schema_version",
+      "run_id",
+      "command",
+      "scan_tier",
+      "repository_root",
+      "source_revision",
+      "repository_fingerprint",
+      "stage",
+      "completed_batch_ids",
+      "remaining_batch_ids",
+      "coverage",
+      "capsules",
+      "completion_findings",
+      "next_command"
+    ],
+    "coverage_fields": [
+      "eligible_files",
+      "selected_files",
+      "analyzed_files",
+      "excluded_files",
+      "selected_source_bytes"
+    ]
+  },
+  "evidence_capsule": {
+    "required_fields": [
+      "capsule_id",
+      "module",
+      "source_hashes",
+      "responsibilities",
+      "public_interfaces",
+      "dependencies",
+      "implemented_capabilities",
+      "tests_and_verification",
+      "known_gaps",
+      "evidence_pointers",
+      "confidence"
+    ],
+    "confidence_values": ["low", "medium", "high"]
+  },
+  "completion_finding": {
+    "required_fields": [
+      "outcome",
+      "classification",
+      "evidence_pointers",
+      "verification_evidence",
+      "confidence"
+    ]
+  },
+  "completion_classifications": [
+    "verified-delivered",
+    "implemented-unverified",
+    "historical-inferred"
+  ],
+  "security": {
+    "follow_symlinks": false,
+    "checkpoint_within_repository": true,
+    "excluded_directories": [
+      ".git",
+      ".hg",
+      ".svn",
+      ".linear-spanks",
+      "node_modules",
+      "vendor",
+      ".venv",
+      "venv",
+      "dist",
+      "build",
+      "target",
+      "out",
+      "coverage",
+      ".next",
+      ".cache",
+      "__pycache__"
+    ],
+    "excluded_secret_patterns": [
+      ".env",
+      ".env.*",
+      "*.pem",
+      "*.key",
+      "*credentials*",
+      "*secrets*"
+    ]
+  },
+  "overflow_result": "CONTEXT_OVERFLOW",
+  "drift_result": "REPOSITORY_DRIFT",
+  "ripwire": {
+    "version": "0.4.0",
+    "default": "on",
+    "precedence": [
+      "run",
+      "repository",
+      "user",
+      "default"
+    ],
+    "query_kinds": [
+      "map",
+      "task",
+      "symbol",
+      "callers",
+      "impact",
+      "tests"
+    ],
+    "timeout_seconds": 30,
+    "cache": false,
+    "optional": true,
+    "reference": "references/ripwire.md",
+    "child_propagation": "explicit-run-override-only",
+    "evidence": "measured-packet-with-source-query-binary-policy-worktree-binding"
+  }
+}

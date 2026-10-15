@@ -1,0 +1,20 @@
+.DS_Store
+.env
+.env.*
+node_modules/
+dist/
+build/
+coverage/
+*.log
+__pycache__/
+*.py[cod]
+.coverage
+.mypy_cache/
+.ruff_cache/
+.venv/
+
+# Local OpenClaude config and unrelated skill caches
+.openclaude/
+.agents/
+agent/
+skills-lock.json

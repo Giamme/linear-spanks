@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "project_resolution": {
+    "order": [
+      "Resolve the project before milestones, issues, or documents.",
+      "Prefer --project-id, then --project scoped by --team.",
+      "Use list_issues with project and team filters for task discovery.",
+      "Use get_project(query, includeMilestones:true) for milestone context.",
+      "Pass both milestone and resolved project when assigning a milestone."
+    ],
+    "ambiguous_target": "stop",
+    "strict_project": "Reject an entity outside the selected project.",
+    "cross_project_blockers": "Read-only external blocker context; never expands mutation scope."
+  },
+  "mutation_protocol": {
+    "steps": [
+      "Draft the exact proposed change.",
+      "Obtain approval for that mutation unless the user already approved it explicitly.",
+      "Re-read the logical target and compare its revision or relevant fields.",
+      "Validate the command and any state transition with scripts/linear_spanks_cli.py state advance.",
+      "Use an idempotency key derived from project, entity, command, and current revision; bulk operations add a stable operation ID and canonical payload hash from state payload-hash.",
+      "Apply only intended fields; omit empty optional fields.",
+      "Read back the saved entity or document; plan it with runtime readback-plan and read back only the written fields plus identity and revision.",
+      "Report the artifact title, status, and Linear link."
+    ],
+    "assurance_variance": {
+      "strict": "Re-read before every write and read back every write.",
+      "balanced": "Reuse the revision within the logical entity or phase unless drift is detected; trust the mutation response as acknowledgement but still perform one explicit final entity read.",
+      "fast": "Same as balanced."
+    },
+    "never": [
+      "Mutate during a read-only or report request.",
+      "Expand scope, bulk-create, apply review fixes, persist learning artifacts, archive, split, promote, or resolve conflicts without the manifest's explicit gate."
+    ]
+  },
+  "postcondition_definitions": {
+    "each_write_read_back": "After each write, issue a fresh read and confirm the intended fields are present. A projected read of the written fields plus identity and revision satisfies this; a full entity read is never required to prove a write landed. A mutation response is an acknowledgement, not evidence.",
+    "all_writes_read_back": "Every write in this command must be confirmed by a fresh read before the command reports success.",
+    "every_write_read_back": "Every write in this command must be confirmed by a fresh read before the command reports success.",
+    "each_linear_write_read_back": "Every Linear mutation must be confirmed by a fresh Linear read before reporting success.",
+    "phase_writes_read_back": "Reconcile the phase once, then perform targeted reads for failures, missing entities, and stale revisions.",
+    "done_state_read_back": "After setting Done, re-read the issue and confirm the status actually persisted as Done.",
+    "completion_receipt_read_back": "Re-read the persisted completion comment and confirm its content matches what was written.",
+    "state_marker_read_back": "Re-read the milestone description and confirm the machine-readable state marker holds the intended stage.",
+    "plan_revision_read_back": "Re-read the persisted Implementation Plan comment and confirm the plan revision advanced as intended.",
+    "description_and_status_read_back": "Re-read both the entity description and its status after writing them.",
+    "backlog_status_read_back": "Re-read the issue and confirm it reached Backlog only after its authoritative plan was persisted.",
+    "gate_done_read_back": "Re-read the human-verification gate issue and confirm it is Done.",
+    "snapshot_document_read_back": "Re-read the persisted snapshot Document and confirm its content and revision.",
+    "verification_receipt_read_back": "Re-read the persisted verification result comment before treating verification as recorded.",
+    "repair_task_read_back": "Re-read the created repair task and confirm it exists with the intended contract.",
+    "release_update_read_back": "Re-read the project after a release update and confirm the change persisted.",
+    "human_verified_marker_read_back": "Re-read the milestone state marker and confirm it records human-verified.",
+    "linear_completion_read_back": "Re-read the Linear entity after completion and confirm the terminal state persisted.",
+    "successor_entities_read_back": "Re-read every created successor entity and confirm it exists before resolving the source.",
+    "enabled_checklist_and_gate_read_back": "Re-read both the checklist and the gate issue after enabling human verification.",
+    "integrated_issues_done_and_read_back": "Confirm by fresh read that every integrated issue reached Done.",
+    "every_created_task_unplanned_and_read_back": "Confirm by fresh read that each created task exists and is in Unplanned.",
+    "snapshot_read_back_before_active_reference": "Persist and read back the snapshot before writing the small active reference that points at it.",
+    "archive_read_back_before_comment_mutation": "Persist the archive Document and confirm it by fresh read before mutating or deleting any source comment.",
+    "canonical_comments_read_back_before_any_deletion": "Confirm every canonical per-type comment by fresh read before deleting any redundant comment.",
+    "canonical_comments_and_summary_read_back_before_deletion": "Confirm the canonical comments and the milestone summary by fresh read before any deletion.",
+    "deleted_comment_ids_absent_on_fresh_complete_read": "Prove absence from a fresh complete comment inventory. A delete acknowledgement is not proof, and a permissions error or ambiguous lookup is not absence.",
+    "original_comment_versions_preserved_in_single_archive": "All original comment versions must survive in exactly one archive Document before consolidation.",
+    "original_comment_and_task_versions_preserved_in_single_archive": "All original comment and task versions must survive in exactly one archive Document before consolidation.",
+    "exact_preview_approval_satisfied": "The approval must name this exact preview. A general approval never satisfies it.",
+    "exact_preview_hash_approved": "The approved preview hash must equal the current preview hash; any drift invalidates the approval.",
+    "exact_repair_preview_approved": "The approval must name this exact repair preview.",
+    "preview_hash_approval": "Activation requires approval bound to the exact preview hash.",
+    "prune_never_inferred_or_inherited": "Pruning requires an explicit --level prune argument on this invocation. It is never inferred from general approval, execution permission, configuration, a parent loop, or a previous checkpoint.",
+    "unapproved_operations_omitted": "Operations outside the approved preview must not be performed.",
+    "stronger_model_selection_user_gated": "A stronger executor runs only after explicit user model selection bound to the current attempt count.",
+    "verification_passed": "Every acceptance criterion passes, no blocking findings are open or regressed, the exact candidate commit was reviewed, and all required checks were freshly rerun.",
+    "unverified_work_not_marked_done": "Work without current verification evidence must not reach Done.",
+    "no_done_without_verified_integration": "Done requires a validated integration receipt for the exact candidate.",
+    "failed_verification_remains_in_progress": "On failure, record a Verification Failure comment and keep or move the task to In Progress. Never advance to Done.",
+    "machine_reverification_required": "Machine verification must be rerun; a prior pass on a different candidate does not carry over.",
+    "fresh_human_checklist_required": "A new revision-bound human checklist is required; a previous checklist does not carry over.",
+    "no_mutations": "This command performs no writes of any kind.",
+    "read_only_when_no_approved_mutation": "Without an approved mutation this command must behave as read-only.",
+    "source_tree_unmodified": "This role must not edit tracked source.",
+    "role_capabilities_enforced": "Each role may perform only its contract-defined operations; workers never mutate Linear beyond their own marked comment.",
+    "hard_blockers_done": "Every hard blocker must be Done before execution proceeds.",
+    "required_links_reported": "Report the artifact title, status, and Linear link for each affected entity."
+  },
+  "naming": "Read the project's naming-conventions paragraph before proposing milestones or issues and apply it strictly. During audit or onboarding, report a missing convention and ask for the preferred format before saving one.",
+  "recovery": {
+    "interrupted_pipeline": "Parse the state marker, run status and sync, then continue from the validated stage.",
+    "failed_verification": "Do not mark Done. Add a Verification Failure comment and keep or move the task In Progress.",
+    "PROJECT_ORCHESTRATION_RECEIPT_AMBIGUOUS": "Validate exactly one active receipt and resume one deterministic event.",
+    "PROJECT_ORCHESTRATION_DRIFT": "Revision or source drift; refresh bindings before resuming.",
+    "MILESTONE_ORCHESTRATION_RECEIPT_AMBIGUOUS": "Validate the matching milestone receipt and project scope fence.",
+    "ORCHESTRATION_SCOPE_CONFLICT": "Project-scope conflict; resolve scope before resuming.",
+    "HUMAN_VERIFICATION_POLICY_DRIFT": "Resolve precedence again, reconcile affected receipts and gate state, then recompute the next event.",
+    "MODEL_SELECTION_REQUIRED": "Four failed automatic rounds. Run only one explicitly selected stronger repair, then return to the same gate after any further failure.",
+    "ROLLOVER_DRIFT": "Refresh inventory and preview; never complete the source project from a stale receipt.",
+    "external_mutation": "Compare with current plans. Ask before reconciling conflicts.",
+    "changed_plans_or_dependencies": "Classify bound drift. Safe-refresh only whitelisted plan evidence; material changes expire guarded policy.",
+    "failed_write": "Read back to determine whether it applied. Retry once only when safe, then stop.",
+    "missing_blocker": "Stop and ask for a valid issue identifier.",
+    "missing_document_capability": "Return the draft and the capability gap; do not claim persistence."
+  }
+}

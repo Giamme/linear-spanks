@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "commands": {
+    "context budget": {
+      "access": "write",
+      "approval": "explicit invocation authorizes exactly the selected budget update or reset; agent-proposed increases require approval",
+      "approval_kind": "invocation",
+      "reads": [
+        "resolved_project_and_scope_ancestry",
+        "fresh_scope_policy_documents",
+        "active_context_reference",
+        "bounded_source_sections"
+      ],
+      "writes": [
+        "context_budget_policy_document",
+        "operation_receipt"
+      ],
+      "postconditions": [
+        "each_write_read_back",
+        "previous_active_preserved_on_partial_failure",
+        "packet_recompiled_after_policy_change"
+      ]
+    },
+    "context inspect": {
+      "access": "read",
+      "approval": "none",
+      "approval_kind": "none",
+      "reads": [
+        "resolved_project_and_scope_ancestry",
+        "fresh_scope_policy_documents",
+        "active_context_reference",
+        "bounded_source_sections"
+      ],
+      "writes": [],
+      "postconditions": [
+        "no_mutations",
+        "next_legal_action_and_blocking_limit_reported"
+      ]
+    },
+    "runtime inspect": {
+      "access": "read",
+      "approval": "none",
+      "approval_kind": "none",
+      "reads": [
+        "resolved_project_and_scope_ancestry",
+        "fresh_scope_policy_documents",
+        "active_context_reference",
+        "bounded_source_sections"
+      ],
+      "writes": [],
+      "postconditions": [
+        "no_mutations",
+        "next_legal_action_and_blocking_limit_reported"
+      ]
+    },
+    "milestone checkpoint": {
+      "access": "write",
+      "approval": "exact preview approval; task deletion additionally requires explicit --level prune in the invocation",
+      "approval_kind": "preview",
+      "reads": [
+        "resolved_project_and_scope_ancestry",
+        "fresh_scope_policy_documents",
+        "complete_milestone_task_and_comment_inventory",
+        "existing_milestone_and_task_archives",
+        "fresh_prune_outcome_and_relation_evidence"
+      ],
+      "writes": [
+        "single_milestone_task_archive",
+        "one_canonical_comment_per_task_type",
+        "approved_redundant_comment_deletions",
+        "managed_milestone_summary_paragraph",
+        "archived_dependency_handoff_comments",
+        "approved_task_deletions"
+      ],
+      "postconditions": [
+        "archive_read_back_before_comment_mutation",
+        "canonical_comments_and_summary_read_back_before_deletion",
+        "original_comment_and_task_versions_preserved_in_single_archive",
+        "prune_never_inferred_or_inherited",
+        "surviving_consumers_have_verified_archive_references",
+        "deleted_tasks_absent_on_fresh_inventory",
+        "open_tasks_and_managed_human_gates_retained",
+        "partial_failure_resumable_from_exact_preview"
+      ]
+    },
+    "task checkpoint": {
+      "access": "write",
+      "approval": "exact preview approval for archive, canonical comments and redundant-comment deletion",
+      "approval_kind": "preview",
+      "reads": [
+        "resolved_project_and_scope_ancestry",
+        "fresh_scope_policy_documents",
+        "complete_task_comments_with_metadata",
+        "existing_single_task_comment_archive",
+        "stable_task_contract"
+      ],
+      "writes": [
+        "single_task_comment_archive",
+        "one_canonical_comment_per_selected_type",
+        "approved_redundant_comment_deletions"
+      ],
+      "postconditions": [
+        "archive_read_back_before_comment_mutation",
+        "canonical_comments_read_back_before_any_deletion",
+        "deleted_comment_ids_absent_on_fresh_complete_read",
+        "one_comment_per_selected_type",
+        "original_comment_versions_preserved_in_single_archive",
+        "stable_task_description_and_status_unchanged",
+        "partial_failure_resumable_from_exact_preview"
+      ]
+    }
+  },
+  "artifacts": [
+    "ContextSnapshot",
+    "ContextDelta",
+    "ContextManifest",
+    "CompactionReceipt",
+    "ContextBudgetPolicy"
+  ],
+  "budget": {
+    "inheritance": [
+      "task",
+      "milestone",
+      "project",
+      "built-in"
+    ],
+    "raise_only": true,
+    "active_token_fields": [
+      "max_input_tokens",
+      "max_active_context_tokens",
+      "max_capsule_tokens"
+    ],
+    "other_limits_unchanged": true,
+    "runtime_capacity": "revalidate model and harness; unknown explicitly reported",
+    "storage": "scope-addressable project Linear Documents",
+    "reset": "revisioned null override restores inheritance"
+  },
+  "compaction": {
+    "suggest_percent": 70,
+    "target_percent": 50,
+    "suggest_max_tokens": 21000,
+    "target_max_tokens": 15000,
+    "threshold": "min(percent_of_effective_budget, absolute_cap)",
+    "history_tokens": 4000,
+    "events_since_checkpoint": 3,
+    "manifest_page_entries": 50,
+    "approval": "exact preview hash; refresh sources before write; read snapshot before active reference",
+    "source_preservation": "project originals retained; task/milestone originals preserved in one scope archive before approved consolidation; only explicit milestone --level prune may delete completed verified tasks"
+  },
+  "comment_slots": {
+    "types": [
+      "plan",
+      "handoff",
+      "review",
+      "execution"
+    ],
+    "identity": "managed marker, never comment position; human comments and thread replies interleave with managed ones",
+    "write_path": "resolve the slot, then update that comment in place; append only when the slot is empty",
+    "history": "each edit keeps a bounded superseded-revision summary in the comment; exact prior bodies live in the task archive",
+    "default_history_entries": 5,
+    "duplicate_result": "TASK_SLOT_AMBIGUOUS",
+    "consolidation": "task checkpoint reconciles duplicate or legacy appended comments into one slot per type"
+  },
+  "packet": {
+    "required_sections": [
+      "instructions",
+      "skills",
+      "plan",
+      "evidence",
+      "bindings"
+    ],
+    "measurement": "canonical complete UTF-8 JSON, ceil(bytes/4) estimate; actual telemetry separate",
+    "dispatch": "validate packet and policy hash immediately before dispatch"
+  },
+  "repair": {
+    "unchanged_failures_before_diagnosis": 2,
+    "max_automatic_attempts": 4,
+    "environment": "prerequisite-recovery",
+    "stronger_executor": "explicit approval",
+    "stalled_action": "diagnose once per unchanged evidence state, then REPAIR_STALLED without a changed approach or new evidence",
+    "material_only_replan": true,
+    "progress": "mandatory in schema 2 attempts; preserve consumed counts and executor strengths"
+  },
+  "skill_selection": {
+    "metadata": [
+      "roles",
+      "phases",
+      "technologies",
+      "requires",
+      "precedence",
+      "source_hash"
+    ],
+    "selection": "minimum applicable set from repository evidence; higher existing precedence wins; equal conflicting sources stop",
+    "load": "full source once per session and source hash"
+  },
+  "reuse": {
+    "bindings": [
+      "source_hashes",
+      "worktree",
+      "contracts",
+      "toolchain",
+      "dependencies",
+      "selection"
+    ],
+    "required_verification": [
+      "actual-candidate",
+      "integrated-result"
+    ]
+  }
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tech React"
+  short_description: "Help with Tech React tasks"
+  default_prompt: "Use $tech-react to apply project-compatible technology guidance."

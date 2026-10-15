@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+# Update the canonical checkout, then refresh each harness through the installer.
+set -uo pipefail
+
+main() {
+  local source_dir dry=0 local_only=0 upstream remote branch before after changes
+  local -a install_args=(--client all)
+  source_dir="$(cd -P "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)" || return 2
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --source) source_dir="${2:?--source needs a Linear Spanks checkout}"; shift 2 ;;
+      --client|--mode|--scope|--dest)
+        [ $# -ge 2 ] || { echo "linear-spanks: $1 needs a value" >&2; return 2; }
+        install_args+=("$1" "$2"); shift 2 ;;
+      --without-ripwire) install_args+=("$1"); shift ;;
+      --dry-run) dry=1; shift ;;
+      --local) local_only=1; shift ;;
+      --help|-h)
+        echo 'Usage: update-skills [--source <checkout>] [--local] [--dry-run]'
+        echo 'Default: fast-forward the tracked upstream, then refresh harness installations.'
+        echo '--local: refresh installations from the current files without fetching.'
+        echo 'Installer options: --client SELECTOR (default all), --mode link|copy,'
+        echo '  --scope linear|all|exec|tech, --dest PATH, --without-ripwire'
+        return 0 ;;
+      *) echo "linear-spanks: unknown update option: $1" >&2; return 2 ;;
+    esac
+  done
+  source_dir="$(cd -P "$source_dir" && pwd)" || return 2
+  if [ ! -f "$source_dir/skills/linear-spanks/SKILL.md" ] || [ ! -f "$source_dir/scripts/install-skills" ]; then
+    echo "linear-spanks: not a Linear Spanks source directory: $source_dir" >&2; return 2
+  fi
+  echo "linear-spanks: update source: $source_dir"
+  if [ "$local_only" = 0 ]; then
+    if [ "$(git -C "$source_dir" rev-parse --show-toplevel 2>/dev/null)" != "$source_dir" ]; then
+      echo 'linear-spanks: update needs the original Git checkout; use --source <checkout> or --local' >&2; return 2
+    fi
+    changes="$(git -C "$source_dir" status --porcelain --untracked-files=all)" || return $?
+    if [ -n "$changes" ]; then
+      echo 'linear-spanks: checkout has local changes; commit or stash them, or use --local to refresh current files' >&2; return 2
+    fi
+    branch="$(git -C "$source_dir" symbolic-ref --quiet --short HEAD)" || {
+      echo 'linear-spanks: detached HEAD; check out a tracking branch or use --local' >&2; return 2;
+    }
+    upstream="$(git -C "$source_dir" rev-parse --abbrev-ref --symbolic-full-name '@{upstream}' 2>/dev/null)" || {
+      echo 'linear-spanks: branch has no upstream; configure tracking or use --local' >&2; return 2;
+    }
+    remote="$(git -C "$source_dir" config --get "branch.$branch.remote")" || return 2
+    if [ "$dry" = 1 ]; then
+      echo "linear-spanks: would fetch $remote and fast-forward $branch to $upstream (no network in dry run)"
+    else
+      before="$(git -C "$source_dir" rev-parse HEAD)" || return 2
+      git -C "$source_dir" fetch -- "$remote" || return $?
+      git -C "$source_dir" merge --ff-only -- "$upstream" || {
+        echo 'linear-spanks: could not fast-forward; resolve branch divergence before updating installations' >&2; return 1;
+      }
+      after="$(git -C "$source_dir" rev-parse HEAD)" || return 2
+      echo "linear-spanks: source $before -> $after"
+    fi
+  fi
+  # Run the refreshed installer in a new process so it loads updated source.
+  if [ "$dry" = 1 ]; then
+    python3 "$source_dir/scripts/install-skills" "${install_args[@]}" --dry-run || return $?
+    echo 'linear-spanks: preview only; remote changes and live harness availability are not verified'
+  else
+    python3 "$source_dir/scripts/install-skills" "${install_args[@]}" || {
+      echo 'linear-spanks: source retained; some installations failed. Fix the reported cause and retry with --local' >&2; return 1;
+    }
+    echo 'linear-spanks: installations refreshed; restart active harness sessions to load the updated skill'
+  fi
+}
+
+# Parse the function before fetching: the update may replace this script on disk.
+main "$@"; exit $?

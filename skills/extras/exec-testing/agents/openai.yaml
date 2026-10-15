@@ -1,0 +1,4 @@
+interface:
+  display_name: "Exec Testing"
+  short_description: "Help with Exec Testing tasks"
+  default_prompt: "Use $exec-testing to apply its execution checks to this task."

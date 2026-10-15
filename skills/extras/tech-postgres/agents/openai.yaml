@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tech Postgres"
+  short_description: "Help with Tech Postgres tasks"
+  default_prompt: "Use $tech-postgres to apply project-compatible technology guidance."

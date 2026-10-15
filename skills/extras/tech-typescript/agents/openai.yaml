@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tech Typescript"
+  short_description: "Help with Tech Typescript tasks"
+  default_prompt: "Use $tech-typescript to apply project-compatible technology guidance."

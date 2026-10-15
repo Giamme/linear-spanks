@@ -1,0 +1,390 @@
+{
+  "codebase analyze": [
+    "references/codebase-analysis.md",
+    "references/context-runtime.md",
+    "references/project-commands.md",
+    "templates/codebase-analysis.md",
+    "references/ripwire.md"
+  ],
+  "codebase import": [
+    "references/codebase-analysis.md",
+    "references/context-runtime.md",
+    "references/project-commands.md",
+    "templates/codebase-import-proposal.md",
+    "references/ripwire.md"
+  ],
+  "context budget": [
+    "references/context-management.md"
+  ],
+  "context inspect": [
+    "references/context-management.md"
+  ],
+  "learning apply": [
+    "references/learning-commands.md",
+    "references/context-runtime.md"
+  ],
+  "learning organize": [
+    "references/learning-commands.md",
+    "references/context-runtime.md",
+    "templates/learning-entry.md",
+    "templates/milestone-learning-index.md",
+    "templates/project-learning-index.md"
+  ],
+  "learning review": [
+    "references/learning-commands.md",
+    "references/context-runtime.md",
+    "templates/learning-entry.md",
+    "templates/milestone-learning-index.md"
+  ],
+  "milestone archive": [
+    "references/milestone-commands.md",
+    "references/context-runtime.md",
+    "references/workflow-state.md",
+    "references/lifecycle-commands.md",
+    "templates/milestone-archive-notes.md"
+  ],
+  "milestone blockers": [
+    "references/milestone-commands.md",
+    "references/context-runtime.md",
+    "references/lifecycle-commands.md"
+  ],
+  "milestone checkpoint": [
+    "references/context-management.md",
+    "references/milestone-checkpoint.md",
+    "references/task-checkpoint.md"
+  ],
+  "milestone clarify": [
+    "references/milestone-commands.md",
+    "references/context-runtime.md",
+    "references/workflow-state.md",
+    "templates/milestone-spec.md"
+  ],
+  "milestone create-tasks": [
+    "references/milestone-commands.md",
+    "references/context-runtime.md",
+    "references/workflow-state.md",
+    "templates/task-spec.md"
+  ],
+  "milestone design": [
+    "references/milestone-commands.md",
+    "references/context-runtime.md",
+    "references/workflow-state.md",
+    "templates/architectural-options.md"
+  ],
+  "milestone diff": [
+    "references/milestone-commands.md",
+    "references/context-runtime.md",
+    "references/lifecycle-commands.md",
+    "templates/milestone-diff-report.md"
+  ],
+  "milestone fix-review": [
+    "references/milestone-commands.md",
+    "references/context-runtime.md",
+    "references/workflow-state.md",
+    "templates/milestone-review-findings.md"
+  ],
+  "milestone handoff": [
+    "references/milestone-commands.md",
+    "references/context-runtime.md",
+    "references/lifecycle-commands.md",
+    "references/human-verification.md",
+    "templates/milestone-handoff.md"
+  ],
+  "milestone onboard": [
+    "references/milestone-commands.md",
+    "references/context-runtime.md",
+    "references/lifecycle-commands.md",
+    "templates/milestone-spec.md"
+  ],
+  "milestone pause": [
+    "references/milestone-commands.md",
+    "references/context-runtime.md",
+    "references/workflow-state.md",
+    "references/lifecycle-commands.md"
+  ],
+  "milestone plan": [
+    "references/milestone-commands.md",
+    "references/context-runtime.md",
+    "references/model-routing.md",
+    "references/task-workflow.md",
+    "references/workflow-state.md",
+    "references/skill-composition.md",
+    "references/repository-scan.md",
+    "references/issue-intake.md",
+    "templates/implementation-plan.md",
+    "references/ripwire.md"
+  ],
+  "milestone report-findings": [
+    "references/milestone-commands.md",
+    "references/context-runtime.md",
+    "references/human-verification.md",
+    "templates/milestone-review-findings.md"
+  ],
+  "milestone resume": [
+    "references/milestone-commands.md",
+    "references/context-runtime.md",
+    "references/workflow-state.md",
+    "references/lifecycle-commands.md"
+  ],
+  "milestone review": [
+    "references/milestone-commands.md",
+    "references/context-runtime.md",
+    "references/workflow-state.md",
+    "templates/milestone-review-findings.md"
+  ],
+  "milestone run": [
+    "references/milestone-commands.md",
+    "references/context-runtime.md",
+    "references/workflow-state.md",
+    "references/human-verification.md",
+    "templates/milestone-spec.md"
+  ],
+  "milestone status": [
+    "references/milestone-commands.md",
+    "references/context-runtime.md",
+    "references/lifecycle-commands.md",
+    "references/human-verification.md"
+  ],
+  "milestone sync": [
+    "references/milestone-commands.md",
+    "references/context-runtime.md",
+    "references/lifecycle-commands.md",
+    "templates/sync-report.md"
+  ],
+  "milestone verify": [
+    "references/milestone-commands.md",
+    "references/context-runtime.md",
+    "references/workflow-state.md",
+    "references/repository-scan.md",
+    "references/human-verification.md",
+    "templates/completion-handoff.md",
+    "references/ripwire.md"
+  ],
+  "milestone wrap": [
+    "references/milestone-commands.md",
+    "references/context-runtime.md",
+    "references/workflow-state.md",
+    "references/human-verification.md",
+    "templates/learning-entry.md",
+    "templates/milestone-learning-index.md",
+    "templates/milestone-retrospective.md"
+  ],
+  "project audit": [
+    "references/project-commands.md",
+    "references/context-runtime.md",
+    "templates/project-onboarding-findings.md"
+  ],
+  "project checkpoint": [
+    "references/project-commands.md",
+    "references/context-runtime.md",
+    "references/project-epoch.md",
+    "templates/project-context-capsule.md"
+  ],
+  "project create": [
+    "references/project-commands.md",
+    "references/context-runtime.md",
+    "templates/project-spec.md"
+  ],
+  "project normalize": [
+    "references/project-commands.md",
+    "references/context-runtime.md",
+    "templates/project-onboarding-findings.md"
+  ],
+  "project onboard": [
+    "references/project-commands.md",
+    "references/context-runtime.md",
+    "templates/project-onboarding-findings.md"
+  ],
+  "project review": [
+    "references/project-commands.md",
+    "references/context-runtime.md",
+    "templates/project-review-findings.md"
+  ],
+  "project rollover": [
+    "references/project-commands.md",
+    "references/context-runtime.md",
+    "references/project-epoch.md",
+    "templates/project-rollover-proposal.md"
+  ],
+  "project run": [
+    "references/context-runtime.md",
+    "references/project-orchestration.md",
+    "references/parallel-execution.md",
+    "templates/completion-handoff.md",
+    "templates/verification-ledger.md",
+    "templates/task-verification-result.md",
+    "references/human-verification.md",
+    "templates/project-orchestration-receipt.md",
+    "references/ripwire.md"
+  ],
+  "project update": [
+    "references/project-commands.md",
+    "references/context-runtime.md",
+    "templates/project-spec.md"
+  ],
+  "runtime inspect": [
+    "references/context-management.md"
+  ],
+  "task backfill": [
+    "references/task-commands.md",
+    "references/context-runtime.md",
+    "references/repository-scan.md",
+    "templates/reconstructed-completion.md",
+    "references/ripwire.md"
+  ],
+  "task checkpoint": [
+    "references/context-management.md",
+    "references/task-checkpoint.md"
+  ],
+  "task create-bug": [
+    "references/task-commands.md",
+    "references/context-runtime.md",
+    "templates/bug-task-spec.md"
+  ],
+  "task decompose": [
+    "references/task-commands.md",
+    "references/context-runtime.md",
+    "templates/task-split-proposal.md"
+  ],
+  "task design": [
+    "references/task-commands.md",
+    "references/context-runtime.md",
+    "templates/task-spec.md"
+  ],
+  "task next": [
+    "references/task-commands.md",
+    "references/context-runtime.md",
+    "references/model-routing.md",
+    "references/task-workflow.md",
+    "references/workflow-state.md",
+    "references/skill-composition.md",
+    "references/repository-scan.md",
+    "references/lifecycle-commands.md",
+    "templates/implementation-plan.md",
+    "references/ripwire.md"
+  ],
+  "task onboard": [
+    "references/task-commands.md",
+    "references/context-runtime.md",
+    "references/lifecycle-commands.md",
+    "templates/task-spec.md"
+  ],
+  "task organize": [
+    "references/task-commands.md",
+    "references/context-runtime.md",
+    "references/issue-intake.md",
+    "templates/unplanned-work-grouping.md"
+  ],
+  "task plan": [
+    "references/task-commands.md",
+    "references/context-runtime.md",
+    "references/model-routing.md",
+    "references/task-workflow.md",
+    "references/skill-composition.md",
+    "references/repository-scan.md",
+    "references/issue-intake.md",
+    "templates/implementation-plan.md",
+    "references/ripwire.md"
+  ],
+  "task promote": [
+    "references/task-commands.md",
+    "references/context-runtime.md",
+    "templates/task-promotion-proposal.md"
+  ],
+  "task refine": [
+    "references/task-commands.md",
+    "references/context-runtime.md",
+    "references/model-routing.md",
+    "references/task-workflow.md",
+    "references/issue-intake.md",
+    "templates/task-refinement.md",
+    "references/ripwire.md"
+  ],
+  "task replan": [
+    "references/task-commands.md",
+    "references/context-runtime.md",
+    "references/model-routing.md",
+    "references/task-workflow.md",
+    "references/skill-composition.md",
+    "references/repository-scan.md",
+    "templates/replan-task.md",
+    "references/ripwire.md"
+  ],
+  "task run": [
+    "references/task-commands.md",
+    "references/context-runtime.md",
+    "references/model-routing.md",
+    "references/task-workflow.md",
+    "references/workflow-state.md",
+    "references/skill-composition.md",
+    "references/repository-scan.md",
+    "templates/implementation-plan.md",
+    "references/ripwire.md"
+  ],
+  "task scope": [
+    "references/task-commands.md",
+    "references/context-runtime.md"
+  ],
+  "task split": [
+    "references/task-commands.md",
+    "references/context-runtime.md",
+    "templates/task-split-proposal.md"
+  ],
+  "task verify": [
+    "references/task-commands.md",
+    "references/context-runtime.md",
+    "references/model-routing.md",
+    "references/task-workflow.md",
+    "references/skill-composition.md",
+    "references/repository-scan.md",
+    "templates/completion-handoff.md",
+    "references/ripwire.md"
+  ],
+  "verification confirm": [
+    "references/human-verification.md",
+    "references/context-runtime.md",
+    "references/workflow-state.md",
+    "references/milestone-commands.md",
+    "templates/human-verification-checklist.md"
+  ],
+  "verification fail": [
+    "references/human-verification.md",
+    "references/context-runtime.md",
+    "references/workflow-state.md",
+    "references/milestone-commands.md",
+    "templates/human-verification-checklist.md"
+  ],
+  "verification policy-set": [
+    "references/human-verification.md",
+    "references/context-runtime.md",
+    "references/project-commands.md"
+  ],
+  "verification status": [
+    "references/human-verification.md",
+    "references/context-runtime.md",
+    "references/project-commands.md"
+  ],
+  "wave implement": [
+    "references/parallel-execution.md",
+    "references/context-runtime.md",
+    "references/model-routing.md",
+    "references/task-workflow.md",
+    "references/workflow-state.md",
+    "references/skill-composition.md",
+    "references/repository-scan.md",
+    "references/lifecycle-commands.md",
+    "templates/parallel-wave-receipt.md",
+    "references/ripwire.md"
+  ],
+  "wave reconcile": [
+    "references/parallel-execution.md",
+    "references/context-runtime.md",
+    "references/model-routing.md",
+    "references/task-workflow.md",
+    "references/skill-composition.md",
+    "references/repository-scan.md",
+    "references/lifecycle-commands.md",
+    "templates/parallel-wave-receipt.md",
+    "references/ripwire.md"
+  ]
+}

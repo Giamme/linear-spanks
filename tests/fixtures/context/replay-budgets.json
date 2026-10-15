@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "cycles": 100,
+  "max_context_bytes": 4000,
+  "max_historical_artifacts_expanded": 3,
+  "max_duplicate_writes": 0,
+  "max_repeated_analysis": 0,
+  "required_preserved_facts": ["acceptance", "findings", "approvals", "next_action", "plan_binding", "commits"],
+  "scenarios": ["planning", "repair", "handoff", "interrupted-write", "failed-read-back", "integration-approval", "conflicting-source", "stale-policy", "environment-recovery"]
+}

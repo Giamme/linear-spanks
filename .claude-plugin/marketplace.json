@@ -1,0 +1,16 @@
+{
+  "name": "linear-spanks",
+  "owner": {
+    "name": "Giamme"
+  },
+  "metadata": {
+    "description": "A governed project, milestone and task workflow for Linear."
+  },
+  "plugins": [
+    {
+      "name": "linear-spanks",
+      "source": ".",
+      "description": "A governed workflow for Linear: turn project intent into milestones and tasks, then run them with declared approvals, fresh read-backs after every write and verification before done. Works through your agent's Linear MCP connector."
+    }
+  ]
+}

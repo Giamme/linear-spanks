@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "measurement": "ceil(utf8_bytes/4) over the compiled envelope JSON plus every required reference",
+  "rationale": "Overhead is paid once per event and multiplies across every session boundary. These ceilings sit roughly ten percent above the measured values so ordinary wording changes pass and structural growth fails.",
+  "max_optimized_overhead_percent": 55,
+  "commands": {
+    "task run": {
+      "envelope_tokens": 6600,
+      "reference_tokens": 11500,
+      "strict_overhead_tokens": 18000,
+      "optimized_overhead_tokens": 1600
+    },
+    "task plan": {
+      "envelope_tokens": 6400,
+      "reference_tokens": 12000,
+      "strict_overhead_tokens": 18500,
+      "optimized_overhead_tokens": 1500
+    },
+    "milestone run": {
+      "envelope_tokens": 11600,
+      "reference_tokens": 13500,
+      "strict_overhead_tokens": 25000,
+      "optimized_overhead_tokens": 23500
+    },
+    "project run": {
+      "envelope_tokens": 7500,
+      "reference_tokens": 9000,
+      "strict_overhead_tokens": 16500,
+      "optimized_overhead_tokens": 16500
+    },
+    "context budget": {
+      "envelope_tokens": 1900,
+      "reference_tokens": 4900,
+      "strict_overhead_tokens": 6700,
+      "optimized_overhead_tokens": 6700
+    }
+  }
+}

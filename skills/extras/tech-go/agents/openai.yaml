@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tech Go"
+  short_description: "Help with Tech Go tasks and workflows"
+  default_prompt: "Use $tech-go to apply project-compatible technology guidance."

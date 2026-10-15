@@ -1,0 +1,230 @@
+{
+  "schema_version": 1,
+  "system_default": "disabled",
+  "precedence": [
+    "milestone-override",
+    "project-default",
+    "system-default"
+  ],
+  "results": {
+    "policy_unavailable": "HUMAN_VERIFICATION_POLICY_UNAVAILABLE",
+    "policy_collision": "HUMAN_VERIFICATION_POLICY_COLLISION",
+    "policy_malformed": "HUMAN_VERIFICATION_POLICY_MALFORMED",
+    "policy_drift": "HUMAN_VERIFICATION_POLICY_DRIFT",
+    "preview_required": "HUMAN_VERIFICATION_PREVIEW_REQUIRED",
+    "gate_drift": "HUMAN_VERIFICATION_GATE_DRIFT",
+    "checklist_stale": "HUMAN_VERIFICATION_CHECKLIST_STALE",
+    "confirmation_incomplete": "HUMAN_VERIFICATION_CONFIRMATION_INCOMPLETE",
+    "bypass_reason_required": "HUMAN_VERIFICATION_BYPASS_REASON_REQUIRED"
+  },
+  "project_policy": {
+    "document_title": "Linear Spanks Human Verification Policy",
+    "document_marker": "linear-spanks:human-verification-policy",
+    "values": [
+      "enabled",
+      "disabled"
+    ],
+    "required_fields": [
+      "schema_version",
+      "project_id",
+      "default",
+      "revision",
+      "policy_hash",
+      "actor",
+      "updated_at"
+    ],
+    "singleton": true,
+    "missing_behavior": "disabled",
+    "persistence_required_for_project_mutation": true
+  },
+  "milestone_override": {
+    "description_marker": "linear-spanks:human-verification-override",
+    "values": [
+      "enabled",
+      "disabled",
+      "inherit"
+    ],
+    "required_fields": [
+      "schema_version",
+      "project_id",
+      "milestone_id",
+      "override",
+      "revision",
+      "marker_hash",
+      "actor",
+      "updated_at"
+    ]
+  },
+  "effective_policy": {
+    "sources": [
+      "milestone-override",
+      "project-default",
+      "system-default"
+    ],
+    "required_fields": [
+      "schema_version",
+      "project_id",
+      "milestone_id",
+      "effective",
+      "source",
+      "project_policy_revision",
+      "milestone_override_revision",
+      "policy_hash"
+    ]
+  },
+  "preview": {
+    "scopes": [
+      "project",
+      "milestone"
+    ],
+    "required_fields": [
+      "schema_version",
+      "scope",
+      "project_id",
+      "milestone_id",
+      "requested_value",
+      "reason",
+      "active_milestone_ids",
+      "affected_milestones",
+      "preview_hash",
+      "approved_hash"
+    ],
+    "affected_milestone_fields": [
+      "milestone_id",
+      "stage",
+      "before_effective",
+      "after_effective",
+      "gate_issue_id",
+      "gate_action",
+      "checklist_id",
+      "checklist_action",
+      "orchestration_receipt_ids",
+      "receipt_action"
+    ],
+    "gate_actions": [
+      "none",
+      "create",
+      "reactivate",
+      "cancel"
+    ],
+    "checklist_actions": [
+      "none",
+      "supersede",
+      "bypass"
+    ],
+    "receipt_actions": [
+      "none",
+      "reconcile"
+    ],
+    "terminal_stages": [
+      "wrapped",
+      "archived"
+    ],
+    "pending_stages": [
+      "milestone-verified"
+    ],
+    "exact_approval_required": true
+  },
+  "gate_issue": {
+    "title_prefix": "Human verification gate",
+    "description_marker": "linear-spanks:human-verification-gate",
+    "required_fields": [
+      "schema_version",
+      "project_id",
+      "milestone_id",
+      "issue_id",
+      "gate_revision",
+      "effective_policy_hash",
+      "state",
+      "updated_at"
+    ],
+    "states": [
+      "Todo",
+      "In Progress",
+      "Done",
+      "Canceled"
+    ],
+    "active_states": [
+      "Todo",
+      "In Progress"
+    ],
+    "planner_excluded": true,
+    "dependency_graph_excluded": true,
+    "task_execution_excluded": true,
+    "regular_task_totals_excluded": true,
+    "disabled_action": "cancel",
+    "history_preserved": true
+  },
+  "checklist": {
+    "comment_marker": "linear-spanks:human-verification-checklist",
+    "required_fields": [
+      "schema_version",
+      "checklist_id",
+      "project_id",
+      "milestone_id",
+      "gate_issue_id",
+      "checklist_revision",
+      "machine_verification_revision",
+      "effective_policy_hash",
+      "status",
+      "instructions",
+      "evidence",
+      "actor",
+      "updated_at"
+    ],
+    "statuses": [
+      "pending",
+      "confirmed",
+      "failed",
+      "bypassed",
+      "superseded"
+    ],
+    "terminal_statuses": [
+      "confirmed",
+      "failed",
+      "bypassed",
+      "superseded"
+    ],
+    "history_preserved": true
+  },
+  "repair_task": {
+    "description_marker": "linear-spanks:human-verification-repair",
+    "required_fields": [
+      "schema_version",
+      "project_id",
+      "milestone_id",
+      "gate_issue_id",
+      "checklist_id",
+      "failure_revision",
+      "reason",
+      "status"
+    ],
+    "initial_status": "Unplanned",
+    "one_per_failure_revision": true
+  },
+  "lifecycle": {
+    "disabled_wrap_from": "milestone-verified",
+    "enabled_verify_to": "milestone-verified",
+    "enabled_confirm_to": "human-verified",
+    "enabled_failure_to": "implementing",
+    "enabled_wrap_from": "human-verified",
+    "await_event": "await-human-verification",
+    "requires_linear_completion_readback": true,
+    "machine_reverification_after_enable_or_failure": true,
+    "confirmation_and_wrap_are_separate": true
+  },
+  "orchestration_binding": {
+    "required_fields": [
+      "project_id",
+      "milestone_id",
+      "effective",
+      "source",
+      "project_policy_revision",
+      "milestone_override_revision",
+      "policy_hash"
+    ],
+    "drift_action": "recompute",
+    "enabled_stop": "await-human-verification",
+    "downstream_dispatch_while_waiting": false
+  }
+}

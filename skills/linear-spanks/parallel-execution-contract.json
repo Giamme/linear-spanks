@@ -1,0 +1,247 @@
+{
+  "schema_version": 1,
+  "source_hash_semantics": "trace-only after the plan binding is current; parent HEAD and integration preview remain exact",
+  "graph": {
+    "marker_name": "linear-spanks:dependency-graph",
+    "managed_heading": "## Dependency graph",
+    "required_fields": [
+      "schema_version",
+      "project_id",
+      "milestone_id",
+      "graph_revision",
+      "workflow_revision",
+      "source_hash",
+      "graph_hash",
+      "review_status",
+      "tasks",
+      "hard_edges",
+      "serialization_edges",
+      "waves",
+      "generated_at"
+    ],
+    "task_fields": ["id", "plan_revision", "execution_footprint"],
+    "edge_fields": ["from", "to"],
+    "review_statuses": ["unreviewed", "reviewed", "incremental-reviewed"],
+    "authoritative_dependency_source": "Linear blockedBy relations",
+    "drift_result": "DEPENDENCY_GRAPH_DRIFT",
+    "cycle_result": "DEPENDENCY_GRAPH_CYCLE",
+    "max_write_retries": 1
+  },
+  "execution_footprint": {
+    "required_fields": [
+      "repository",
+      "write_scopes",
+      "exclusive_resources",
+      "parallel_safe",
+      "serialization_rationale"
+    ],
+    "unknown_scope_serializes": true,
+    "overlapping_scope_serializes": true,
+    "overlapping_exclusive_resource_serializes": true,
+    "paths_are_repository_relative": true
+  },
+  "waves": {
+    "default_max_parallel": 2,
+    "hard_max_parallel": 8,
+    "minimum_parallel_tasks": 2,
+    "selection_input_fields": ["graph", "live_statuses", "excluded_issue_ids"],
+    "incremental_selection_field": "review_coverage_hashes",
+    "assurance": "strict",
+    "fixed_frontier": true,
+    "selection_order": [
+      "milestone_task_order",
+      "linear_priority_ascending_null_last",
+      "dependency_fanout_descending",
+      "creation_time_ascending",
+      "identifier_ascending"
+    ],
+    "capacity_result": "PARALLEL_CAPACITY_UNAVAILABLE",
+    "insufficient_frontier_result": "NO_PARALLEL_WAVE",
+    "failure_policy": "finish-independent-siblings-block-next-wave"
+  },
+  "git": {
+    "parent_source": "clean-current-branch-and-head",
+    "branch_pattern": "linear-spanks/wave-<wave-id>/<issue-id>",
+    "worktree_policy": "one-clean-worktree-per-task",
+    "baseline_policy": "all-children-from-exact-parent-head",
+    "worktree_root_config": ".linear-spanks-git.yml parallel-worktree-root",
+    "executor_may_merge": false,
+    "executor_may_mark_done": false,
+    "merge_strategy": "merge-commit-no-ff",
+    "integration_worktree": "temporary-clean-worktree",
+    "delete_merged_branches_default": false,
+    "remove_successful_worktrees_after_merged_receipt": true,
+    "preserve_failed_worktrees": true
+  },
+  "single_execution": {
+    "flag": "--isolated-worktree",
+    "optional_commands": ["run-task", "implement-next"],
+    "conditional_commands": {
+      "run-milestone": "start-implementation"
+    },
+    "always_isolated_commands": ["implement-wave"],
+    "not_applicable_result": "ISOLATION_NOT_APPLICABLE",
+    "preflight_result": "ISOLATION_PREFLIGHT_FAILED",
+    "ambiguous_receipt_result": "ISOLATION_RECEIPT_AMBIGUOUS",
+    "approval_drift_result": "ISOLATION_APPROVAL_INVALIDATED",
+    "plan_drift_result": "REPLAN_REQUIRED",
+    "branch_pattern": "linear-spanks/run-<run-id>/<issue-id>",
+    "receipt_template": "templates/isolation-receipt.md",
+    "reads": [
+      "git_strategy_and_safe_worktree_root",
+      "clean_attached_parent_branch_and_head",
+      "current_plan_and_source_hash",
+      "active_isolation_receipts",
+      "child_branch_and_worktree_state",
+      "current_integration_bindings"
+    ],
+    "writes": [
+      "durable_isolation_receipt",
+      "isolated_child_branch_and_worktree",
+      "verified_child_commit",
+      "temporary_integration_worktree",
+      "verified_parent_fast_forward",
+      "completion_receipt_and_done_state",
+      "safe_worktree_cleanup"
+    ],
+    "postconditions": [
+      "executor_writes_only_inside_isolated_worktree",
+      "exact_integration_preview_approved",
+      "failed_integration_preserves_parent_and_linear_state",
+      "done_only_after_verified_parent_integration",
+      "integrated_receipt_persisted_before_cleanup",
+      "child_branch_preserved_without_push_or_pr"
+    ],
+    "integration_preview_fields": [
+      "parent_branch",
+      "parent_head",
+      "child_commit",
+      "merge_command",
+      "verification_commands",
+      "cleanup_commands",
+      "linear_completion_writes"
+    ],
+    "integration_strategy": "temporary-worktree-then-fast-forward-parent",
+    "merge_strategy": "merge-commit-no-ff",
+    "preserve_child_branch": true,
+    "push_or_pr": false,
+    "cleanup_after_integrated_receipt": true,
+    "linear_done_after_parent_integration": true
+  },
+  "isolation_receipt": {
+    "required_fields": [
+      "schema_version",
+      "receipt_id",
+      "run_id",
+      "state",
+      "command",
+      "issue_id",
+      "plan_revision",
+      "source_hash",
+      "parent_branch",
+      "baseline_head",
+      "repository_root",
+      "worktree_root",
+      "worktree_path",
+      "child_branch",
+      "child_commit",
+      "verification",
+      "integration",
+      "completion",
+      "failure",
+      "created_at",
+      "updated_at",
+      "state_timestamps"
+    ],
+    "states": [
+      "prepared",
+      "executing",
+      "verified-pending-integration",
+      "integrating",
+      "integrated",
+      "failed"
+    ],
+    "active_states": [
+      "prepared",
+      "executing",
+      "verified-pending-integration",
+      "integrating"
+    ],
+    "transitions": {
+      "prepared": ["executing", "failed"],
+      "executing": ["verified-pending-integration", "failed"],
+      "verified-pending-integration": ["verified-pending-integration", "integrating", "integrated", "failed"],
+      "integrating": ["verified-pending-integration", "integrated", "failed"],
+      "integrated": ["integrated"],
+      "failed": []
+    },
+    "verification_fields": ["status", "commands", "completed_at"],
+    "integration_fields": [
+      "preview_hash",
+      "preview_parent_head",
+      "approved_preview_hash",
+      "approved_parent_head",
+      "integrated_head",
+      "verification_status"
+    ],
+    "completion_fields": [
+      "receipt_id",
+      "receipt_persisted",
+      "issue_done_read_back",
+      "newly_unblocked_read_back",
+      "worktree_cleanup"
+    ],
+    "failure_fields": ["code", "message", "at"]
+  },
+  "wave_receipt": {
+    "required_fields": [
+      "schema_version",
+      "wave_id",
+      "milestone_id",
+      "graph_hash",
+      "source_hash",
+      "parent_branch",
+      "baseline_head",
+      "worktree_root",
+      "requested_parallelism",
+      "effective_parallelism",
+      "state",
+      "tasks",
+      "created_at",
+      "updated_at"
+    ],
+    "task_fields": [
+      "issue_id",
+      "plan_revision",
+      "branch",
+      "worktree",
+      "claim_status",
+      "execution_status",
+      "commit_sha",
+      "verification_status",
+      "integration_status"
+    ],
+    "states": [
+      "prepared",
+      "executing",
+      "awaiting-reconciliation",
+      "reconciling",
+      "partially-integrated",
+      "integrated",
+      "failed"
+    ],
+    "execution_statuses": ["pending", "running", "verified", "failed", "skipped"],
+    "integration_statuses": ["pending", "integrated", "conflicted", "failed-verification"],
+    "drift_result": "WAVE_RECEIPT_DRIFT"
+  },
+  "reconciliation": {
+    "approval": "one-exact-wave-preview",
+    "continue_independent_siblings_after_conflict": true,
+    "combined_verification_required": true,
+    "parent_unchanged_on_combined_verification_failure": true,
+    "linear_done_only_after_parent_integration": true,
+    "read_back_newly_unblocked_relations": true,
+    "overlapping_source_drift_result": "REPLAN_REQUIRED for material consumed-surface or dependency-output drift only",
+    "approval_drift_result": "RECONCILIATION_APPROVAL_INVALIDATED"
+  }
+}

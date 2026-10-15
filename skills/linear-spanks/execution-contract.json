@@ -1,0 +1,664 @@
+{
+  "schema_version": 1,
+  "token_estimate": "ceil(utf8_characters / 4)",
+  "context_profiles": {
+    "catalog": {
+      "max_input_tokens": 4000
+    },
+    "project": {
+      "max_input_tokens": 60000,
+      "max_milestones": 30,
+      "max_full_entities": 30,
+      "max_learning_entries": 3
+    },
+    "project_compaction": {
+      "max_input_tokens": 16000,
+      "max_inventory_batches": 64,
+      "max_compact_rows_per_batch": 30,
+      "max_full_entities_per_batch": 12,
+      "max_capsule_bytes": 24576
+    },
+    "milestone": {
+      "max_input_tokens": 100000,
+      "max_tasks": 60,
+      "deep_review_batch_size": 16,
+      "max_blocker_depth": 4,
+      "max_blocker_nodes": 60,
+      "max_full_entities": 24,
+      "max_learning_entries": 3,
+      "max_raw_log_characters": 8000
+    },
+    "task": {
+      "max_input_tokens": 120000,
+      "max_blocker_depth": 4,
+      "max_blocker_nodes": 60,
+      "max_full_blockers": 16,
+      "max_siblings": 6,
+      "max_learning_entries": 3,
+      "max_raw_log_characters": 8000
+    },
+    "intake": {
+      "max_input_tokens": 16000,
+      "max_candidate_tasks": 30,
+      "max_existing_milestones": 30,
+      "max_full_entities": 12,
+      "max_learning_entries": 3
+    },
+    "lifecycle": {
+      "max_input_tokens": 30000,
+      "max_tasks": 30,
+      "max_blocker_depth": 4,
+      "max_blocker_nodes": 20,
+      "max_full_entities": 8
+    },
+    "learning": {
+      "max_input_tokens": 10000,
+      "max_learning_entries": 20,
+      "max_full_entities": 8
+    }
+  },
+  "execution_profiles": {
+    "read_report": {
+      "approval": {"kind": "none", "regate_on": []},
+      "reads": ["resolved_target", "command_required_evidence"],
+      "writes": [],
+      "postconditions": ["no_mutations", "sources_identified"]
+    },
+    "preview_write": {
+      "approval": {"kind": "preview", "regate_on": ["target_revision_changed"]},
+      "reads": ["resolved_target", "current_revision", "command_required_evidence"],
+      "writes": ["approved_operations_only"],
+      "postconditions": ["each_write_read_back", "required_links_reported"]
+    },
+    "invocation_write": {
+      "approval": {"kind": "invocation", "regate_on": ["scope_changed", "downstream_contract_changed", "target_revision_changed"]},
+      "reads": ["resolved_target", "current_revision", "command_required_evidence"],
+      "writes": ["invocation_scoped_operations"],
+      "postconditions": ["each_write_read_back", "required_links_reported"]
+    },
+    "per_operation_write": {
+      "approval": {"kind": "per_operation", "regate_on": ["every_gated_operation", "target_revision_changed"]},
+      "reads": ["resolved_target", "current_revision", "command_required_evidence"],
+      "writes": ["individually_approved_operations"],
+      "postconditions": ["each_write_read_back", "checkpoint_persisted", "next_command_reported"]
+    },
+    "conditional_write": {
+      "approval": {"kind": "conditional", "regate_on": ["conflicting_mutation_selected", "target_revision_changed"]},
+      "reads": ["resolved_target", "current_revision", "command_required_evidence"],
+      "writes": ["approved_conflict_resolution_only"],
+      "postconditions": ["read_only_when_no_approved_mutation", "each_write_read_back"]
+    },
+    "staged_import": {
+      "approval": {
+        "kind": "staged",
+        "regate_on": ["repository_revision_changed", "scan_scope_changed", "linear_target_revision_changed"],
+        "stages": {
+          "analysis_checkpoint": "invocation",
+          "linear_project_and_milestones": "preview"
+        }
+      },
+      "reads": ["resolved_repository", "current_repository_revision", "bounded_repository_evidence"],
+      "writes": ["invocation_scoped_scan_checkpoints", "preview_approved_linear_operations"],
+      "postconditions": ["checkpoint_validated", "each_linear_write_read_back", "required_links_reported"]
+    },
+    "staged_rollover": {
+      "approval": {
+        "kind": "staged",
+        "regate_on": [
+          "source_project_revision_changed",
+          "source_snapshot_changed",
+          "approved_rollover_plan_changed",
+          "initiative_changed",
+          "successor_scope_changed"
+        ],
+        "stages": {
+          "inventory": "invocation",
+          "successor_project": "preview",
+          "successor_roadmap": "preview",
+          "carryover_issues": "preview",
+          "source_dispositions": "preview",
+          "source_completion": "preview"
+        }
+      },
+      "reads": [
+        "resolved_source_project",
+        "current_source_revision",
+        "bounded_project_inventory",
+        "current_initiative_membership"
+      ],
+      "writes": [
+        "approved_capsule_and_successor_operations",
+        "approved_roadmap_operations",
+        "approved_carryover_operations",
+        "approved_source_dispositions",
+        "approved_release_update_and_source_completion"
+      ],
+      "postconditions": [
+        "rollover_receipt_persisted",
+        "phase_writes_read_back",
+        "next_command_reported",
+        "release_update_read_back",
+        "source_remains_active_until_finalized"
+      ]
+    },
+    "staged_project_orchestration": {
+      "approval": {
+        "kind": "staged",
+        "regate_on": [
+          "project_scope_changed",
+          "milestone_scope_changed",
+          "task_plan_scope_changed",
+          "integration_preview_changed",
+          "selected_model_changed",
+          "bound_revision_changed"
+        ],
+        "stages": {
+          "approved_scope_progress": "invocation",
+          "project_or_milestone_scope": "preview",
+          "task_execution": "invocation",
+          "integration": "preview",
+          "stronger_executor_selection": "preview"
+        }
+      },
+      "reads": [
+        "resolved_project",
+        "active_project_context_slices",
+        "compact_milestone_ledger",
+        "project_orchestration_receipt",
+        "eligible_milestone_and_task_frontiers"
+      ],
+      "writes": [
+        "approved_orchestration_operations",
+        "durable_project_loop_receipt",
+        "role_handoffs_and_task_ledgers"
+      ],
+      "postconditions": [
+        "one_fresh_bounded_event",
+        "role_capabilities_enforced",
+        "checkpoint_persisted",
+        "next_command_reported",
+        "no_done_without_verified_integration"
+      ]
+    },
+    "staged_milestone_orchestration": {
+      "approval": {
+        "kind": "staged",
+        "regate_on": [
+          "milestone_scope_changed",
+          "task_plan_scope_changed",
+          "integration_preview_changed",
+          "selected_model_changed",
+          "bound_revision_changed"
+        ],
+        "stages": {
+          "approved_milestone_progress": "invocation",
+          "milestone_scope": "preview",
+          "task_execution": "invocation",
+          "integration": "preview",
+          "stronger_executor_selection": "preview"
+        }
+      },
+      "reads": [
+        "resolved_project_and_milestone",
+        "milestone_state_marker_and_dependency_graph",
+        "milestone_orchestration_receipt",
+        "task_frontier_and_project_scope_receipts"
+      ],
+      "writes": [
+        "approved_milestone_orchestration_operations",
+        "durable_milestone_loop_receipt",
+        "role_handoffs_and_task_ledgers"
+      ],
+      "postconditions": [
+        "one_fresh_bounded_event",
+        "role_capabilities_enforced",
+        "checkpoint_persisted",
+        "next_command_reported",
+        "no_done_without_verified_integration"
+      ]
+    },
+    "conditional_proposal_write": {
+      "approval": {"kind": "conditional", "regate_on": ["any_mutation_selected", "proposal_scope_changed", "target_revision_changed"]},
+      "reads": ["resolved_target", "current_revision", "command_required_evidence"],
+      "writes": ["approved_proposal_operations_only"],
+      "postconditions": ["read_only_when_no_approved_mutation", "each_write_read_back"]
+    }
+  },
+  "runtime_cards": {
+    "task_commands": ["refine-task", "plan-task", "plan-tasks", "run-task", "replan-task", "verify-task", "implement-next", "implement-wave", "reconcile-wave"],
+    "shared_safety_gates": [
+      "project_scope_resolved",
+      "approval_satisfied",
+      "blocker_readiness_satisfied",
+      "idempotency_identity_present",
+      "repository_exclusions_enforced",
+      "drift_rejected",
+      "fresh_verification_before_done",
+      "final_durable_read_back"
+    ],
+    "phases": {
+      "refine-task": {
+        "roles": ["coordinator"],
+        "skills": ["repository-patterns-when-code-evidence-is-needed"],
+        "verification": "final-entity-read-back"
+      },
+      "plan-task": {
+        "roles": ["coordinator", "planner-when-policy-required"],
+        "skills": ["repository-patterns", "task-specific-guidance"],
+        "verification": "plan-and-status-final-read-back"
+      },
+      "plan-tasks": {
+        "roles": ["coordinator", "planner-when-policy-required"],
+        "skills": ["repository-patterns", "task-specific-guidance"],
+        "verification": "bulk-reconciliation-then-targeted-mismatch-reads"
+      },
+      "run-task": {
+        "roles": ["coordinator", "planner-when-needed", "executor", "reviewer-when-required"],
+        "skills": ["repository-patterns", "task-specific-guidance", "testing-when-coverage-required"],
+        "completion_skills": ["code-review-when-required", "verification"],
+        "verification": "fresh-in-command-verification-and-final-entity-read-back"
+      },
+      "replan-task": {
+        "roles": ["coordinator", "planner-when-policy-required"],
+        "skills": ["repository-patterns", "task-specific-guidance"],
+        "verification": "new-current-plan-final-read-back"
+      },
+      "verify-task": {
+        "roles": ["coordinator", "reviewer-when-required"],
+        "skills": ["testing-when-coverage-required", "verification"],
+        "verification": "explicit-recovery-or-independent-verification"
+      },
+      "implement-next": {
+        "roles": ["coordinator", "executor", "reviewer-when-required"],
+        "skills": ["repository-patterns", "task-specific-guidance", "testing-when-coverage-required"],
+        "completion_skills": ["code-review-when-required", "verification"],
+        "verification": "reuse-valid-preflight-then-run-task-verification"
+      },
+      "implement-wave": {
+        "roles": ["coordinator", "executor", "reviewer-when-required"],
+        "skills": ["repository-patterns", "linear-spanks-git", "task-specific-guidance", "testing-when-coverage-required"],
+        "completion_skills": ["code-review-when-required", "verification"],
+        "verification": "independent-task-verification-without-integration-or-done-transition"
+      },
+      "reconcile-wave": {
+        "roles": ["coordinator", "reviewer-when-required"],
+        "skills": ["linear-spanks-git", "testing-when-coverage-required"],
+        "completion_skills": ["code-review-when-required", "verification"],
+        "verification": "ordered-candidate-and-combined-integration-verification"
+      }
+    }
+  },
+  "commands": {
+    "help": {"context": "catalog", "execution": "read_report", "session_boundary": "single-command"},
+    "create-project": {"context": "project", "execution": "preview_write", "session_boundary": "single-command"},
+    "analyze-codebase": {
+      "context": "project",
+      "execution": "invocation_write",
+      "session_boundary": "single-stage",
+      "repository_scan": {"default_tier": "medium"},
+      "reads": ["resolved_repository", "current_repository_revision", "bounded_repository_evidence"],
+      "writes": ["checkpoint_artifacts_only"],
+      "postconditions": ["source_tree_unmodified", "checkpoint_validated", "coverage_reported", "next_command_reported", "raw_batch_context_released"]
+    },
+    "import-codebase": {
+      "context": "project",
+      "execution": "staged_import",
+      "session_boundary": "single-stage",
+      "repository_scan": {"default_tier": "medium"},
+      "bulk": true,
+      "reads": ["validated_analysis_checkpoint", "evidence_linked_capability_model"],
+      "writes": ["approved_project_spec", "approved_historical_milestones", "approved_future_milestones"],
+      "postconditions": ["completion_classifications_preserved", "historical_milestones_outcome_oriented", "unverified_work_not_marked_done", "next_command_reported"]
+    },
+    "update-project": {"context": "project", "execution": "preview_write", "session_boundary": "single-command"},
+    "review-project": {"context": "project", "execution": "read_report", "session_boundary": "single-command"},
+    "onboard-project": {"context": "project", "execution": "preview_write", "session_boundary": "single-command"},
+    "audit-project": {"context": "project", "execution": "read_report", "session_boundary": "single-command"},
+    "normalize-project": {"context": "project", "execution": "preview_write", "session_boundary": "single-command"},
+    "checkpoint-project": {
+      "context": "project_compaction",
+      "execution": "preview_write",
+      "session_boundary": "single-command",
+      "reads": [
+        "bounded_project_inventory",
+        "existing_active_project_context",
+        "project_learning_index",
+        "fresh_scope_policy_documents",
+        "bounded_original_source_sections"
+      ],
+      "writes": [
+        "approved_context_snapshot_and_manifest_documents",
+        "compaction_receipt",
+        "active_context_reference"
+      ],
+      "postconditions": [
+        "context_snapshot_validated",
+        "snapshot_document_read_back",
+        "historical_entities_unchanged",
+        "snapshot_read_back_before_active_reference",
+        "preview_hash_approval",
+        "previous_active_preserved_on_partial_failure"
+      ]
+    },
+    "rollover-project": {
+      "context": "project_compaction",
+      "execution": "staged_rollover",
+      "session_boundary": "single-phase",
+      "bulk": true,
+      "reads": ["milestone_and_issue_disposition_matrix", "existing_project_documents", "project_learning_index"],
+      "writes": ["durable_rollover_receipt", "prepared_release_capsule", "successor_project_and_roadmap", "selected_unplanned_carryovers", "source_resolution_release_update_and_completion"],
+      "postconditions": ["rollover_phase_validated", "no_unresolved_source_items_before_completion", "successor_entities_read_back", "source_project_completed_only_after_successor_verification"]
+    },
+    "run-project": {
+      "context": "project",
+      "execution": "staged_project_orchestration",
+      "session_boundary": "single-event",
+      "bulk": true,
+      "reads": [
+        "project_and_milestone_orchestrator_bindings",
+        "task_executor_and_verifier_bindings",
+        "verification_ledgers",
+        "current_project_milestone_and_task_revisions"
+      ],
+      "writes": [
+        "capability_scoped_role_operations",
+        "attempt_bound_completion_handoffs",
+        "attempt_bound_verification_results"
+      ],
+      "postconditions": [
+        "one_project_orchestrator_per_project",
+        "one_milestone_orchestrator_per_milestone",
+        "one_executor_and_verifier_per_task",
+        "automatic_task_rounds_bounded",
+        "stronger_model_selection_user_gated",
+        "raw_role_context_released"
+      ]
+    },
+    "set-human-verification-policy": {
+      "context": "project",
+      "execution": "preview_write",
+      "session_boundary": "single-command",
+      "bulk": true,
+      "reads": [
+        "resolved_project_and_optional_milestone",
+        "singleton_policy_document",
+        "milestone_override_markers",
+        "active_milestones_gates_checklists_and_orchestration_receipts"
+      ],
+      "writes": [
+        "approved_policy_or_override",
+        "approved_gate_lifecycle_operations",
+        "approved_checklist_bypass_replies",
+        "reconciled_orchestration_receipts"
+      ],
+      "postconditions": [
+        "exact_preview_hash_approved",
+        "every_write_read_back",
+        "singleton_policy_preserved",
+        "pending_bypass_has_reason_and_immutable_reply",
+        "no_false_human_confirmation"
+      ]
+    },
+    "status-human-verification": {
+      "context": "project",
+      "execution": "read_report",
+      "session_boundary": "single-command",
+      "reads": [
+        "singleton_policy_document",
+        "milestone_override_markers",
+        "managed_gates_and_current_checklists",
+        "orchestration_policy_bindings"
+      ],
+      "postconditions": [
+        "effective_precedence_reported",
+        "missing_project_policy_reported_as_disabled",
+        "no_mutations"
+      ]
+    },
+
+    "run-milestone-loop": {
+      "context": "milestone",
+      "execution": "staged_milestone_orchestration",
+      "orchestration": "planning",
+      "session_boundary": "single-event",
+      "bulk": true,
+      "reads": [
+        "milestone_orchestrator_binding",
+        "task_executor_and_verifier_bindings",
+        "verification_ledgers",
+        "current_project_milestone_and_task_revisions",
+        "singleton_milestone_runtime_projection",
+        "guarded_autopilot_policy_binding",
+        "incremental_review_coverage"
+      ],
+      "writes": [
+        "capability_scoped_role_operations",
+        "attempt_bound_completion_handoffs",
+        "attempt_bound_verification_results"
+      ],
+      "postconditions": [
+        "one_milestone_orchestrator_per_milestone",
+        "one_executor_and_verifier_per_task",
+        "automatic_task_rounds_bounded",
+        "stronger_model_selection_user_gated",
+        "raw_role_context_released",
+        "project_scope_unchanged",
+        "fresh_session_and_read_back_per_event",
+        "stop_at_material_gate_or_event_ceiling"
+      ]
+    },
+
+    "run-milestone": {
+      "context": "milestone",
+      "execution": "per_operation_write",
+      "session_boundary": "single-stage",
+      "reads": ["validated_state_marker", "next_stage_preconditions", "bounded_stage_evidence", "parallel_wave_eligibility_when_implementing", "milestone_runtime_projection"],
+      "writes": ["approved_next_stage_operations", "replacement_state_marker", "autopilot_policy_when_requested"],
+      "postconditions": ["state_marker_read_back", "next_command_reported", "parallel_or_sequential_implementation_command_recommended", "raw_stage_context_released", "autopilot_aliases_guarded_loop_when_requested"]
+    },
+    "clarify-milestone": {"context": "milestone", "execution": "preview_write", "session_boundary": "single-command"},
+    "design-milestone": {"context": "milestone", "execution": "preview_write", "session_boundary": "single-command"},
+    "create-tasks": {
+      "context": "milestone",
+      "execution": "preview_write",
+      "session_boundary": "single-command",
+      "bulk": true,
+      "reads": ["team_issue_status_catalog"],
+      "writes": ["created_task_unplanned_status"],
+      "postconditions": ["required_statuses_resolved", "every_created_task_unplanned_and_read_back"]
+    },
+    "plan-tasks": {
+      "context": "milestone",
+      "execution": "invocation_write",
+      "orchestration": "planning",
+      "repository_scan": {"default_tier": "fast"},
+      "session_boundary": "single-command",
+      "bulk": true,
+      "reads": ["team_issue_status_catalog", "task_contract_matrix", "authoritative_current_plans", "bounded_learning_entries", "current_milestone_dependency_graph", "live_executable_frontier", "incremental_plan_bindings"],
+      "writes": ["current_plan_revisions", "backlog_status_after_plan_read_back", "managed_unreviewed_dependency_graph", "next_wave_plans_only_when_requested"],
+      "postconditions": ["required_statuses_resolved", "each_planned_task_has_one_authoritative_current_plan", "each_planned_unplanned_task_backlog", "later_next_wave_tasks_remain_unplanned_at_revision_zero", "tasks_planned_requires_valid_dependency_graph"]
+    },
+    "review-milestone": {
+      "context": "milestone",
+      "execution": "invocation_write",
+      "session_boundary": "single-command",
+      "reads": ["task_contract_matrix", "dependency_adjacent_review_batches", "bounded_learning_entries", "managed_dependency_graph", "live_blocked_by_relations", "current_execution_footprints", "changed_task_bindings", "incremental_impact_closure"],
+      "writes": ["revision_cited_review_findings", "reviewed_dependency_graph", "replacement_state_marker", "incremental_review_checkpoint"],
+      "postconditions": ["stable_contract_covered_initially", "changed_neighbour_overlap_and_sink_coverage_recorded", "review_batches_within_limit", "findings_source_revisions_recorded", "graph_hash_and_sources_validated", "selected_wave_has_current_review"]
+    },
+    "report-milestone-findings": {
+      "context": "milestone",
+      "execution": "conditional_proposal_write",
+      "session_boundary": "single-command",
+      "bulk": true,
+      "reads": ["testing_session_id", "complete_finding_batch", "candidate_owning_tasks", "current_gate_and_checklist_history", "unfinished_plan_surface_bindings"],
+      "writes": ["idempotent_finding_batch", "reopened_unambiguous_owner_or_one_managed_repair_task", "implementing_runtime_projection"],
+      "postconditions": ["one_batch_per_session", "gate_and_checklist_history_preserved", "surface_scoped_plan_invalidation", "machine_reverification_required", "fresh_human_checklist_required"]
+    },
+    "fix-review": {"context": "milestone", "execution": "preview_write", "session_boundary": "single-command"},
+    "verify-milestone": {
+      "context": "milestone",
+      "execution": "invocation_write",
+      "session_boundary": "single-command",
+      "repository_scan": {"default_tier": "fast"},
+      "reads": ["milestone_success_criteria", "compact_task_completion_receipts", "fresh_verification_evidence", "effective_human_verification_policy", "managed_gate_and_current_checklist"],
+      "writes": ["milestone_verification_receipt", "replacement_state_marker", "enabled_gate_in_progress", "revision_bound_human_checklist"],
+      "postconditions": ["every_success_criterion_verified", "verification_receipt_read_back", "enabled_policy_stops_at_milestone_verified", "enabled_checklist_and_gate_read_back"]
+    },
+    "confirm-milestone": {
+      "context": "milestone",
+      "execution": "invocation_write",
+      "session_boundary": "single-command",
+      "reads": ["effective_human_verification_policy", "current_pending_checklist", "managed_gate_issue", "linear_milestone_completion"],
+      "writes": ["immutable_confirmation_reply", "managed_gate_done", "human_verified_state_marker"],
+      "postconditions": ["checklist_revision_current", "gate_done_read_back", "linear_completion_read_back", "human_verified_marker_read_back", "wrap_milestone_reported"]
+    },
+    "fail-milestone-verification": {
+      "context": "milestone",
+      "execution": "preview_write",
+      "session_boundary": "single-command",
+      "reads": ["effective_human_verification_policy", "current_pending_checklist", "managed_gate_issue", "existing_repair_tasks"],
+      "writes": ["immutable_failure_reply", "one_unplanned_repair_task", "implementing_state_marker"],
+      "postconditions": ["non_empty_reason", "exact_repair_preview_approved", "gate_remains_open", "repair_task_read_back", "machine_reverification_required"]
+    },
+    "wrap-milestone": {
+      "context": "milestone",
+      "execution": "preview_write",
+      "session_boundary": "single-command",
+      "bulk": true,
+      "reads": ["effective_human_verification_policy", "current_milestone_state", "managed_gate_and_checklist_when_enabled"],
+      "postconditions": ["disabled_policy_accepts_milestone_verified", "enabled_policy_requires_human_verified", "no_pending_human_gate"]
+    },
+
+    "design-task": {"context": "task", "execution": "preview_write", "session_boundary": "single-command"},
+    "create-bug-task": {"context": "task", "execution": "preview_write", "session_boundary": "single-command"},
+    "refine-task": {
+      "context": "task",
+      "execution": "preview_write",
+      "orchestration": "task-intake",
+      "session_boundary": "single-command",
+      "reads": ["team_issue_status_catalog", "human_draft_issue", "current_issue_status", "current_revision"],
+      "writes": ["approved_refined_description", "unplanned_status"],
+      "postconditions": ["required_statuses_resolved", "human_intent_preserved", "description_and_status_read_back", "milestone_fit_next_step_reported"]
+    },
+    "plan-task": {
+      "context": "task",
+      "execution": "invocation_write",
+      "orchestration": "planning",
+      "repository_scan": {"default_tier": "fast"},
+      "session_boundary": "single-command",
+      "reads": ["team_issue_status_catalog", "refined_task_contract", "current_issue_status", "repository_evidence", "bounded_learning_entries", "milestone_dependency_graph_when_bound"],
+      "writes": ["authoritative_current_plan", "backlog_status", "managed_unreviewed_dependency_graph_when_bound"],
+      "postconditions": ["required_statuses_resolved", "plan_revision_read_back", "backlog_status_read_back", "dependency_graph_refreshed_when_milestone_bound", "no_implementation"]
+    },
+    "organize-unplanned": {
+      "context": "intake",
+      "execution": "conditional_proposal_write",
+      "session_boundary": "single-command",
+      "bulk": true,
+      "reads": ["team_issue_status_catalog", "unplanned_task_contract_matrix", "existing_milestone_contracts", "project_spec", "bounded_learning_entries"],
+      "writes": ["approved_milestone_membership", "approved_new_milestone", "approved_complementary_unplanned_tasks"],
+      "postconditions": ["required_statuses_resolved", "every_candidate_has_placement_decision", "all_writes_read_back", "unapproved_operations_omitted"]
+    },
+    "run-task": {
+      "context": "task",
+      "execution": "invocation_write",
+      "orchestration": "task-execution",
+      "repository_scan": {"default_tier": "fast"},
+      "session_boundary": "single-task",
+      "reads": ["target_issue_full", "planned_issue_readiness", "milestone_contract_compact", "blocker_status_matrix", "unfinished_or_consumed_blocker_contracts", "authoritative_current_plan", "bounded_sibling_contracts", "bounded_learning_entries", "repository_evidence"],
+      "writes": ["claim_when_configured", "in_progress_state", "plan_revision_when_required", "completion_receipt", "done_state"],
+      "postconditions": ["human_draft_or_unplanned_rejected", "hard_blockers_done", "verification_passed", "completion_receipt_read_back", "done_state_read_back", "newly_unblocked_relations_read"]
+    },
+    "replan-task": {
+      "context": "task",
+      "execution": "invocation_write",
+      "orchestration": "planning",
+      "repository_scan": {"default_tier": "fast"},
+      "session_boundary": "single-command",
+      "reads": ["authoritative_current_plan", "implementation_drift_evidence", "milestone_dependency_graph_when_bound"],
+      "writes": ["new_plan_revision", "current_plan_pointer", "managed_unreviewed_dependency_graph_when_bound"],
+      "postconditions": ["superseded_plans_excluded_from_active_context", "dependency_graph_refreshed_when_milestone_bound"]
+    },
+    "review-task-scope": {"context": "task", "execution": "read_report", "session_boundary": "single-command"},
+    "decompose-task": {"context": "task", "execution": "read_report", "session_boundary": "single-command"},
+    "split-task": {"context": "task", "execution": "preview_write", "session_boundary": "single-command", "bulk": true},
+    "promote-task": {"context": "task", "execution": "preview_write", "session_boundary": "single-command", "bulk": true},
+    "verify-task": {
+      "context": "task",
+      "execution": "invocation_write",
+      "orchestration": "task-verification",
+      "repository_scan": {"default_tier": "fast"},
+      "session_boundary": "single-command",
+      "reads": ["task_acceptance_criteria", "fresh_verification_evidence"],
+      "writes": ["completion_receipt", "done_state_on_success"],
+      "postconditions": ["each_acceptance_criterion_verified", "failed_verification_remains_in_progress"]
+    },
+    "backfill-completion": {"context": "task", "execution": "invocation_write", "session_boundary": "single-command", "repository_scan": {"default_tier": "fast"}},
+
+    "implement-next": {
+      "context": "lifecycle",
+      "execution": "invocation_write",
+      "orchestration": "task-execution",
+      "repository_scan": {"default_tier": "fast"},
+      "session_boundary": "single-task",
+      "reads": ["compact_milestone_task_matrix", "blocker_status_matrix", "selected_task_repository_trace_revision"],
+      "writes": ["selected_task_execution_operations"],
+      "postconditions": ["selection_total_order_recorded", "exactly_one_task_selected"]
+    },
+    "implement-wave": {
+      "context": "lifecycle",
+      "execution": "invocation_write",
+      "orchestration": "parallel-execution",
+      "repository_scan": {"default_tier": "fast"},
+      "session_boundary": "single-wave",
+      "bulk": true,
+      "reads": ["reviewed_dependency_graph", "compact_milestone_task_matrix", "blocker_status_matrix", "current_plan_revisions", "clean_parent_branch_and_head", "harness_parallel_capacity"],
+      "writes": ["durable_wave_receipt", "serial_task_claims", "isolated_child_branches", "clean_task_worktrees", "verified_task_commits"],
+      "postconditions": ["fixed_frontier_recorded", "every_task_isolated_from_exact_baseline", "successful_tasks_verified_pending_integration", "no_issue_marked_done", "next_wave_blocked_on_failure"]
+    },
+    "reconcile-wave": {
+      "context": "lifecycle",
+      "execution": "preview_write",
+      "orchestration": "wave-reconciliation",
+      "repository_scan": {"default_tier": "fast"},
+      "session_boundary": "single-wave",
+      "bulk": true,
+      "reads": ["reviewed_dependency_graph", "current_plan_revisions", "wave_receipt", "child_branch_heads", "clean_current_parent"],
+      "writes": ["temporary_integration_branch_and_worktree", "approved_merge_commits", "verified_parent_advance", "completion_receipts", "done_states", "safe_worktree_cleanup", "approved_merged_branch_deletion"],
+      "postconditions": ["exact_preview_approval_satisfied", "parent_unchanged_on_combined_verification_failure", "independent_conflicts_preserved", "integrated_issues_done_and_read_back", "newly_unblocked_relations_read"]
+    },
+    "status-milestone": {
+      "context": "lifecycle",
+      "execution": "read_report",
+      "session_boundary": "single-command",
+      "reads": ["compact_milestone_task_matrix", "bounded_blocker_graph", "managed_dependency_graph_when_present", "harness_parallel_capacity", "milestone_runtime_storage_and_projection"],
+      "postconditions": ["status_counts_reconcile_with_matrix", "runtime_storage_policy_wave_plan_review_and_repair_reported", "parallel_or_sequential_next_command_recommended"]
+    },
+    "pause-milestone": {"context": "lifecycle", "execution": "invocation_write", "session_boundary": "single-command"},
+    "resume-milestone": {"context": "lifecycle", "execution": "preview_write", "session_boundary": "single-command"},
+    "sync-milestone": {"context": "lifecycle", "execution": "conditional_write", "session_boundary": "single-command"},
+    "archive-milestone": {"context": "lifecycle", "execution": "preview_write", "session_boundary": "single-command", "bulk": true},
+    "trace-blockers": {
+      "context": "lifecycle",
+      "execution": "read_report",
+      "session_boundary": "single-command",
+      "reads": ["bounded_blocker_status_graph", "unfinished_or_contract_relevant_blockers"],
+      "postconditions": ["depth_and_node_limits_reported"]
+    },
+    "diff-milestone": {"context": "lifecycle", "execution": "read_report", "session_boundary": "single-command"},
+    "handoff-milestone": {
+      "context": "lifecycle",
+      "execution": "read_report",
+      "session_boundary": "single-command",
+      "reads": ["validated_state_marker", "compact_milestone_task_matrix", "open_findings", "milestone_runtime_storage_and_projection"],
+      "postconditions": ["source_revisions_and_next_command_included", "runtime_policy_wave_plan_review_and_repair_included"]
+    },
+    "onboard-milestone": {"context": "lifecycle", "execution": "preview_write", "session_boundary": "single-command"},
+    "onboard-task": {"context": "lifecycle", "execution": "preview_write", "session_boundary": "single-command"},
+
+    "review-learnings": {"context": "learning", "execution": "read_report", "session_boundary": "single-command"},
+    "apply-learnings": {"context": "learning", "execution": "read_report", "session_boundary": "single-command"},
+    "organize-learnings": {"context": "learning", "execution": "conditional_write", "session_boundary": "single-command", "bulk": true}
+  }
+}

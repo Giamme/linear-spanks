@@ -1,0 +1,18 @@
+#!/usr/bin/env python3
+"""Replay the context regression workload and emit measured maxima as JSON."""
+
+import json
+import sys
+import unittest
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from tests.test_context_reliability import ContextReliabilityTest
+
+case = ContextReliabilityTest(
+    "test_hundred_repair_handoffs_have_bounded_active_work_and_retrievable_history"
+)
+result = unittest.TextTestRunner(stream=sys.stderr).run(unittest.TestSuite([case]))
+if result.wasSuccessful():
+    print(json.dumps({"status": "passed", **case.replay_metrics}, sort_keys=True))
+sys.exit(0 if result.wasSuccessful() else 1)

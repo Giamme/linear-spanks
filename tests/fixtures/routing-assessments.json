@@ -1,0 +1,47 @@
+{
+  "base": {
+    "schema_version": 1,
+    "localized_established_pattern": true,
+    "deterministic_focused_verification": true,
+    "uncertainty": false,
+    "dimensions": {
+      "architecture_ambiguity": false,
+      "contract_or_schema_change": false,
+      "security_privacy_or_auth": false,
+      "irreversible_migration": false,
+      "concurrency_or_distributed_state": false,
+      "public_compatibility": false,
+      "cross_repository_coordination": false,
+      "broad_refactor": false,
+      "unclear_failure_cause": false,
+      "interface_change": false,
+      "migration": false,
+      "nondeterministic_debugging": false,
+      "operational_risk": false,
+      "multi_module_change": false,
+      "new_dependency": false
+    }
+  },
+  "cases": {
+    "low": {},
+    "medium-interface": {
+      "localized_established_pattern": false,
+      "dimensions": {"interface_change": true}
+    },
+    "high-two-medium": {
+      "localized_established_pattern": false,
+      "dimensions": {"multi_module_change": true, "new_dependency": true}
+    },
+    "high-critical": {
+      "localized_established_pattern": false,
+      "dimensions": {"security_privacy_or_auth": true}
+    },
+    "uncertain-low": {
+      "uncertainty": true
+    }
+  },
+  "malformed": {
+    "schema_version": 1,
+    "localized_established_pattern": true
+  }
+}

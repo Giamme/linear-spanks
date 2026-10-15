@@ -1,0 +1,4 @@
+interface:
+  display_name: "Linear Spanks Git"
+  short_description: "Help with Linear Spanks Git tasks"
+  default_prompt: "Use $linear-spanks-git to coordinate this Linear workflow safely."

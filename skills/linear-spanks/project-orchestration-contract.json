@@ -1,0 +1,590 @@
+{
+  "schema_version": 1,
+  "source_hash_semantics": "trace-only; plan revisions, dependency graph, task loops, policies, and exact integration previews carry invalidation authority",
+  "command": "run-project",
+  "session_boundary": "single-event",
+  "results": {
+    "drift": "PROJECT_ORCHESTRATION_DRIFT",
+    "ambiguous_receipt": "PROJECT_ORCHESTRATION_RECEIPT_AMBIGUOUS",
+    "unauthorized_operation": "ROLE_CAPABILITY_VIOLATION",
+    "invalid_handoff": "ROLE_HANDOFF_INVALID",
+    "model_selection_required": "MODEL_SELECTION_REQUIRED",
+    "context_overflow": "CONTEXT_OVERFLOW"
+  },
+  "topology": {
+    "roles": [
+      "project-orchestrator",
+      "milestone-orchestrator",
+      "task-executor",
+      "task-verifier"
+    ],
+    "project_orchestrators_per_project": 1,
+    "milestone_orchestrators_per_milestone": 1,
+    "task_executors_per_task": 1,
+    "task_verifiers_per_task": 1,
+    "logical_identity_survives_session_refresh": true,
+    "cross_milestone_conflict_owner": "project-orchestrator",
+    "task_verifier_activation": "one logical slot; independent dispatch only when task policy requires"
+  },
+  "roles": {
+    "project-orchestrator": {
+      "strength": "high",
+      "routing_role": "planner",
+      "cardinality": "one-per-project",
+      "repository_access": "none",
+      "context_profile": "project",
+      "max_input_tokens": 60000,
+      "required_context": [
+        "project_spec",
+        "compact_milestone_ledger",
+        "project_receipt"
+      ],
+      "allowed_context": [
+        "project_spec",
+        "active_project_context_slices",
+        "compact_milestone_ledger",
+        "selected_documents",
+        "indexed_learnings",
+        "project_receipt"
+      ]
+    },
+    "milestone-orchestrator": {
+      "strength": "high",
+      "routing_role": "planner",
+      "cardinality": "one-per-milestone",
+      "repository_access": "source-read-only-and-integration",
+      "context_profile": "milestone",
+      "max_input_tokens": 100000,
+      "required_context": [
+        "milestone_contract",
+        "compact_task_matrix",
+        "dependency_graph",
+        "milestone_receipt"
+      ],
+      "allowed_context": [
+        "milestone_contract",
+        "compact_task_matrix",
+        "dependency_graph",
+        "current_plans",
+        "selected_project_decisions",
+        "selected_learnings",
+        "bounded_repository_evidence",
+        "milestone_receipt"
+      ]
+    },
+    "task-executor": {
+      "strength": "plan-recommended",
+      "routing_role": "executor",
+      "cardinality": "one-per-task",
+      "repository_access": "assigned-worktree-write",
+      "context_profile": "task",
+      "max_input_tokens": 120000,
+      "required_context": [
+        "task_contract",
+        "compact_milestone_objective",
+        "current_plan",
+        "assigned_worktree",
+        "verification_commands",
+        "task_receipt"
+      ],
+      "allowed_context": [
+        "task_contract",
+        "compact_milestone_objective",
+        "current_plan",
+        "blocker_outputs",
+        "repository_evidence_pointers",
+        "assigned_worktree",
+        "verification_commands",
+        "latest_verifier_findings",
+        "task_receipt"
+      ]
+    },
+    "task-verifier": {
+      "strength": "risk-based",
+      "routing_role": "reviewer",
+      "cardinality": "when-required",
+      "repository_access": "source-read-only-and-test-artifacts",
+      "context_profile": "task",
+      "max_input_tokens": 120000,
+      "required_context": [
+        "task_contract",
+        "compact_milestone_criteria",
+        "current_plan",
+        "candidate_commit_diff",
+        "completion_handoff",
+        "verification_ledger",
+        "verification_commands",
+        "task_receipt"
+      ],
+      "allowed_context": [
+        "task_contract",
+        "compact_milestone_criteria",
+        "current_plan",
+        "candidate_commit_diff",
+        "completion_handoff",
+        "verification_ledger",
+        "verification_commands",
+        "task_receipt"
+      ]
+    }
+  },
+  "event_selection": {
+    "events": [
+      "project-reconcile",
+      "await-approval",
+      "task-execute",
+      "task-verify",
+      "milestone-integrate",
+      "task-dispatch",
+      "await-human-verification",
+      "milestone-wrap",
+      "milestone-orchestrate",
+      "project-complete",
+      "blocked"
+    ],
+    "precedence": [
+      "project-drift-or-cross-milestone-conflict",
+      "approval-pending",
+      "task-executing",
+      "task-verifying",
+      "verified-task-ready-for-integration",
+      "human-verification-pending",
+      "ready-task-frontier",
+      "milestone-ready-to-wrap",
+      "eligible-milestone",
+      "project-complete",
+      "blocked"
+    ]
+  },
+  "task_loop": {
+    "automatic_rounds": [
+      {
+        "round": 0,
+        "executor_phase": "implementation",
+        "executor_strength": "plan-recommended",
+        "verifier_strength": "risk-based"
+      },
+      {
+        "round": 1,
+        "executor_phase": "repair",
+        "executor_strength": "plan-recommended",
+        "verifier_strength": "risk-based"
+      },
+      {
+        "round": 2,
+        "executor_phase": "repair",
+        "executor_strength": "plan-recommended",
+        "verifier_strength": "risk-based"
+      },
+      {
+        "round": 3,
+        "executor_phase": "repair",
+        "executor_strength": "plan-recommended",
+        "verifier_strength": "risk-based"
+      }
+    ],
+    "max_automatic_executions": 4,
+    "max_automatic_verifications": 4,
+    "max_injected_input_tokens": 96000,
+    "automatic_failure_action": "user-model-selection",
+    "minimum_selected_model_strength": "medium",
+    "escalated_attempts_per_selection": 1,
+    "escalated_failure_action": "user-model-selection",
+    "no_automatic_stronger_model_retry": true,
+    "user_actions": [
+      "run-selected-model",
+      "retry-selected-model",
+      "select-another-stronger-model",
+      "request-milestone-replan",
+      "pause-task"
+    ],
+    "attempt_fields": [
+      "schema_version",
+      "task_id",
+      "task_loop_id",
+      "attempt_id",
+      "attempt_index",
+      "attempt_kind",
+      "executor_phase",
+      "executor_strength",
+      "verifier_strength",
+      "selected_model",
+      "user_approved",
+      "previous_verification",
+      "verification_result",
+      "candidate_commit"
+    ],
+    "attempt_kinds": [
+      "automatic",
+      "user-selected"
+    ],
+    "verification_results": [
+      "pending",
+      "passed",
+      "failed"
+    ],
+    "selected_model_fields": [
+      "strength",
+      "model",
+      "harness",
+      "capability",
+      "configured"
+    ],
+    "current_attempt_schema_version": 2,
+    "policy_resolution": "routing task-policy; runtime task-next before dispatch",
+    "v2_additional_fields": [
+      "execution_policy",
+      "progress",
+      "verification"
+    ],
+    "legacy_policy": "schema 1 attempts retain low executor and high verifier"
+  },
+  "verification_ledger": {
+    "logical_identity": "one-per-task",
+    "reuse_live_session_when_supported_and_within_budget": true,
+    "fresh_session_restores_same_logical_identity": true,
+    "raw_executor_transcript_allowed": false,
+    "max_raw_log_characters": 2000,
+    "required_fields": [
+      "schema_version",
+      "ledger_id",
+      "task_id",
+      "verifier_id",
+      "project_revision",
+      "milestone_revision",
+      "plan_revision",
+      "source_revision",
+      "candidate_commit",
+      "reviewed_attempts",
+      "acceptance_criteria",
+      "findings",
+      "verification_runs",
+      "baseline_failures",
+      "exclusions",
+      "next_checks",
+      "raw_executor_transcript_included",
+      "required_verification_current",
+      "final_result",
+      "live_session",
+      "updated_at"
+    ],
+    "acceptance_states": [
+      "unverified",
+      "passing",
+      "failing",
+      "regressed"
+    ],
+    "finding_states": [
+      "open",
+      "resolved",
+      "regressed"
+    ],
+    "verification_statuses": [
+      "passed",
+      "failed"
+    ],
+    "final_results": [
+      "pending",
+      "passed",
+      "failed"
+    ],
+    "live_session_states": [
+      "active",
+      "refreshed",
+      "unavailable"
+    ],
+    "final_pass_requires": [
+      "all_acceptance_criteria_passing",
+      "no_open_or_regressed_blocking_findings",
+      "candidate_commit_reviewed",
+      "required_verification_current"
+    ],
+    "current_schema_version": 2,
+    "v2_finding_fields": [
+      "classification",
+      "requirement"
+    ],
+    "finding_classifications": [
+      "blocking",
+      "suggestion"
+    ],
+    "v2_additional_fields": [
+      "execution_binding"
+    ]
+  },
+  "project_loop_receipt": {
+    "required_fields": [
+      "schema_version",
+      "receipt_id",
+      "state",
+      "project_id",
+      "project_revision",
+      "project_orchestrator_id",
+      "source_hash",
+      "dependency_graph_hash",
+      "milestones",
+      "human_verification_policies",
+      "task_loops",
+      "current_event",
+      "next_event",
+      "approval",
+      "budget",
+      "created_at",
+      "updated_at",
+      "state_timestamps",
+      "failure"
+    ],
+    "states": [
+      "prepared",
+      "project-orchestrating",
+      "milestone-orchestrating",
+      "task-wave-executing",
+      "task-wave-verifying",
+      "milestone-integrating",
+      "project-reconciling",
+      "awaiting-approval",
+      "completed",
+      "failed"
+    ],
+    "active_states": [
+      "prepared",
+      "project-orchestrating",
+      "milestone-orchestrating",
+      "task-wave-executing",
+      "task-wave-verifying",
+      "milestone-integrating",
+      "project-reconciling",
+      "awaiting-approval"
+    ],
+    "transitions": {
+      "prepared": [
+        "project-orchestrating",
+        "awaiting-approval",
+        "failed"
+      ],
+      "project-orchestrating": [
+        "milestone-orchestrating",
+        "project-reconciling",
+        "awaiting-approval",
+        "completed",
+        "failed"
+      ],
+      "milestone-orchestrating": [
+        "task-wave-executing",
+        "project-orchestrating",
+        "awaiting-approval",
+        "failed"
+      ],
+      "task-wave-executing": [
+        "task-wave-verifying",
+        "milestone-orchestrating",
+        "awaiting-approval",
+        "failed"
+      ],
+      "task-wave-verifying": [
+        "task-wave-executing",
+        "milestone-integrating",
+        "milestone-orchestrating",
+        "awaiting-approval",
+        "failed"
+      ],
+      "milestone-integrating": [
+        "milestone-orchestrating",
+        "project-reconciling",
+        "awaiting-approval",
+        "failed"
+      ],
+      "project-reconciling": [
+        "project-orchestrating",
+        "milestone-orchestrating",
+        "awaiting-approval",
+        "completed",
+        "failed"
+      ],
+      "awaiting-approval": [
+        "project-orchestrating",
+        "milestone-orchestrating",
+        "task-wave-executing",
+        "milestone-integrating",
+        "project-reconciling",
+        "failed"
+      ],
+      "completed": [
+        "completed"
+      ],
+      "failed": [
+        "failed"
+      ]
+    },
+    "milestone_fields": [
+      "milestone_id",
+      "milestone_revision",
+      "orchestrator_id",
+      "state"
+    ],
+    "milestone_states": [
+      "pending",
+      "active",
+      "awaiting-approval",
+      "blocked",
+      "completed"
+    ],
+    "task_loop_fields": [
+      "task_id",
+      "milestone_id",
+      "plan_revision",
+      "executor_id",
+      "verifier_id",
+      "state",
+      "attempt_index"
+    ],
+    "task_loop_states": [
+      "prepared",
+      "executing",
+      "verifying",
+      "awaiting-model-selection",
+      "verified-pending-integration",
+      "integrated",
+      "failed",
+      "paused"
+    ],
+    "approval_fields": [
+      "status",
+      "preview_hash",
+      "approved_hash"
+    ],
+    "approval_statuses": [
+      "not-required",
+      "pending",
+      "approved",
+      "declined"
+    ],
+    "budget_fields": [
+      "role_invocations",
+      "injected_input_tokens"
+    ],
+    "transition_request_fields": [
+      "target_state",
+      "current_project_revision",
+      "current_source_hash",
+      "current_dependency_graph_hash",
+      "current_milestones",
+      "current_human_verification_policies",
+      "current_task_loops",
+      "completed_event",
+      "next_project_revision",
+      "next_source_hash",
+      "next_dependency_graph_hash",
+      "next_milestones",
+      "next_human_verification_policies",
+      "next_task_loops",
+      "next_budget",
+      "next_event",
+      "approval",
+      "failure",
+      "updated_at"
+    ],
+    "preserve_existing_role_bindings": true
+  },
+  "role_handoff": {
+    "required_fields": [
+      "schema_version",
+      "handoff_id",
+      "role",
+      "logical_role_id",
+      "project_id",
+      "project_revision",
+      "milestone_id",
+      "milestone_revision",
+      "task_id",
+      "plan_revision",
+      "source_revision",
+      "source_hash",
+      "dependency_graph_hash",
+      "repository_head",
+      "attempt_id",
+      "context_sections",
+      "context_tokens",
+      "raw_transcript_included",
+      "previous_handoff_hash",
+      "created_at"
+    ],
+    "raw_transcript_allowed": false,
+    "current_task_schema_version": 2,
+    "v2_additional_fields": [
+      "execution_policy",
+      "workflow_hash"
+    ]
+  },
+  "capabilities": {
+    "project-orchestrator": {
+      "operations": [
+        "create-milestone",
+        "update-milestone-summary",
+        "update-project-description",
+        "manage-project-document",
+        "curate-project-learning",
+        "update-project-state"
+      ],
+      "comment_marker": null,
+      "tracked_source_write": false
+    },
+    "milestone-orchestrator": {
+      "operations": [
+        "create-task",
+        "update-task-plan",
+        "manage-task-relations",
+        "update-task-status",
+        "update-milestone",
+        "dispatch-task-wave",
+        "integrate-verified-commit",
+        "verify-milestone",
+        "manage-human-verification-gate",
+        "confirm-milestone",
+        "fail-milestone-verification",
+        "wrap-milestone"
+      ],
+      "comment_marker": null,
+      "tracked_source_write": false
+    },
+    "task-executor": {
+      "operations": [
+        "edit-assigned-worktree",
+        "commit-assigned-worktree",
+        "write-completion-handoff-comment",
+        "run-verification"
+      ],
+      "comment_marker": "linear-spanks:completion-handoff",
+      "tracked_source_write": true
+    },
+    "task-verifier": {
+      "operations": [
+        "run-verification",
+        "write-verification-result-comment"
+      ],
+      "comment_marker": "linear-spanks:verification-result",
+      "tracked_source_write": false
+    }
+  },
+  "scheduling": {
+    "default_max_parallel": 2,
+    "hard_max_parallel": 8,
+    "fixed_task_frontier": true,
+    "independent_milestones_may_run_concurrently": true,
+    "cross_milestone_conflicts_escalate": true,
+    "task_worktree_policy": "one-clean-isolated-worktree-per-task"
+  },
+  "approval_gates": [
+    "project-scope-change",
+    "milestone-create-or-material-revision",
+    "task-plan-scope-change",
+    "exact-git-integration-preview",
+    "stronger-executor-model-selection",
+    "human-verification-policy-change-or-bypass"
+  ],
+  "ripwire": {
+    "propagate": "explicit-run-override-only",
+    "resolve": "each-child-actual-repository",
+    "reference": "references/ripwire.md"
+  }
+}

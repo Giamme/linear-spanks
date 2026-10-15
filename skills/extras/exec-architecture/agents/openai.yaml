@@ -1,0 +1,4 @@
+interface:
+  display_name: "Exec Architecture"
+  short_description: "Help with Exec Architecture tasks"
+  default_prompt: "Use $exec-architecture to apply its execution checks to this task."

@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "statuses": {
+    "human_draft": "Human draft",
+    "unplanned": "Unplanned",
+    "backlog": "Backlog"
+  },
+  "transitions": {
+    "refine": {
+      "commands": ["refine-task"],
+      "from": ["Human draft"],
+      "to": "Unplanned",
+      "requires": ["approved_refined_description", "target_revision_unchanged", "write_read_back"]
+    },
+    "plan": {
+      "commands": ["plan-task", "plan-tasks"],
+      "from": ["Unplanned"],
+      "to": "Backlog",
+      "requires": ["authoritative_current_plan", "target_revision_unchanged", "write_read_back"]
+    }
+  }
+}

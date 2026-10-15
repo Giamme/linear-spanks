@@ -1,0 +1,1446 @@
+{
+  "schema_version": 2,
+  "version": "2.0.0",
+  "default_format": "json",
+  "display": {
+    "namespace_order": [
+      "codebase",
+      "project",
+      "milestone",
+      "task",
+      "wave",
+      "verification",
+      "learning",
+      "context",
+      "runtime"
+    ],
+    "commands": {
+      "codebase": [
+        "analyze",
+        "import"
+      ],
+      "project": [
+        "create",
+        "review",
+        "run",
+        "update",
+        "audit",
+        "onboard",
+        "normalize",
+        "checkpoint",
+        "rollover"
+      ],
+      "milestone": [
+        "clarify",
+        "design",
+        "create-tasks",
+        "plan",
+        "review",
+        "run",
+        "status",
+        "verify",
+        "wrap",
+        "report-findings",
+        "fix-review",
+        "pause",
+        "resume",
+        "sync",
+        "archive",
+        "blockers",
+        "diff",
+        "handoff",
+        "onboard",
+        "checkpoint"
+      ],
+      "task": [
+        "refine",
+        "plan",
+        "next",
+        "run",
+        "design",
+        "create-bug",
+        "organize",
+        "replan",
+        "scope",
+        "decompose",
+        "split",
+        "promote",
+        "verify",
+        "backfill",
+        "onboard",
+        "checkpoint"
+      ],
+      "wave": [
+        "implement",
+        "reconcile"
+      ],
+      "verification": [
+        "policy-set",
+        "status",
+        "confirm",
+        "fail"
+      ],
+      "learning": [
+        "review",
+        "apply",
+        "organize"
+      ],
+      "context": [
+        "budget",
+        "inspect"
+      ],
+      "runtime": [
+        "inspect"
+      ]
+    }
+  },
+  "commands": [
+    {
+      "path": [
+        "codebase",
+        "analyze"
+      ],
+      "tier": "core",
+      "access": "write",
+      "approval": "explicit invocation authorizes source-read-only analysis and local checkpoint artifacts; no Linear mutations",
+      "profiles": [
+        "invocation_write",
+        "project"
+      ],
+      "template": "codebase-analysis.md",
+      "transitions": [],
+      "legacy_names": [
+        "analyze-codebase"
+      ],
+      "legacy_runtime_command": "analyze-codebase",
+      "usage": "codebase analyze <repository-path> [--scan fast|medium|heavy] [--checkpoint-dir <path>] [--resume <checkpoint>] [project options]",
+      "summary": "Analyze a repository in bounded resumable stages and produce evidence-linked current-state findings."
+    },
+    {
+      "path": [
+        "codebase",
+        "import"
+      ],
+      "tier": "core",
+      "access": "write",
+      "approval": "invocation authorizes local scan checkpoints; preview required before Linear project and milestone creation",
+      "profiles": [
+        "staged_import",
+        "project"
+      ],
+      "template": "codebase-import-proposal.md",
+      "transitions": [],
+      "legacy_names": [
+        "import-codebase"
+      ],
+      "legacy_runtime_command": "import-codebase",
+      "usage": "codebase import <repository-path|checkpoint> [--scan fast|medium|heavy] [project options]",
+      "summary": "Reconstruct a project and outcome-oriented historical milestones from codebase evidence, then create only the approved Linear artifacts."
+    },
+    {
+      "path": [
+        "learning",
+        "apply"
+      ],
+      "tier": "advanced",
+      "access": "read",
+      "approval": "none",
+      "profiles": [
+        "read_report",
+        "learning"
+      ],
+      "template": null,
+      "transitions": [],
+      "legacy_names": [
+        "apply-learnings"
+      ],
+      "legacy_runtime_command": "apply-learnings",
+      "usage": "learning apply <milestone|idea> [project options]",
+      "summary": "Return relevant, cited lessons before planning."
+    },
+    {
+      "path": [
+        "learning",
+        "organize"
+      ],
+      "tier": "advanced",
+      "access": "conditional",
+      "approval": "before changing learning documents",
+      "profiles": [
+        "conditional_write",
+        "learning"
+      ],
+      "template": "project-learning-index.md",
+      "transitions": [],
+      "legacy_names": [
+        "organize-learnings"
+      ],
+      "legacy_runtime_command": "organize-learnings",
+      "usage": "learning organize <project> [project options]",
+      "summary": "Draft cleanup for duplicate, stale, or low-signal learning entries."
+    },
+    {
+      "path": [
+        "learning",
+        "review"
+      ],
+      "tier": "advanced",
+      "access": "read",
+      "approval": "none",
+      "profiles": [
+        "read_report",
+        "learning"
+      ],
+      "template": null,
+      "transitions": [],
+      "legacy_names": [
+        "review-learnings"
+      ],
+      "legacy_runtime_command": "review-learnings",
+      "usage": "learning review <project|milestone> [project options]",
+      "summary": "Summarize reusable learnings by tag and impacted area."
+    },
+    {
+      "path": [
+        "milestone",
+        "clarify"
+      ],
+      "tier": "core",
+      "access": "write",
+      "approval": "before saving the milestone spec",
+      "profiles": [
+        "preview_write",
+        "milestone"
+      ],
+      "template": "milestone-spec.md",
+      "transitions": [
+        "clarify"
+      ],
+      "legacy_names": [
+        "clarify-milestone"
+      ],
+      "legacy_runtime_command": "clarify-milestone",
+      "usage": "milestone clarify <idea> [project options]",
+      "summary": "Clarify intent, assumptions, constraints, and success criteria."
+    },
+    {
+      "path": [
+        "milestone",
+        "create-tasks"
+      ],
+      "tier": "core",
+      "access": "write",
+      "approval": "before bulk task creation",
+      "profiles": [
+        "preview_write",
+        "milestone"
+      ],
+      "template": "task-spec.md",
+      "transitions": [
+        "create-tasks"
+      ],
+      "legacy_names": [
+        "create-tasks"
+      ],
+      "legacy_runtime_command": "create-tasks",
+      "usage": "milestone create-tasks <milestone> [project options]",
+      "summary": "Decompose an approved milestone into ordered, dependency-aware tasks."
+    },
+    {
+      "path": [
+        "milestone",
+        "design"
+      ],
+      "tier": "core",
+      "access": "write",
+      "approval": "before saving the selected design",
+      "profiles": [
+        "preview_write",
+        "milestone"
+      ],
+      "template": "architectural-options.md",
+      "transitions": [
+        "clarify"
+      ],
+      "legacy_names": [
+        "design-milestone"
+      ],
+      "legacy_runtime_command": "design-milestone",
+      "usage": "milestone design <idea> [project options]",
+      "summary": "Explore multiple architectural options before producing a milestone spec."
+    },
+    {
+      "path": [
+        "milestone",
+        "plan"
+      ],
+      "tier": "core",
+      "access": "write",
+      "approval": "covered by the approved planning stage; --next-wave preserves later tasks as Unplanned revision zero",
+      "profiles": [
+        "invocation_write",
+        "milestone",
+        "planning"
+      ],
+      "template": "implementation-plan.md",
+      "transitions": [
+        "plan-tasks"
+      ],
+      "legacy_names": [
+        "plan-tasks"
+      ],
+      "legacy_runtime_command": "plan-tasks",
+      "usage": "milestone plan <milestone> [--next-wave] [--scan fast|medium|heavy] [project options]",
+      "summary": "Plan all tasks, or only the next live executable frontier with --next-wave."
+    },
+    {
+      "path": [
+        "milestone",
+        "review"
+      ],
+      "tier": "core",
+      "access": "write",
+      "approval": "explicit invocation covers review persistence and safe repairs; material findings require fix-review approval",
+      "profiles": [
+        "invocation_write",
+        "milestone"
+      ],
+      "template": "milestone-review-findings.md",
+      "transitions": [
+        "review-milestone"
+      ],
+      "legacy_names": [
+        "review-milestone"
+      ],
+      "legacy_runtime_command": "review-milestone",
+      "usage": "milestone review <milestone> [--next-wave] [--repair-safe] [project options]",
+      "summary": "Review the stable contract and first wave, then use impact-closed incremental coverage."
+    },
+    {
+      "path": [
+        "milestone",
+        "run"
+      ],
+      "tier": "core",
+      "access": "write",
+      "approval": "at each gated mutation; --mode loop persists guarded policy and stops at material gates",
+      "profiles": [
+        "per_operation_write",
+        "milestone"
+      ],
+      "template": "milestone-spec.md",
+      "transitions": [
+        "clarify",
+        "review-project",
+        "create-tasks",
+        "plan-tasks",
+        "review-milestone",
+        "fix-review",
+        "start-implementation",
+        "verify-milestone",
+        "wrap-milestone"
+      ],
+      "legacy_names": [
+        "run-milestone",
+        "run-milestone-loop"
+      ],
+      "legacy_runtime_command": "run-milestone",
+      "usage": "milestone run <goal|milestone> [--mode step|loop] [--isolated-worktree] [loop options] [project options]",
+      "summary": "Resume one stage, or use --mode loop for guarded milestone orchestration.",
+      "modes": {
+        "loop": {
+          "approval": "invocation covers guarded automatic operations inside the bound milestone policy; material change, integration, model selection, merge, and push remain gated",
+          "profiles": [
+            "staged_milestone_orchestration",
+            "milestone",
+            "planning"
+          ],
+          "template": "milestone-orchestration-receipt.md",
+          "transitions": [],
+          "usage": "milestone run <goal|milestone> --mode loop [--max-parallel <2..8>] [--resume <receipt-id>] [--until approval-required,blocked,milestone-done] [--max-events <1..100>] [--repair-safe] [--isolated-worktree] [project options]",
+          "summary": "Supervise fresh receipt-backed single events until a configured stop or event ceiling."
+        }
+      }
+    },
+    {
+      "path": [
+        "milestone",
+        "status"
+      ],
+      "tier": "core",
+      "access": "read",
+      "approval": "none",
+      "profiles": [
+        "read_report",
+        "lifecycle"
+      ],
+      "template": null,
+      "transitions": [],
+      "legacy_names": [
+        "status-milestone"
+      ],
+      "legacy_runtime_command": "status-milestone",
+      "usage": "milestone status <milestone> [project options]",
+      "summary": "Report runtime storage, policy binding, active wave, plan validity, review coverage, repair state, statuses, and dependencies."
+    },
+    {
+      "path": [
+        "milestone",
+        "verify"
+      ],
+      "tier": "core",
+      "access": "write",
+      "approval": "covered by the approved milestone execution",
+      "profiles": [
+        "invocation_write",
+        "milestone"
+      ],
+      "template": "completion-handoff.md",
+      "transitions": [
+        "verify-milestone"
+      ],
+      "legacy_names": [
+        "verify-milestone"
+      ],
+      "legacy_runtime_command": "verify-milestone",
+      "usage": "milestone verify <milestone> [--scan fast|medium|heavy] [project options]",
+      "summary": "Verify every milestone success criterion using fresh evidence."
+    },
+    {
+      "path": [
+        "milestone",
+        "wrap"
+      ],
+      "tier": "core",
+      "access": "write",
+      "approval": "before saving retrospective and learning artifacts",
+      "profiles": [
+        "preview_write",
+        "milestone"
+      ],
+      "template": "milestone-retrospective.md",
+      "transitions": [
+        "wrap-milestone"
+      ],
+      "legacy_names": [
+        "wrap-milestone"
+      ],
+      "legacy_runtime_command": "wrap-milestone",
+      "usage": "milestone wrap <milestone> [project options]",
+      "summary": "Persist the retrospective, approved learnings, indexes, and read-back evidence."
+    },
+    {
+      "path": [
+        "milestone",
+        "archive"
+      ],
+      "tier": "advanced",
+      "access": "write",
+      "approval": "before changing task dispositions",
+      "profiles": [
+        "preview_write",
+        "lifecycle"
+      ],
+      "template": "milestone-archive-notes.md",
+      "transitions": [
+        "archive"
+      ],
+      "legacy_names": [
+        "archive-milestone"
+      ],
+      "legacy_runtime_command": "archive-milestone",
+      "usage": "milestone archive <milestone> [project options]",
+      "summary": "Gracefully archive a milestone and resolve affected tasks."
+    },
+    {
+      "path": [
+        "milestone",
+        "blockers"
+      ],
+      "tier": "advanced",
+      "access": "read",
+      "approval": "none",
+      "profiles": [
+        "read_report",
+        "lifecycle"
+      ],
+      "template": null,
+      "transitions": [],
+      "legacy_names": [
+        "trace-blockers"
+      ],
+      "legacy_runtime_command": "trace-blockers",
+      "usage": "milestone blockers <issue|milestone> [project options]",
+      "summary": "Report the transitive blocker chain and critical path."
+    },
+    {
+      "path": [
+        "milestone",
+        "diff"
+      ],
+      "tier": "advanced",
+      "access": "read",
+      "approval": "none",
+      "profiles": [
+        "read_report",
+        "lifecycle"
+      ],
+      "template": "milestone-diff-report.md",
+      "transitions": [],
+      "legacy_names": [
+        "diff-milestone"
+      ],
+      "legacy_runtime_command": "diff-milestone",
+      "usage": "milestone diff <milestone> [project options]",
+      "summary": "Show milestone changes since a point in time or stage."
+    },
+    {
+      "path": [
+        "milestone",
+        "fix-review"
+      ],
+      "tier": "advanced",
+      "access": "write",
+      "approval": "before applying review fixes",
+      "profiles": [
+        "preview_write",
+        "milestone"
+      ],
+      "template": "milestone-review-findings.md",
+      "transitions": [
+        "fix-review"
+      ],
+      "legacy_names": [
+        "fix-review"
+      ],
+      "legacy_runtime_command": "fix-review",
+      "usage": "milestone fix-review <milestone> [--incremental] [project options]",
+      "summary": "Apply approved review fixes and require a fresh milestone review; incremental active repairs retain the implementing stage."
+    },
+    {
+      "path": [
+        "milestone",
+        "handoff"
+      ],
+      "tier": "advanced",
+      "access": "read",
+      "approval": "none",
+      "profiles": [
+        "read_report",
+        "lifecycle"
+      ],
+      "template": "milestone-handoff.md",
+      "transitions": [],
+      "legacy_names": [
+        "handoff-milestone"
+      ],
+      "legacy_runtime_command": "handoff-milestone",
+      "usage": "milestone handoff <milestone> [project options]",
+      "summary": "Generate a runtime-aware context package for another agent or human."
+    },
+    {
+      "path": [
+        "milestone",
+        "onboard"
+      ],
+      "tier": "advanced",
+      "access": "write",
+      "approval": "before normalization",
+      "profiles": [
+        "preview_write",
+        "lifecycle"
+      ],
+      "template": "milestone-spec.md",
+      "transitions": [],
+      "legacy_names": [
+        "onboard-milestone"
+      ],
+      "legacy_runtime_command": "onboard-milestone",
+      "usage": "milestone onboard <milestone> [project options]",
+      "summary": "Normalize one legacy milestone."
+    },
+    {
+      "path": [
+        "milestone",
+        "pause"
+      ],
+      "tier": "advanced",
+      "access": "write",
+      "approval": "explicit command invocation required",
+      "profiles": [
+        "invocation_write",
+        "lifecycle"
+      ],
+      "template": null,
+      "transitions": [
+        "pause"
+      ],
+      "legacy_names": [
+        "pause-milestone"
+      ],
+      "legacy_runtime_command": "pause-milestone",
+      "usage": "milestone pause <milestone> [project options]",
+      "summary": "Park a milestone while preserving its resumable state."
+    },
+    {
+      "path": [
+        "milestone",
+        "report-findings"
+      ],
+      "tier": "advanced",
+      "access": "write",
+      "approval": "invocation reopens one unambiguous owner; otherwise one exact managed repair-task preview is required",
+      "profiles": [
+        "conditional_proposal_write",
+        "milestone"
+      ],
+      "template": "milestone-review-findings.md",
+      "transitions": [],
+      "legacy_names": [
+        "report-milestone-findings"
+      ],
+      "legacy_runtime_command": "report-milestone-findings",
+      "usage": "milestone report-findings <milestone> --session-id <id> --finding <text>... [project options]",
+      "summary": "Submit one idempotent testing-session batch and require machine plus fresh human reverification."
+    },
+    {
+      "path": [
+        "milestone",
+        "resume"
+      ],
+      "tier": "advanced",
+      "access": "write",
+      "approval": "after status and synchronization checks",
+      "profiles": [
+        "preview_write",
+        "lifecycle"
+      ],
+      "template": null,
+      "transitions": [
+        "resume"
+      ],
+      "legacy_names": [
+        "resume-milestone"
+      ],
+      "legacy_runtime_command": "resume-milestone",
+      "usage": "milestone resume <milestone> [project options]",
+      "summary": "Synchronize and resume a paused milestone."
+    },
+    {
+      "path": [
+        "milestone",
+        "sync"
+      ],
+      "tier": "advanced",
+      "access": "conditional",
+      "approval": "before resolving conflicting mutations",
+      "profiles": [
+        "conditional_write",
+        "lifecycle"
+      ],
+      "template": "sync-report.md",
+      "transitions": [],
+      "legacy_names": [
+        "sync-milestone"
+      ],
+      "legacy_runtime_command": "sync-milestone",
+      "usage": "milestone sync <milestone> [project options]",
+      "summary": "Detect external changes and reconcile only approved conflicts."
+    },
+    {
+      "path": [
+        "project",
+        "create"
+      ],
+      "tier": "core",
+      "access": "write",
+      "approval": "before project and roadmap creation",
+      "profiles": [
+        "preview_write",
+        "project"
+      ],
+      "template": "project-spec.md",
+      "transitions": [],
+      "legacy_names": [
+        "create-project"
+      ],
+      "legacy_runtime_command": "create-project",
+      "usage": "project create <idea> [project options]",
+      "summary": "Run interactive product and architecture discovery, create a project spec, then propose the initial roadmap."
+    },
+    {
+      "path": [
+        "project",
+        "review"
+      ],
+      "tier": "core",
+      "access": "read",
+      "approval": "none",
+      "profiles": [
+        "read_report",
+        "project"
+      ],
+      "template": "project-review-findings.md",
+      "transitions": [],
+      "legacy_names": [
+        "review-project"
+      ],
+      "legacy_runtime_command": "review-project",
+      "usage": "project review <project> [project options]",
+      "summary": "Review roadmap milestones for overlap, conflicts, ordering, and dependency gaps."
+    },
+    {
+      "path": [
+        "project",
+        "run"
+      ],
+      "tier": "core",
+      "access": "write",
+      "approval": "invocation covers autonomous progress inside approved scope; preview gates project or milestone scope changes, exact integration, and stronger executor selection",
+      "profiles": [
+        "staged_project_orchestration",
+        "project"
+      ],
+      "template": "project-orchestration-receipt.md",
+      "transitions": [],
+      "legacy_names": [
+        "run-project"
+      ],
+      "legacy_runtime_command": "run-project",
+      "usage": "project run <project> [--max-parallel <2..8>] [--resume <receipt-id>] [project options]",
+      "summary": "Advance the durable project, milestone, and task orchestration loop by one fresh bounded event."
+    },
+    {
+      "path": [
+        "project",
+        "audit"
+      ],
+      "tier": "advanced",
+      "access": "read",
+      "approval": "none",
+      "profiles": [
+        "read_report",
+        "project"
+      ],
+      "template": "project-onboarding-findings.md",
+      "transitions": [],
+      "legacy_names": [
+        "audit-project"
+      ],
+      "legacy_runtime_command": "audit-project",
+      "usage": "project audit <project> [project options]",
+      "summary": "Produce a read-only compatibility diagnosis for a legacy project."
+    },
+    {
+      "path": [
+        "project",
+        "checkpoint"
+      ],
+      "tier": "advanced",
+      "access": "write",
+      "approval": "before creating or replacing the authoritative Active Project Context document",
+      "profiles": [
+        "preview_write",
+        "project_compaction"
+      ],
+      "template": "project-context-capsule.md",
+      "transitions": [],
+      "legacy_names": [
+        "checkpoint-project"
+      ],
+      "legacy_runtime_command": "checkpoint-project",
+      "usage": "project checkpoint <project> [--label <name>] [project options]",
+      "summary": "Compact the active project frontier into a bounded, revision-linked context capsule without rewriting history."
+    },
+    {
+      "path": [
+        "project",
+        "normalize"
+      ],
+      "tier": "advanced",
+      "access": "write",
+      "approval": "before applying the proposed normalization",
+      "profiles": [
+        "preview_write",
+        "project"
+      ],
+      "template": "project-onboarding-findings.md",
+      "transitions": [],
+      "legacy_names": [
+        "normalize-project"
+      ],
+      "legacy_runtime_command": "normalize-project",
+      "usage": "project normalize <project> [project options]",
+      "summary": "Apply approved structural fixes from onboarding findings."
+    },
+    {
+      "path": [
+        "project",
+        "onboard"
+      ],
+      "tier": "advanced",
+      "access": "write",
+      "approval": "before applying normalization changes",
+      "profiles": [
+        "preview_write",
+        "project"
+      ],
+      "template": "project-onboarding-findings.md",
+      "transitions": [],
+      "legacy_names": [
+        "onboard-project"
+      ],
+      "legacy_runtime_command": "onboard-project",
+      "usage": "project onboard <project> [project options]",
+      "summary": "Audit a legacy project and, after approval, normalize it for linear-spanks."
+    },
+    {
+      "path": [
+        "project",
+        "rollover"
+      ],
+      "tier": "advanced",
+      "access": "write",
+      "approval": "at each previewed release phase, with a final gate before resolving source work and completing the source project",
+      "profiles": [
+        "staged_rollover",
+        "project_compaction"
+      ],
+      "template": "project-rollover-proposal.md",
+      "transitions": [],
+      "legacy_names": [
+        "rollover-project"
+      ],
+      "legacy_runtime_command": "rollover-project",
+      "usage": "project rollover <project> --next-release <label> [--resume <receipt>] [--next-goal <text>] [--next-project-name <name>] [--initiative <id-or-name>] [project options]",
+      "summary": "Create a clean successor release project from a verified source project using a resumable, approval-gated rollover."
+    },
+    {
+      "path": [
+        "project",
+        "update"
+      ],
+      "tier": "advanced",
+      "access": "write",
+      "approval": "before updating the project description",
+      "profiles": [
+        "preview_write",
+        "project"
+      ],
+      "template": "project-spec.md",
+      "transitions": [],
+      "legacy_names": [
+        "update-project"
+      ],
+      "legacy_runtime_command": "update-project",
+      "usage": "project update <project> [project options]",
+      "summary": "Revise an existing project spec after a product or architecture pivot."
+    },
+    {
+      "path": [
+        "task",
+        "next"
+      ],
+      "tier": "core",
+      "access": "write",
+      "approval": "covered by the approved milestone execution",
+      "profiles": [
+        "invocation_write",
+        "lifecycle",
+        "task-execution"
+      ],
+      "template": "implementation-plan.md",
+      "transitions": [
+        "start-implementation"
+      ],
+      "legacy_names": [
+        "implement-next"
+      ],
+      "legacy_runtime_command": "implement-next",
+      "usage": "task next <milestone> [--isolated-worktree] [--scan fast|medium|heavy] [project options]",
+      "summary": "Select and run the next unblocked task using deterministic priority rules."
+    },
+    {
+      "path": [
+        "task",
+        "plan"
+      ],
+      "tier": "core",
+      "access": "write",
+      "approval": "explicit invocation covers persisting the approved plan and moving the issue to Backlog",
+      "profiles": [
+        "invocation_write",
+        "task",
+        "planning"
+      ],
+      "template": "implementation-plan.md",
+      "transitions": [],
+      "legacy_names": [
+        "plan-task"
+      ],
+      "legacy_runtime_command": "plan-task",
+      "usage": "task plan <issue> [--scan fast|medium|heavy] [project options]",
+      "summary": "Create one authoritative implementation plan for an Unplanned task and move it to Backlog."
+    },
+    {
+      "path": [
+        "task",
+        "refine"
+      ],
+      "tier": "core",
+      "access": "write",
+      "approval": "before replacing the human draft description and moving it to Unplanned",
+      "profiles": [
+        "preview_write",
+        "task",
+        "task-intake"
+      ],
+      "template": "task-refinement.md",
+      "transitions": [],
+      "legacy_names": [
+        "refine-task"
+      ],
+      "legacy_runtime_command": "refine-task",
+      "usage": "task refine <issue> [project options]",
+      "summary": "Refine one Human draft issue into a stable task contract and move it to Unplanned after approval."
+    },
+    {
+      "path": [
+        "task",
+        "run"
+      ],
+      "tier": "core",
+      "access": "write",
+      "approval": "covered by the approved task unless scope changes",
+      "profiles": [
+        "invocation_write",
+        "task",
+        "task-execution"
+      ],
+      "template": "implementation-plan.md",
+      "transitions": [
+        "start-implementation"
+      ],
+      "legacy_names": [
+        "run-task"
+      ],
+      "legacy_runtime_command": "run-task",
+      "usage": "task run <issue> [--isolated-worktree] [--scan fast|medium|heavy] [project options]",
+      "summary": "Plan, implement, verify, hand off, and complete one unblocked task."
+    },
+    {
+      "path": [
+        "task",
+        "backfill"
+      ],
+      "tier": "advanced",
+      "access": "write",
+      "approval": "explicit command invocation required",
+      "profiles": [
+        "invocation_write",
+        "task"
+      ],
+      "template": "reconstructed-completion.md",
+      "transitions": [],
+      "legacy_names": [
+        "backfill-completion"
+      ],
+      "legacy_runtime_command": "backfill-completion",
+      "usage": "task backfill <issue> [--scan fast|medium|heavy] [project options]",
+      "summary": "Draft and save a clearly labeled reconstructed completion handoff."
+    },
+    {
+      "path": [
+        "task",
+        "create-bug"
+      ],
+      "tier": "advanced",
+      "access": "write",
+      "approval": "before creating the issue",
+      "profiles": [
+        "preview_write",
+        "task"
+      ],
+      "template": "bug-task-spec.md",
+      "transitions": [],
+      "legacy_names": [
+        "create-bug-task"
+      ],
+      "legacy_runtime_command": "create-bug-task",
+      "usage": "task create-bug <bug-description> [project options]",
+      "summary": "Create a bug task with reproduction, impact, and verification criteria."
+    },
+    {
+      "path": [
+        "task",
+        "decompose"
+      ],
+      "tier": "advanced",
+      "access": "read",
+      "approval": "none",
+      "profiles": [
+        "read_report",
+        "task"
+      ],
+      "template": "task-split-proposal.md",
+      "transitions": [],
+      "legacy_names": [
+        "decompose-task"
+      ],
+      "legacy_runtime_command": "decompose-task",
+      "usage": "task decompose <issue> [project options]",
+      "summary": "Recommend splitting or promoting an oversized issue."
+    },
+    {
+      "path": [
+        "task",
+        "design"
+      ],
+      "tier": "advanced",
+      "access": "write",
+      "approval": "before creating the issue",
+      "profiles": [
+        "preview_write",
+        "task"
+      ],
+      "template": "task-spec.md",
+      "transitions": [],
+      "legacy_names": [
+        "design-task"
+      ],
+      "legacy_runtime_command": "design-task",
+      "usage": "task design <idea> [project options]",
+      "summary": "Design a small standalone task without creating a milestone."
+    },
+    {
+      "path": [
+        "task",
+        "onboard"
+      ],
+      "tier": "advanced",
+      "access": "write",
+      "approval": "before normalization",
+      "profiles": [
+        "preview_write",
+        "lifecycle"
+      ],
+      "template": "task-spec.md",
+      "transitions": [],
+      "legacy_names": [
+        "onboard-task"
+      ],
+      "legacy_runtime_command": "onboard-task",
+      "usage": "task onboard <issue> [project options]",
+      "summary": "Normalize one legacy task."
+    },
+    {
+      "path": [
+        "task",
+        "organize"
+      ],
+      "tier": "advanced",
+      "access": "conditional",
+      "approval": "before attaching tasks, creating a milestone, or creating complementary tasks",
+      "profiles": [
+        "conditional_proposal_write",
+        "intake"
+      ],
+      "template": "unplanned-work-grouping.md",
+      "transitions": [],
+      "legacy_names": [
+        "organize-unplanned"
+      ],
+      "legacy_runtime_command": "organize-unplanned",
+      "usage": "task organize <issue...|project> [project options]",
+      "summary": "Recommend standalone, existing-milestone, or new-milestone placement for refined Unplanned tasks and apply only approved changes."
+    },
+    {
+      "path": [
+        "task",
+        "promote"
+      ],
+      "tier": "advanced",
+      "access": "write",
+      "approval": "before creating a milestone and tasks",
+      "profiles": [
+        "preview_write",
+        "task"
+      ],
+      "template": "task-promotion-proposal.md",
+      "transitions": [],
+      "legacy_names": [
+        "promote-task"
+      ],
+      "legacy_runtime_command": "promote-task",
+      "usage": "task promote <issue> [project options]",
+      "summary": "Promote an oversized issue into a milestone with child tasks."
+    },
+    {
+      "path": [
+        "task",
+        "replan"
+      ],
+      "tier": "advanced",
+      "access": "write",
+      "approval": "covered unless scope or downstream contracts change",
+      "profiles": [
+        "invocation_write",
+        "task",
+        "planning"
+      ],
+      "template": "replan-task.md",
+      "transitions": [],
+      "legacy_names": [
+        "replan-task"
+      ],
+      "legacy_runtime_command": "replan-task",
+      "usage": "task replan <issue> [--scan fast|medium|heavy] [project options]",
+      "summary": "Append a plan revision while preserving the original plan."
+    },
+    {
+      "path": [
+        "task",
+        "scope"
+      ],
+      "tier": "advanced",
+      "access": "read",
+      "approval": "none",
+      "profiles": [
+        "read_report",
+        "task"
+      ],
+      "template": null,
+      "transitions": [],
+      "legacy_names": [
+        "review-task-scope"
+      ],
+      "legacy_runtime_command": "review-task-scope",
+      "usage": "task scope <issue> [project options]",
+      "summary": "Assess whether a task should remain a task, split, or become a milestone."
+    },
+    {
+      "path": [
+        "task",
+        "split"
+      ],
+      "tier": "advanced",
+      "access": "write",
+      "approval": "before creating replacement tasks",
+      "profiles": [
+        "preview_write",
+        "task"
+      ],
+      "template": "task-split-proposal.md",
+      "transitions": [],
+      "legacy_names": [
+        "split-task"
+      ],
+      "legacy_runtime_command": "split-task",
+      "usage": "task split <issue> [project options]",
+      "summary": "Split an approved oversized issue into smaller dependency-aware tasks."
+    },
+    {
+      "path": [
+        "task",
+        "verify"
+      ],
+      "tier": "advanced",
+      "access": "write",
+      "approval": "covered by the approved task",
+      "profiles": [
+        "invocation_write",
+        "task",
+        "task-verification"
+      ],
+      "template": "completion-handoff.md",
+      "transitions": [],
+      "legacy_names": [
+        "verify-task"
+      ],
+      "legacy_runtime_command": "verify-task",
+      "usage": "task verify <issue> [--scan fast|medium|heavy] [project options]",
+      "summary": "Collect fresh evidence before marking a task Done."
+    },
+    {
+      "path": [
+        "verification",
+        "confirm"
+      ],
+      "tier": "advanced",
+      "access": "write",
+      "approval": "explicit human confirmation of the current revision-bound checklist",
+      "profiles": [
+        "invocation_write",
+        "milestone"
+      ],
+      "template": "human-verification-checklist.md",
+      "transitions": [
+        "confirm-milestone"
+      ],
+      "legacy_names": [
+        "confirm-milestone"
+      ],
+      "legacy_runtime_command": "confirm-milestone",
+      "usage": "verification confirm <milestone> [project options]",
+      "summary": "Record final human confirmation, close the managed gate, and advance to human-verified."
+    },
+    {
+      "path": [
+        "verification",
+        "fail"
+      ],
+      "tier": "advanced",
+      "access": "write",
+      "approval": "one exact repair-task preview",
+      "profiles": [
+        "preview_write",
+        "milestone"
+      ],
+      "template": "human-verification-checklist.md",
+      "transitions": [
+        "fail-milestone-verification"
+      ],
+      "legacy_names": [
+        "fail-milestone-verification"
+      ],
+      "legacy_runtime_command": "fail-milestone-verification",
+      "usage": "verification fail <milestone> --reason <text> [project options]",
+      "summary": "Record failed human verification, create one repair task, and return the milestone to implementation."
+    },
+    {
+      "path": [
+        "verification",
+        "policy-set"
+      ],
+      "tier": "advanced",
+      "access": "write",
+      "approval": "one exact preview covering every affected active milestone, gate, checklist, and orchestration receipt",
+      "profiles": [
+        "preview_write",
+        "project"
+      ],
+      "template": null,
+      "transitions": [],
+      "legacy_names": [
+        "set-human-verification-policy"
+      ],
+      "legacy_runtime_command": "set-human-verification-policy",
+      "usage": "verification policy-set <project|milestone> (--default enabled|disabled | --override enabled|disabled|inherit) [--reason <text>] [project options]",
+      "summary": "Set the project default or one milestone override for final human verification."
+    },
+    {
+      "path": [
+        "verification",
+        "status"
+      ],
+      "tier": "advanced",
+      "access": "read",
+      "approval": "none",
+      "profiles": [
+        "read_report",
+        "project"
+      ],
+      "template": null,
+      "transitions": [],
+      "legacy_names": [
+        "status-human-verification"
+      ],
+      "legacy_runtime_command": "status-human-verification",
+      "usage": "verification status <project|milestone> [project options]",
+      "summary": "Report persisted and effective human-verification policy, gates, checklists, and drift without mutation."
+    },
+    {
+      "path": [
+        "wave",
+        "implement"
+      ],
+      "tier": "advanced",
+      "access": "write",
+      "approval": "explicit invocation covers preparing and executing one fixed wave",
+      "profiles": [
+        "invocation_write",
+        "lifecycle",
+        "parallel-execution"
+      ],
+      "template": "parallel-wave-receipt.md",
+      "transitions": [
+        "start-implementation"
+      ],
+      "legacy_names": [
+        "implement-wave"
+      ],
+      "legacy_runtime_command": "implement-wave",
+      "usage": "wave implement <milestone> [--isolated-worktree] [--max-parallel <2..8>] [--resume <wave-id>] [--scan fast|medium|heavy] [project options]",
+      "summary": "Execute one reviewed dependency-graph wave concurrently on isolated child branches and clean task worktrees."
+    },
+    {
+      "path": [
+        "wave",
+        "reconcile"
+      ],
+      "tier": "advanced",
+      "access": "write",
+      "approval": "one approval after an exact ordered integration preview",
+      "profiles": [
+        "preview_write",
+        "lifecycle",
+        "wave-reconciliation"
+      ],
+      "template": "parallel-wave-receipt.md",
+      "transitions": [],
+      "legacy_names": [
+        "reconcile-wave"
+      ],
+      "legacy_runtime_command": "reconcile-wave",
+      "usage": "wave reconcile <milestone> --wave <wave-id> [--delete-merged-branches] [--scan fast|medium|heavy] [project options]",
+      "summary": "Reconcile verified wave branches with merge commits, combined verification, durable receipts, and safe cleanup."
+    },
+    {
+      "path": [
+        "context",
+        "budget"
+      ],
+      "tier": "advanced",
+      "access": "write",
+      "approval": "explicit invocation authorizes exactly the selected budget update or reset; agent-proposed increases require approval",
+      "profiles": [
+        "context_management"
+      ],
+      "template": null,
+      "transitions": [],
+      "legacy_names": [],
+      "legacy_runtime_command": "context budget",
+      "usage": "context budget <project|milestone|task> <target> (--tokens <integer> | --reset) [project options]",
+      "summary": "Persist an inherited, raise-only context token allowance."
+    },
+    {
+      "path": [
+        "context",
+        "inspect"
+      ],
+      "tier": "advanced",
+      "access": "read",
+      "approval": "none",
+      "profiles": [
+        "context_management"
+      ],
+      "template": null,
+      "transitions": [],
+      "legacy_names": [],
+      "legacy_runtime_command": "context inspect",
+      "usage": "context inspect <project|milestone|task> <target> [project options]",
+      "summary": "Inspect scope, effective context limits, and resumable state without mutations."
+    },
+    {
+      "path": [
+        "runtime",
+        "inspect"
+      ],
+      "tier": "advanced",
+      "access": "read",
+      "approval": "none",
+      "profiles": [
+        "context_management"
+      ],
+      "template": null,
+      "transitions": [],
+      "legacy_names": [],
+      "legacy_runtime_command": "runtime inspect",
+      "usage": "runtime inspect <project|milestone|task> <target> [project options]",
+      "summary": "Inspect scope, effective context limits, and resumable state without mutations."
+    },
+    {
+      "path": [
+        "milestone",
+        "checkpoint"
+      ],
+      "tier": "advanced",
+      "access": "write",
+      "approval": "exact preview approval; task deletion additionally requires explicit --level prune in the invocation",
+      "profiles": [
+        "context_management"
+      ],
+      "template": null,
+      "transitions": [],
+      "legacy_names": [],
+      "legacy_runtime_command": "milestone checkpoint",
+      "usage": "milestone checkpoint <target> [--level compact|prune] [project options]",
+      "summary": "Compact task comments into one milestone archive and summary; explicitly select prune to also delete verified completed tasks."
+    },
+    {
+      "path": [
+        "task",
+        "checkpoint"
+      ],
+      "tier": "advanced",
+      "access": "write",
+      "approval": "exact preview approval for archive, canonical comments and redundant-comment deletion",
+      "profiles": [
+        "context_management"
+      ],
+      "template": null,
+      "transitions": [],
+      "legacy_names": [],
+      "legacy_runtime_command": "task checkpoint",
+      "usage": "task checkpoint <target> [project options]",
+      "summary": "Archive all original task comments in one document and consolidate repeated plans, reviews and handoffs to one comment per type."
+    }
+  ],
+  "legacy_replacements": {
+    "analyze-codebase": "codebase analyze",
+    "apply-learnings": "learning apply",
+    "archive-milestone": "milestone archive",
+    "audit-project": "project audit",
+    "backfill-completion": "task backfill",
+    "checkpoint-project": "project checkpoint",
+    "clarify-milestone": "milestone clarify",
+    "confirm-milestone": "verification confirm",
+    "create-bug-task": "task create-bug",
+    "create-project": "project create",
+    "create-tasks": "milestone create-tasks",
+    "decompose-task": "task decompose",
+    "design-milestone": "milestone design",
+    "design-task": "task design",
+    "diff-milestone": "milestone diff",
+    "fail-milestone-verification": "verification fail",
+    "fix-review": "milestone fix-review",
+    "handoff-milestone": "milestone handoff",
+    "implement-next": "task next",
+    "implement-wave": "wave implement",
+    "import-codebase": "codebase import",
+    "normalize-project": "project normalize",
+    "onboard-milestone": "milestone onboard",
+    "onboard-project": "project onboard",
+    "onboard-task": "task onboard",
+    "organize-learnings": "learning organize",
+    "organize-unplanned": "task organize",
+    "pause-milestone": "milestone pause",
+    "plan-task": "task plan",
+    "plan-tasks": "milestone plan",
+    "promote-task": "task promote",
+    "reconcile-wave": "wave reconcile",
+    "refine-task": "task refine",
+    "replan-task": "task replan",
+    "report-milestone-findings": "milestone report-findings",
+    "resume-milestone": "milestone resume",
+    "review-learnings": "learning review",
+    "review-milestone": "milestone review",
+    "review-project": "project review",
+    "review-task-scope": "task scope",
+    "rollover-project": "project rollover",
+    "run-milestone": "milestone run --mode step",
+    "run-milestone-loop": "milestone run --mode loop",
+    "run-project": "project run",
+    "run-task": "task run",
+    "set-human-verification-policy": "verification policy-set",
+    "split-task": "task split",
+    "status-human-verification": "verification status",
+    "status-milestone": "milestone status",
+    "sync-milestone": "milestone sync",
+    "trace-blockers": "milestone blockers",
+    "update-project": "project update",
+    "verify-milestone": "milestone verify",
+    "verify-task": "task verify",
+    "wrap-milestone": "milestone wrap"
+  }
+}

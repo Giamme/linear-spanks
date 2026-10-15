@@ -1,0 +1,4 @@
+interface:
+  display_name: "Linear Workflow"
+  short_description: "Help with Linear Workflow tasks"
+  default_prompt: "Use $linear-workflow to coordinate this Linear workflow safely."

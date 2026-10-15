@@ -1,0 +1,4 @@
+interface:
+  display_name: "Exec UI Ux"
+  short_description: "Help with Exec UI Ux tasks"
+  default_prompt: "Use $exec-ui-ux to apply its execution checks to this task."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tech Docker"
+  short_description: "Help with Tech Docker tasks"
+  default_prompt: "Use $tech-docker to apply project-compatible technology guidance."

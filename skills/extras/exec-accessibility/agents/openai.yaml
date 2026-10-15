@@ -1,0 +1,4 @@
+interface:
+  display_name: "Exec Accessibility"
+  short_description: "Help with Exec Accessibility tasks"
+  default_prompt: "Use $exec-accessibility to apply its execution checks to this task."

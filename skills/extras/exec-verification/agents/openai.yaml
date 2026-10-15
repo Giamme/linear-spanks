@@ -1,0 +1,4 @@
+interface:
+  display_name: "Exec Verification"
+  short_description: "Help with Exec Verification tasks"
+  default_prompt: "Use $exec-verification to apply its execution checks to this task."

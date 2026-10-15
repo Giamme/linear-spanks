@@ -1,0 +1,4 @@
+interface:
+  display_name: "Exec Repo Patterns"
+  short_description: "Help with Exec Repo Patterns tasks"
+  default_prompt: "Use $exec-repo-patterns to apply its execution checks to this task."

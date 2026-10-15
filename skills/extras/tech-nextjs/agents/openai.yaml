@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tech Nextjs"
+  short_description: "Help with Tech Nextjs tasks"
+  default_prompt: "Use $tech-nextjs to apply project-compatible technology guidance."

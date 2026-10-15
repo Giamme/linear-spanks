@@ -1,0 +1,14 @@
+{
+  "name": "linear-spanks",
+  "description": "A governed workflow for Linear: turn project intent into milestones and tasks, then run them with declared approvals, fresh read-backs after every write and verification before done. Works through your agent's Linear MCP connector.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Giamme",
+    "url": "https://github.com/Giamme"
+  },
+  "homepage": "https://github.com/Giamme/linear-spanks",
+  "repository": "https://github.com/Giamme/linear-spanks",
+  "license": "MIT",
+  "keywords": ["linear", "project-management", "workflow", "planning", "milestones"],
+  "skills": ["./skills/linear-spanks", "./skills/linear-spanks-git", "./skills/linear-workflow"]
+}

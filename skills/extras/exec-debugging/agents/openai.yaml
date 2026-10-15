@@ -1,0 +1,4 @@
+interface:
+  display_name: "Exec Debugging"
+  short_description: "Help with Exec Debugging tasks"
+  default_prompt: "Use $exec-debugging to apply its execution checks to this task."

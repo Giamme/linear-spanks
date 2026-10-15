@@ -1,0 +1,78 @@
+[project]
+name = "linear-spanks"
+version = "1.0.0"
+description = "A governed, contract-driven Linear workflow runtime"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = []
+
+[dependency-groups]
+dev = [
+  "coverage==7.10.2",
+  "mypy==1.17.1",
+  "ruff==0.12.7",
+]
+
+[tool.uv]
+required-version = ">=0.8.0,<0.9.0"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+extend-exclude = [
+  "skills/linear-spanks/scripts/linear_spanks/compat/v1_runtime.py",
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "C4", "SIM", "RUF"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["S101"]
+"tests/contract_support.py" = ["E402", "E731", "F401"]
+"tests/test_contract_*.py" = ["F403", "F405"]
+"tests/test_artifact_migration.py" = ["I001"]
+"tests/test_cli_v2.py" = ["I001"]
+"tests/test_contract_set_v2.py" = ["I001"]
+"tests/test_domain_api_v2.py" = ["I001"]
+"tests/test_internal_cli_v2.py" = ["I001"]
+"tests/test_caveman_units_v2.py" = ["I001"]
+"tests/test_installer_units_v2.py" = ["I001"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+pretty = true
+show_error_codes = true
+warn_unreachable = true
+files = ["skills/linear-spanks/scripts/linear_spanks"]
+exclude = ["skills/linear-spanks/scripts/linear_spanks/compat/v1_runtime.py"]
+
+[[tool.mypy.overrides]]
+module = "linear_spanks.compat.*"
+ignore_errors = true
+
+[tool.coverage.run]
+branch = true
+parallel = true
+source = ["skills/linear-spanks/scripts/linear_spanks"]
+# These modules are frozen v1 characterization and load-boundary validators. They are not
+# measured, so the reported percentage describes the v2 shipping path only -- roughly 8,000
+# lines sit outside it. Read the headline number as v2-path coverage, not whole-tree coverage.
+omit = [
+  "skills/linear-spanks/scripts/linear_spanks/compat/v1_runtime.py",
+  "skills/linear-spanks/scripts/linear_spanks/contracts/semantic_validation.py",
+  "skills/linear-spanks/scripts/linear_spanks/domains/_*_v1.py",
+]
+
+[tool.coverage.report]
+fail_under = 90
+precision = 2
+show_missing = true
+skip_covered = true
+exclude_also = [
+  "if TYPE_CHECKING:",
+  "if __name__ == .__main__.:",
+  "raise NotImplementedError",
+]

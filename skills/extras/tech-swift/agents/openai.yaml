@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tech Swift"
+  short_description: "Help with Tech Swift tasks"
+  default_prompt: "Use $tech-swift to apply project-compatible technology guidance."

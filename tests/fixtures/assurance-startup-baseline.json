@@ -1,0 +1,6 @@
+{
+  "baseline": "serialized execution-envelope plus every required reference loaded by that envelope",
+  "compact": "serialized execution-brief with its generated runtime card",
+  "commands": ["run-task", "plan-tasks"],
+  "minimum_reduction_percent": 60
+}

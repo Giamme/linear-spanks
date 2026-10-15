@@ -1,0 +1,30 @@
+#!/usr/bin/env python3
+"""Replay actual routing, dispatch and receipt validators with deterministic evidence."""
+
+import json
+import sys
+import time
+import unittest
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "skills/linear-spanks/scripts"))
+from tests.test_short_workflow import ShortWorkflowTest
+
+case = ShortWorkflowTest("test_hundred_workflow_cycles_have_bounded_dispatch_and_analysis")
+started = time.perf_counter()
+result = unittest.TextTestRunner(stream=sys.stderr).run(unittest.TestSuite([case]))
+if result.wasSuccessful():
+    print(
+        json.dumps(
+            {
+                "status": "passed",
+                "measurement_kind": "deterministic-workflow-replay",
+                "model_telemetry": None,
+                "harness_elapsed_seconds": round(time.perf_counter() - started, 3),
+                **case.replay_metrics,
+            },
+            sort_keys=True,
+        )
+    )
+sys.exit(0 if result.wasSuccessful() else 1)

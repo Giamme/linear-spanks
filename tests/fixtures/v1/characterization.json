@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "captured_on": "2026-08-03",
+  "baseline": {
+    "command_count": 56,
+    "test_count": 173,
+    "python": "3.14.4",
+    "same_machine_seconds": 30.2
+  },
+  "cli": [
+    {
+      "argv": ["validate-contracts"],
+      "exit_code": 0,
+      "stdout_json": {"commands": 56, "status": "valid"},
+      "stderr": ""
+    },
+    {
+      "argv": ["command", "help"],
+      "exit_code": 0,
+      "stdout_json_fields": {
+        "name": "help",
+        "family": "project",
+        "access": "read",
+        "approval": "none"
+      },
+      "stderr": ""
+    },
+    {
+      "argv": ["command", "does-not-exist"],
+      "exit_code": 2,
+      "stdout": "",
+      "stderr_contains": "unknown or duplicated command: does-not-exist"
+    },
+    {
+      "argv": ["transition", "clarify", "--from", "draft"],
+      "exit_code": 0,
+      "stdout": "clarified\n",
+      "stderr": ""
+    }
+  ],
+  "artifact_kinds": {
+    "state-marker": {"source_schema_version": 1, "revision_field": "revision"},
+    "dependency-graph": {"source_schema_version": 1, "revision_field": "graph_revision"},
+    "human-verification-policy": {"source_schema_version": 1, "revision_field": "revision"},
+    "human-verification-override": {"source_schema_version": 1, "revision_field": "revision"},
+    "human-verification-gate": {"source_schema_version": 1, "revision_field": "gate_revision"},
+    "human-verification-checklist": {"source_schema_version": 1, "revision_field": "checklist_revision"},
+    "human-verification-repair": {"source_schema_version": 1, "revision_field": "failure_revision"},
+    "milestone-runtime-projection": {"source_schema_version": 1, "revision_field": "revision"},
+    "autopilot-policy": {"source_schema_version": 1, "revision_field": "revision"},
+    "repository-checkpoint": {"source_schema_version": 1, "revision_field": null},
+    "project-context-capsule": {"source_schema_version": 1, "revision_field": "project_revision"},
+    "verification-ledger": {"source_schema_version": 1, "revision_field": "plan_revision"},
+    "project-loop-receipt": {"source_schema_version": 1, "revision_field": "project_revision"},
+    "milestone-loop-receipt": {"source_schema_version": 1, "revision_field": "milestone_revision"},
+    "isolation-receipt": {"source_schema_version": 1, "revision_field": "plan_revision"},
+    "wave-receipt": {"source_schema_version": 1, "revision_field": null},
+    "rollover-receipt": {"source_schema_version": 1, "revision_field": null}
+  },
+  "compatibility_policy": {
+    "read_only": "decode and migrate in memory only",
+    "write": "preview, authorize, re-read, compare source hash, persist v2, read back",
+    "future_versions": "reject",
+    "malformed_artifacts": "reject"
+  }
+}

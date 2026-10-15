@@ -1,0 +1,140 @@
+{
+  "antigravity": {
+    "capability": "inherited-model",
+    "configuration": "dynamic-subagent",
+    "delegation": "isolated-subagent",
+    "files": {},
+    "operation_count": 0,
+    "role_profiles": {
+      "executor": "dynamic-isolated-subagent",
+      "planner": "dynamic-read-only-subagent",
+      "reviewer": "dynamic-independent-subagent"
+    }
+  },
+  "claude": {
+    "capability": "enforced",
+    "configuration": "agent-markdown",
+    "delegation": "custom-subagent",
+    "files": {
+      "linear-spanks-executor-high.md": "33ef62cfe65bd7791a0c9615014b333827787fee3e9b9cb4edba58e78c8f580e",
+      "linear-spanks-executor-low.md": "bc8f00a2c0e5f48dec88aa84fd071749078567721a2c00ee5d34d4f1597ac7b0",
+      "linear-spanks-executor-medium.md": "90e36fb06e8a6fb670508aba08da667cc753a8df6128fd8bb253bb504ba8d2a8",
+      "linear-spanks-planner-medium.md": "85ad3e5aecfd6a8e62789a07677391e89ac883152f877059eca766e9ac147dac",
+      "linear-spanks-planner.md": "122e143f967229a80087849a43869f41728abf8242c095509e7dea5e6efbfb7d",
+      "linear-spanks-reviewer-high.md": "9dc8fb159ee737b4db699847bc59c20435b79231fa9afbc4be1cde23214a3fd8",
+      "linear-spanks-reviewer-medium.md": "1c8128eeb625a99bc5a5bae1c24e14497903767d6f9f6f4d30895b812a85b764"
+    },
+    "operation_count": 7,
+    "role_profiles": {
+      "executor": {
+        "high": "linear-spanks-executor-high",
+        "low": "linear-spanks-executor-low",
+        "medium": "linear-spanks-executor-medium"
+      },
+      "planner": {
+        "high": "linear-spanks-planner",
+        "medium": "linear-spanks-planner-medium"
+      },
+      "reviewer": {
+        "high": "linear-spanks-reviewer-high",
+        "medium": "linear-spanks-reviewer-medium"
+      }
+    }
+  },
+  "codex": {
+    "capability": "enforced",
+    "configuration": "agent-toml",
+    "delegation": "custom-agent",
+    "files": {
+      "linear-spanks-executor-high.toml": "ae2e41249e55464597f39841eec283d824b76b6e529e1ed9080bbc61714321bd",
+      "linear-spanks-executor-low.toml": "e0b0dfb0f02847b9245568a7fa9e9fbd127dd1bd510db8f07c385cf0784ff236",
+      "linear-spanks-executor-medium.toml": "054c745de5a01366ecb8abf697f7f7fc88e1d456bb6e9ad8f5b8b09f35bb1cf3",
+      "linear-spanks-planner-medium.toml": "dc481edd69872c808ee4818eb0d7c2629cb822936690c8039904310a4cb07d51",
+      "linear-spanks-planner.toml": "62daf1ec5f7047f0322c42e82210666ef1fc87f34576a2ef90bc6a91ea1d92de",
+      "linear-spanks-reviewer-high.toml": "04882d74e3f557404a48cf574c23ec360b4e380277ee292228327f9ad81105d1",
+      "linear-spanks-reviewer-medium.toml": "69357cf4fe64da583fed1ba3185a2daad7d25697478fb5dea516d378cdbeb22c"
+    },
+    "operation_count": 7,
+    "role_profiles": {
+      "executor": {
+        "high": "linear-spanks-executor-high",
+        "low": "linear-spanks-executor-low",
+        "medium": "linear-spanks-executor-medium"
+      },
+      "planner": {
+        "high": "linear-spanks-planner",
+        "medium": "linear-spanks-planner-medium"
+      },
+      "reviewer": {
+        "high": "linear-spanks-reviewer-high",
+        "medium": "linear-spanks-reviewer-medium"
+      }
+    }
+  },
+  "kimi": {
+    "capability": "advisory-only",
+    "configuration": "built-in-profiles",
+    "delegation": "built-in-profile",
+    "files": {},
+    "operation_count": 0,
+    "role_profiles": {
+      "executor": "coder",
+      "planner": "plan",
+      "reviewer": "explore"
+    }
+  },
+  "openclaude": {
+    "capability": "enforced",
+    "configuration": "openclaude-json",
+    "delegation": "settings-agent-routing",
+    "files": {
+      "openclaude.json": "40e9406705ab94047137c94a87022bc1e35b4f5b6e6e6ffde5fc23011f9168b1"
+    },
+    "operation_count": 1,
+    "role_profiles": {
+      "executor": {
+        "high": "linear-spanks-executor-high",
+        "low": "linear-spanks-executor-low",
+        "medium": "linear-spanks-executor-medium"
+      },
+      "planner": {
+        "high": "linear-spanks-planner",
+        "medium": "linear-spanks-planner-medium"
+      },
+      "reviewer": {
+        "high": "linear-spanks-reviewer-high",
+        "medium": "linear-spanks-reviewer-medium"
+      }
+    }
+  },
+  "opencode": {
+    "capability": "enforced",
+    "configuration": "agent-markdown",
+    "delegation": "custom-subagent",
+    "files": {
+      "linear-spanks-executor-high.md": "3cc6cd45f0eac5bcf13d9c70f145a8b7a8ba47728db10de3f388cd149069bec8",
+      "linear-spanks-executor-low.md": "3f8e38a8b77eea8be5b875bffe48572dc8e3d636c6b30c3dbab5a6cd6bb79667",
+      "linear-spanks-executor-medium.md": "01f41520c9970c9f91b42aab0e911bae3c7edf01a2df990ffaed2d9fc6df38e7",
+      "linear-spanks-planner-medium.md": "e825ffe6c78a28a7a30bc319b452b97e7c98a46862bf0a4e86ac7b0220c85319",
+      "linear-spanks-planner.md": "8c1ea403afb787ec0d912dd21c078a9a8478e901a4f1b7384e52b5db659d01bc",
+      "linear-spanks-reviewer-high.md": "53e1973a19f28025c3173a11c3d653d012019ec05ae73556e043abd57ea9ad5e",
+      "linear-spanks-reviewer-medium.md": "f8ac6d95ca53dca9917de8045bce96fa2fb6710364cb96877211b3f3570c4fba"
+    },
+    "operation_count": 7,
+    "role_profiles": {
+      "executor": {
+        "high": "linear-spanks-executor-high",
+        "low": "linear-spanks-executor-low",
+        "medium": "linear-spanks-executor-medium"
+      },
+      "planner": {
+        "high": "linear-spanks-planner",
+        "medium": "linear-spanks-planner-medium"
+      },
+      "reviewer": {
+        "high": "linear-spanks-reviewer-high",
+        "medium": "linear-spanks-reviewer-medium"
+      }
+    }
+  }
+}

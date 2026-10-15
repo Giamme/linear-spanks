@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tech Python"
+  short_description: "Help with Tech Python tasks"
+  default_prompt: "Use $tech-python to apply project-compatible technology guidance."

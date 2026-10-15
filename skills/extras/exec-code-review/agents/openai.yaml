@@ -1,0 +1,4 @@
+interface:
+  display_name: "Exec Code Review"
+  short_description: "Help with Exec Code Review tasks"
+  default_prompt: "Use $exec-code-review to apply its execution checks to this task."

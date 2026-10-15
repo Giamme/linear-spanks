@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tech Flutter"
+  short_description: "Help with Tech Flutter tasks"
+  default_prompt: "Use $tech-flutter to apply project-compatible technology guidance."

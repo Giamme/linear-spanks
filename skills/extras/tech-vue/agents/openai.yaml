@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tech Vue"
+  short_description: "Help with Tech Vue tasks and workflows"
+  default_prompt: "Use $tech-vue to apply project-compatible technology guidance."

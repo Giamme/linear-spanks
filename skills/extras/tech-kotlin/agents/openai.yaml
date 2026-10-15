@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tech Kotlin"
+  short_description: "Help with Tech Kotlin tasks"
+  default_prompt: "Use $tech-kotlin to apply project-compatible technology guidance."

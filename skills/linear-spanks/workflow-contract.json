@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "marker_prefix": "linear-spanks:state",
+  "stages": [
+    "draft",
+    "clarified",
+    "project-reviewed",
+    "tasks-created",
+    "tasks-planned",
+    "milestone-reviewed",
+    "implementing",
+    "milestone-verified",
+    "human-verified",
+    "wrapped",
+    "paused",
+    "archived"
+  ],
+  "transitions": {
+    "clarify": {"from": ["draft", "clarified"], "to": "clarified"},
+    "review-project": {"from": ["clarified", "project-reviewed"], "to": "project-reviewed"},
+    "create-tasks": {"from": ["project-reviewed"], "to": "tasks-created"},
+    "plan-tasks": {"from": ["tasks-created", "tasks-planned"], "to": "tasks-planned", "mode_self_transition": {"from": "implementing", "modes": ["next-wave"], "to": "implementing"}},
+    "review-milestone": {"from": ["tasks-planned", "milestone-reviewed"], "to": "milestone-reviewed", "mode_self_transition": {"from": "implementing", "modes": ["next-wave", "incremental"], "to": "implementing"}},
+    "fix-review": {"from": ["milestone-reviewed"], "to": "tasks-planned", "mode_self_transition": {"from": "implementing", "modes": ["incremental"], "to": "implementing"}},
+    "start-implementation": {"from": ["milestone-reviewed", "implementing"], "to": "implementing"},
+    "verify-milestone": {"from": ["implementing", "milestone-verified"], "to": "milestone-verified"},
+    "confirm-milestone": {"from": ["milestone-verified", "human-verified"], "to": "human-verified"},
+    "fail-milestone-verification": {"from": ["milestone-verified"], "to": "implementing"},
+    "wrap-milestone": {"from": ["milestone-verified", "human-verified", "wrapped"], "to": "wrapped"},
+    "pause": {"from": ["clarified", "project-reviewed", "tasks-created", "tasks-planned", "milestone-reviewed", "implementing", "milestone-verified", "human-verified"], "to": "paused"},
+    "resume": {"from": ["paused"], "to": "$resume_stage"},
+    "archive": {"from": ["draft", "clarified", "project-reviewed", "tasks-created", "tasks-planned", "milestone-reviewed", "implementing", "milestone-verified", "human-verified", "paused"], "to": "archived"}
+  }
+}

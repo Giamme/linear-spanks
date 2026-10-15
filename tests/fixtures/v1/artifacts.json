@@ -1,0 +1,611 @@
+{
+  "artifacts": {
+    "autopilot-policy": {
+      "binding": {
+        "acceptance": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "authorization": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "dependencies": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "migration_policy": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "project_policy": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "scope": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "milestone_id": "milestone-1",
+      "persisted": true,
+      "policy_hash": "sha256:991087cfae807f5e0c7ff926d6139dbe2a7c67a85a1b5aec2490dc2524d42311",
+      "policy_id": "policy-1",
+      "read_back": true,
+      "revision": 1,
+      "schema_version": 1,
+      "updated_at": "2026-07-27T09:59:00+00:00"
+    },
+    "dependency-graph": {
+      "generated_at": "2026-07-21T10:00:00+00:00",
+      "graph_hash": "sha256:1abb0e31819cbd3f12850ff6ab68ab3d32dd13d6bad8de9d8f052f52cf63ee10",
+      "graph_revision": 3,
+      "hard_edges": [
+        {
+          "from": "ENG-1",
+          "to": "ENG-4"
+        },
+        {
+          "from": "ENG-2",
+          "to": "ENG-4"
+        }
+      ],
+      "milestone_id": "milestone-1",
+      "project_id": "project-1",
+      "review_status": "reviewed",
+      "schema_version": 1,
+      "serialization_edges": [
+        {
+          "from": "ENG-1",
+          "to": "ENG-3"
+        }
+      ],
+      "source_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "tasks": [
+        {
+          "execution_footprint": {
+            "exclusive_resources": [],
+            "parallel_safe": true,
+            "repository": "linear-spanks",
+            "serialization_rationale": "scopes are explicit",
+            "write_scopes": [
+              "src/a.py"
+            ]
+          },
+          "id": "ENG-1",
+          "plan_revision": 1
+        },
+        {
+          "execution_footprint": {
+            "exclusive_resources": [],
+            "parallel_safe": true,
+            "repository": "linear-spanks",
+            "serialization_rationale": "scopes are explicit",
+            "write_scopes": [
+              "src/b.py"
+            ]
+          },
+          "id": "ENG-2",
+          "plan_revision": 2
+        },
+        {
+          "execution_footprint": {
+            "exclusive_resources": [],
+            "parallel_safe": true,
+            "repository": "linear-spanks",
+            "serialization_rationale": "scopes are explicit",
+            "write_scopes": [
+              "src/a.py"
+            ]
+          },
+          "id": "ENG-3",
+          "plan_revision": 1
+        },
+        {
+          "execution_footprint": {
+            "exclusive_resources": [],
+            "parallel_safe": true,
+            "repository": "linear-spanks",
+            "serialization_rationale": "scopes are explicit",
+            "write_scopes": [
+              "src/c.py"
+            ]
+          },
+          "id": "ENG-4",
+          "plan_revision": 1
+        }
+      ],
+      "waves": [
+        [
+          "ENG-1",
+          "ENG-2"
+        ],
+        [
+          "ENG-3",
+          "ENG-4"
+        ]
+      ],
+      "workflow_revision": 7
+    },
+    "human-verification-checklist": {
+      "actor": "linear-spanks",
+      "checklist_id": "checklist-1",
+      "checklist_revision": 1,
+      "effective_policy_hash": "sha256:61c0f8fbce54b4078680e0a1d12b06755a7da19fea8becd1867a75503d8633f4",
+      "evidence": [],
+      "gate_issue_id": "ENG-999",
+      "instructions": [
+        "Exercise the primary workflow"
+      ],
+      "machine_verification_revision": 4,
+      "milestone_id": "milestone-1",
+      "project_id": "project-1",
+      "schema_version": 1,
+      "status": "pending",
+      "updated_at": "2026-07-24T10:05:00+00:00"
+    },
+    "human-verification-gate": {
+      "effective_policy_hash": "sha256:61c0f8fbce54b4078680e0a1d12b06755a7da19fea8becd1867a75503d8633f4",
+      "gate_revision": 1,
+      "issue_id": "ENG-999",
+      "milestone_id": "milestone-1",
+      "project_id": "project-1",
+      "schema_version": 1,
+      "state": "In Progress",
+      "updated_at": "2026-07-24T10:05:00+00:00"
+    },
+    "human-verification-override": {
+      "actor": "human@example.com",
+      "marker_hash": "sha256:26a7cb80e1c09686bfc2766c79283e1a90bb5ba6d9b97c8951475cc863a78a54",
+      "milestone_id": "milestone-1",
+      "override": "inherit",
+      "project_id": "project-1",
+      "revision": 1,
+      "schema_version": 1,
+      "updated_at": "2026-07-24T10:00:00+00:00"
+    },
+    "human-verification-policy": {
+      "actor": "human@example.com",
+      "default": "enabled",
+      "policy_hash": "sha256:2a6a814afd484965766a63e941498a5ea9d7957070a455e716ad20a77b773a45",
+      "project_id": "project-1",
+      "revision": 1,
+      "schema_version": 1,
+      "updated_at": "2026-07-24T10:00:00+00:00"
+    },
+    "human-verification-repair": {
+      "checklist_id": "checklist-1",
+      "failure_revision": 1,
+      "gate_issue_id": "ENG-999",
+      "milestone_id": "milestone-1",
+      "project_id": "project-1",
+      "reason": "The primary workflow regressed",
+      "schema_version": 1,
+      "status": "Unplanned"
+    },
+    "isolation-receipt": {
+      "baseline_head": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "child_branch": "linear-spanks/run-run-1/ENG-1",
+      "child_commit": null,
+      "command": "run-task",
+      "completion": {
+        "issue_done_read_back": false,
+        "newly_unblocked_read_back": false,
+        "receipt_id": null,
+        "receipt_persisted": false,
+        "worktree_cleanup": "pending"
+      },
+      "created_at": "2026-07-21T10:00:00+00:00",
+      "failure": null,
+      "integration": {
+        "approved_parent_head": null,
+        "approved_preview_hash": null,
+        "integrated_head": null,
+        "preview_hash": null,
+        "preview_parent_head": null,
+        "verification_status": "pending"
+      },
+      "issue_id": "ENG-1",
+      "parent_branch": "main",
+      "plan_revision": 3,
+      "receipt_id": "isolation-1",
+      "repository_root": "/repo",
+      "run_id": "run-1",
+      "schema_version": 1,
+      "source_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "state": "prepared",
+      "state_timestamps": {
+        "prepared": "2026-07-21T10:00:00+00:00"
+      },
+      "updated_at": "2026-07-21T10:00:00+00:00",
+      "verification": {
+        "commands": [],
+        "completed_at": null,
+        "status": "pending"
+      },
+      "worktree_path": "/worktrees/run-1-ENG-1",
+      "worktree_root": "/worktrees"
+    },
+    "milestone-loop-receipt": {
+      "approval": {
+        "approved_hash": null,
+        "preview_hash": null,
+        "status": "not-required"
+      },
+      "budget": {
+        "injected_input_tokens": 0,
+        "role_invocations": 0
+      },
+      "created_at": "2026-07-23T10:00:00+00:00",
+      "current_event": null,
+      "dependency_graph_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "failure": null,
+      "human_verification_policy": {
+        "effective": "disabled",
+        "milestone_id": "milestone-1",
+        "milestone_override_revision": 0,
+        "policy_hash": "sha256:61c0f8fbce54b4078680e0a1d12b06755a7da19fea8becd1867a75503d8633f4",
+        "project_id": "project-1",
+        "project_policy_revision": 0,
+        "source": "system-default"
+      },
+      "milestone_id": "milestone-1",
+      "milestone_orchestrator_id": "milestone-orchestrator-milestone-1",
+      "milestone_revision": 3,
+      "next_event": "milestone-orchestrate",
+      "project_id": "project-1",
+      "project_revision": 7,
+      "receipt_id": "milestone-loop-1",
+      "schema_version": 1,
+      "source_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "state": "prepared",
+      "state_timestamps": {
+        "prepared": "2026-07-23T10:00:00+00:00"
+      },
+      "task_loops": [
+        {
+          "attempt_index": 0,
+          "executor_id": "task-executor-ENG-1",
+          "milestone_id": "milestone-1",
+          "plan_revision": 2,
+          "state": "prepared",
+          "task_id": "ENG-1",
+          "verifier_id": "task-verifier-ENG-1"
+        }
+      ],
+      "updated_at": "2026-07-23T10:00:00+00:00"
+    },
+    "milestone-runtime-projection": {
+      "active_wave": {
+        "task_ids": [
+          "ENG-1"
+        ]
+      },
+      "event_count": 1,
+      "human_repair": {
+        "status": "none"
+      },
+      "last_event": "task-dispatch",
+      "milestone_id": "milestone-1",
+      "plan_validity": {
+        "valid": 1
+      },
+      "policy_binding": {
+        "binding": {
+          "acceptance": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "authorization": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "dependencies": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "migration_policy": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "project_policy": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "scope": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "milestone_id": "milestone-1",
+        "persisted": true,
+        "policy_hash": "sha256:991087cfae807f5e0c7ff926d6139dbe2a7c67a85a1b5aec2490dc2524d42311",
+        "policy_id": "policy-1",
+        "read_back": true,
+        "revision": 1,
+        "schema_version": 1,
+        "updated_at": "2026-07-27T09:59:00+00:00"
+      },
+      "project_id": "project-1",
+      "projection_hash": "sha256:c01babc77ed3eb06fd342a73aefe5648c547e7a40bf2d4c0b7254bf3050f107d",
+      "review_coverage": {
+        "adjacent": 1,
+        "changed": 1,
+        "unchanged": 0
+      },
+      "revision": 1,
+      "runtime_id": "runtime-1",
+      "schema_version": 1,
+      "storage_source": "document",
+      "updated_at": "2026-07-27T10:00:00+00:00"
+    },
+    "project-context-capsule": {
+      "batches": [
+        {
+          "batch_id": "batch-1",
+          "compact_rows": 2,
+          "full_entities": 1,
+          "source_ids": [
+            "milestone-1",
+            "issue-1"
+          ]
+        }
+      ],
+      "body": "## Current Baseline\n\nContent for Current Baseline\n\n## Delivered Outcomes\n\nContent for Delivered Outcomes\n\n## Active Frontier\n\nContent for Active Frontier\n\n## Decisions and Constraints\n\nContent for Decisions and Constraints\n\n## Risks, Debt, and Open Questions\n\nContent for Risks, Debt, and Open Questions\n\n## Resource Map\n\nContent for Resource Map\n\n## Learning Links\n\nContent for Learning Links\n\n## Provenance and Resume\n\nContent for Provenance and Resume",
+      "coverage": {
+        "covered_source_ids": [
+          "milestone-1",
+          "issue-1"
+        ],
+        "excluded_sources": [
+          {
+            "reason": "superseded historical draft",
+            "source_id": "document-old"
+          }
+        ],
+        "expected_source_ids": [
+          "milestone-1",
+          "issue-1",
+          "document-old"
+        ]
+      },
+      "generated_at": "2026-07-16T10:00:00+00:00",
+      "label": "Post-v1 baseline",
+      "next_command": "run-milestone milestone-2 --project-id project-1",
+      "project_id": "project-1",
+      "project_revision": 42,
+      "schema_version": 1,
+      "source_snapshot_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "project-loop-receipt": {
+      "approval": {
+        "approved_hash": null,
+        "preview_hash": null,
+        "status": "not-required"
+      },
+      "budget": {
+        "injected_input_tokens": 0,
+        "role_invocations": 0
+      },
+      "created_at": "2026-07-22T10:00:00+00:00",
+      "current_event": null,
+      "dependency_graph_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "failure": null,
+      "human_verification_policies": [
+        {
+          "effective": "disabled",
+          "milestone_id": "milestone-1",
+          "milestone_override_revision": 0,
+          "policy_hash": "sha256:61c0f8fbce54b4078680e0a1d12b06755a7da19fea8becd1867a75503d8633f4",
+          "project_id": "project-1",
+          "project_policy_revision": 0,
+          "source": "system-default"
+        }
+      ],
+      "milestones": [
+        {
+          "milestone_id": "milestone-1",
+          "milestone_revision": 3,
+          "orchestrator_id": "milestone-orchestrator-milestone-1",
+          "state": "active"
+        }
+      ],
+      "next_event": "milestone-orchestrate",
+      "project_id": "project-1",
+      "project_orchestrator_id": "project-orchestrator-project-1",
+      "project_revision": 7,
+      "receipt_id": "project-loop-1",
+      "schema_version": 1,
+      "source_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "state": "prepared",
+      "state_timestamps": {
+        "prepared": "2026-07-22T10:00:00+00:00"
+      },
+      "task_loops": [
+        {
+          "attempt_index": 0,
+          "executor_id": "task-executor-ENG-1",
+          "milestone_id": "milestone-1",
+          "plan_revision": 2,
+          "state": "prepared",
+          "task_id": "ENG-1",
+          "verifier_id": "task-verifier-ENG-1"
+        }
+      ],
+      "updated_at": "2026-07-22T10:00:00+00:00"
+    },
+    "repository-checkpoint": {
+      "capsules": [],
+      "command": "analyze-codebase",
+      "completed_batch_ids": [],
+      "completion_findings": [],
+      "coverage": {
+        "analyzed_files": 0,
+        "eligible_files": 1,
+        "excluded_files": 0,
+        "selected_files": 1,
+        "selected_source_bytes": 10
+      },
+      "next_command": "analyze-codebase --resume scan-1",
+      "remaining_batch_ids": [
+        "batch-1"
+      ],
+      "repository_fingerprint": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "repository_root": "/",
+      "run_id": "scan-1",
+      "scan_tier": "fast",
+      "schema_version": 1,
+      "source_revision": "abc123",
+      "stage": "inventory"
+    },
+    "rollover-receipt": {
+      "applied_operation_ids": [],
+      "approved_plan_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "capsule": {
+        "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "document_id": null,
+        "revision": 0,
+        "source_snapshot_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "status": "draft"
+      },
+      "carryovers": [
+        {
+          "provenance_linked": false,
+          "read_back": false,
+          "source_issue_id": "issue-1",
+          "source_revision": 7,
+          "successor_issue_id": null,
+          "successor_status": null
+        }
+      ],
+      "initiative": {
+        "requested_initiative_id": null,
+        "source_initiative_id": "initiative-1",
+        "successor_initiative_id": null,
+        "warning": null
+      },
+      "issue_dispositions": [
+        {
+          "approved": false,
+          "disposition": "superseded",
+          "resolved": false,
+          "source_issue_id": "issue-1"
+        }
+      ],
+      "milestone_dispositions": [
+        {
+          "approved": false,
+          "disposition": "wrapped",
+          "resolved": false,
+          "source_milestone_id": "milestone-1"
+        }
+      ],
+      "next_command": "rollover-project project-1 --next-release v2 --resume preview",
+      "next_release": "v2",
+      "phase": "preview",
+      "read_back_ids": [],
+      "roadmap_items": [
+        {
+          "objective": "Outcome 1",
+          "proposal_id": "roadmap-1",
+          "read_back": false,
+          "successor_milestone_id": null
+        },
+        {
+          "objective": "Outcome 2",
+          "proposal_id": "roadmap-2",
+          "read_back": false,
+          "successor_milestone_id": null
+        },
+        {
+          "objective": "Outcome 3",
+          "proposal_id": "roadmap-3",
+          "read_back": false,
+          "successor_milestone_id": null
+        }
+      ],
+      "run_id": "rollover-1",
+      "schema_version": 1,
+      "source_project": {
+        "project_id": "project-1",
+        "revision": 42,
+        "status": "In Progress"
+      },
+      "source_snapshot_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "successor_project": null,
+      "unresolved_source_items": [
+        "milestone-1",
+        "issue-1"
+      ],
+      "updated_at": "2026-07-16T10:00:00+00:00"
+    },
+    "state-marker": {
+      "last_command": "clarify-milestone",
+      "milestone_id": "milestone-1",
+      "project_id": "project-1",
+      "resume_stage": null,
+      "revision": 1,
+      "run_id": "run-1",
+      "schema_version": 1,
+      "stage": "clarified",
+      "updated_at": "2026-07-27T10:00:00+00:00"
+    },
+    "verification-ledger": {
+      "acceptance_criteria": [
+        {
+          "criterion_id": "acceptance-1",
+          "evidence": "focused test passed",
+          "last_checked_commit": "dddddddddddddddddddddddddddddddddddddddd",
+          "status": "passing"
+        }
+      ],
+      "baseline_failures": [],
+      "candidate_commit": "dddddddddddddddddddddddddddddddddddddddd",
+      "exclusions": [],
+      "final_result": "passed",
+      "findings": [],
+      "ledger_id": "ledger-ENG-1",
+      "live_session": {
+        "context_tokens": 2000,
+        "session_id": "verifier-session-1",
+        "status": "active"
+      },
+      "milestone_revision": 3,
+      "next_checks": [],
+      "plan_revision": 2,
+      "project_revision": 7,
+      "raw_executor_transcript_included": false,
+      "required_verification_current": true,
+      "reviewed_attempts": [
+        {
+          "attempt_id": "attempt-0",
+          "attempt_index": 0,
+          "commit": "dddddddddddddddddddddddddddddddddddddddd",
+          "result": "passed",
+          "reviewed_at": "2026-07-22T10:05:00+00:00"
+        }
+      ],
+      "schema_version": 1,
+      "source_revision": 11,
+      "task_id": "ENG-1",
+      "updated_at": "2026-07-22T10:05:00+00:00",
+      "verification_runs": [
+        {
+          "artifact": null,
+          "command": "python3 -m unittest tests.test_target",
+          "commit": "dddddddddddddddddddddddddddddddddddddddd",
+          "status": "passed",
+          "summary": "focused verification result"
+        }
+      ],
+      "verifier_id": "task-verifier-ENG-1"
+    },
+    "wave-receipt": {
+      "baseline_head": "cccccccccccccccccccccccccccccccccccccccc",
+      "created_at": "2026-07-21T10:00:00+00:00",
+      "effective_parallelism": 2,
+      "graph_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "milestone_id": "milestone-1",
+      "parent_branch": "main",
+      "requested_parallelism": 2,
+      "schema_version": 1,
+      "source_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "state": "awaiting-reconciliation",
+      "tasks": [
+        {
+          "branch": "linear-spanks/wave-wave-1/ENG-1",
+          "claim_status": "claimed",
+          "commit_sha": "dddddddddddddddddddddddddddddddddddddddd",
+          "execution_status": "verified",
+          "integration_status": "pending",
+          "issue_id": "ENG-1",
+          "plan_revision": 1,
+          "verification_status": "passed",
+          "worktree": "/worktrees/d"
+        },
+        {
+          "branch": "linear-spanks/wave-wave-1/ENG-2",
+          "claim_status": "claimed",
+          "commit_sha": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          "execution_status": "verified",
+          "integration_status": "pending",
+          "issue_id": "ENG-2",
+          "plan_revision": 1,
+          "verification_status": "passed",
+          "worktree": "/worktrees/e"
+        }
+      ],
+      "updated_at": "2026-07-21T10:05:00+00:00",
+      "wave_id": "wave-1",
+      "worktree_root": "/worktrees"
+    }
+  },
+  "artifacts_sha256": "sha256:6b427cf1327792afba60a2142b1e6480f3b267444eaf66d9cb8a6ff58a596c2e",
+  "captured_commit": "bca43fdedcae73ec94e8387eb394f23f7dee0385",
+  "captured_product_version": "1.x",
+  "fixture_schema_version": 1
+}

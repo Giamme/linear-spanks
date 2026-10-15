@@ -1,0 +1,4 @@
+interface:
+  display_name: "Exec Security"
+  short_description: "Help with Exec Security tasks"
+  default_prompt: "Use $exec-security to apply its execution checks to this task."

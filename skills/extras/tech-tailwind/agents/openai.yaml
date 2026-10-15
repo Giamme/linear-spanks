@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tech Tailwind"
+  short_description: "Help with Tech Tailwind tasks"
+  default_prompt: "Use $tech-tailwind to apply project-compatible technology guidance."

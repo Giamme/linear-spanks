@@ -1,0 +1,4 @@
+interface:
+  display_name: "Exec Performance"
+  short_description: "Help with Exec Performance tasks"
+  default_prompt: "Use $exec-performance to apply its execution checks to this task."

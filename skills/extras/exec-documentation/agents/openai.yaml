@@ -1,0 +1,4 @@
+interface:
+  display_name: "Exec Documentation"
+  short_description: "Help with Exec Documentation tasks"
+  default_prompt: "Use $exec-documentation to apply its execution checks to this task."

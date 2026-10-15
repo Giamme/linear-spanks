@@ -1,0 +1,530 @@
+{
+  "schema_version": 1,
+  "catalog": [
+    {
+      "name": "exec-accessibility",
+      "roles": [
+        "planner",
+        "executor",
+        "reviewer",
+        "coordinator"
+      ],
+      "phases": [
+        "planning",
+        "implementation",
+        "repair",
+        "completion"
+      ],
+      "technologies": [],
+      "requires": [
+        "ui"
+      ],
+      "precedence": 2,
+      "source_hash": "sha256:5f2a0f95570b0067c4a9be906cd9390cbbe87f626c5937975f73baaf87ef18c2"
+    },
+    {
+      "name": "exec-architecture",
+      "roles": [
+        "planner",
+        "executor",
+        "reviewer",
+        "coordinator"
+      ],
+      "phases": [
+        "planning",
+        "implementation",
+        "repair",
+        "completion"
+      ],
+      "technologies": [],
+      "requires": [
+        "structural-change"
+      ],
+      "precedence": 2,
+      "source_hash": "sha256:33e31449117733965270cb2ecba527e4c3e8932cb49b553802ef28546a0a0242"
+    },
+    {
+      "name": "exec-code-review",
+      "roles": [
+        "planner",
+        "executor",
+        "reviewer",
+        "coordinator"
+      ],
+      "phases": [
+        "completion"
+      ],
+      "technologies": [],
+      "requires": [],
+      "precedence": 2,
+      "source_hash": "sha256:92e12ce13c22882235c374dd3281f3b22a2dc63c72584b800dc71bb001d2161b"
+    },
+    {
+      "name": "exec-debugging",
+      "roles": [
+        "planner",
+        "executor",
+        "reviewer",
+        "coordinator"
+      ],
+      "phases": [
+        "planning",
+        "implementation",
+        "repair",
+        "completion"
+      ],
+      "technologies": [],
+      "requires": [
+        "observed-failure"
+      ],
+      "precedence": 2,
+      "source_hash": "sha256:1266cc718e53a752853804cb0762949e9544264f6aad2f0680f3edeeed6b29b1"
+    },
+    {
+      "name": "exec-documentation",
+      "roles": [
+        "planner",
+        "executor",
+        "reviewer",
+        "coordinator"
+      ],
+      "phases": [
+        "planning",
+        "implementation",
+        "repair",
+        "completion"
+      ],
+      "technologies": [],
+      "requires": [
+        "documentation"
+      ],
+      "precedence": 2,
+      "source_hash": "sha256:2fa3baf8d603be76b02dbaa5c7e50e6222bb3fc89b26931e8ea5e7fabc71bb03"
+    },
+    {
+      "name": "exec-performance",
+      "roles": [
+        "planner",
+        "executor",
+        "reviewer",
+        "coordinator"
+      ],
+      "phases": [
+        "planning",
+        "implementation",
+        "repair",
+        "completion"
+      ],
+      "technologies": [],
+      "requires": [
+        "performance"
+      ],
+      "precedence": 2,
+      "source_hash": "sha256:5c61360e355f07ad49c9d8bd2832b42b0a8f2b4e7e7049cc3b8c0e627c602b14"
+    },
+    {
+      "name": "exec-refactoring",
+      "roles": [
+        "planner",
+        "executor",
+        "reviewer",
+        "coordinator"
+      ],
+      "phases": [
+        "planning",
+        "implementation",
+        "repair",
+        "completion"
+      ],
+      "technologies": [],
+      "requires": [
+        "refactoring"
+      ],
+      "precedence": 2,
+      "source_hash": "sha256:f9757b920e38d4f2fa15cd5b72d88b0b985b180db3a12b46e4a653a3b0ef7d7a"
+    },
+    {
+      "name": "exec-repo-patterns",
+      "roles": [
+        "planner",
+        "executor",
+        "reviewer",
+        "coordinator"
+      ],
+      "phases": [
+        "planning",
+        "implementation",
+        "repair",
+        "completion"
+      ],
+      "technologies": [],
+      "requires": [],
+      "precedence": 2,
+      "source_hash": "sha256:90a987551f81451d7fd34c67602dd55e8f6417f00544e8f1b2df8bf51c0149a1"
+    },
+    {
+      "name": "exec-security",
+      "roles": [
+        "planner",
+        "executor",
+        "reviewer",
+        "coordinator"
+      ],
+      "phases": [
+        "planning",
+        "implementation",
+        "repair",
+        "completion"
+      ],
+      "technologies": [],
+      "requires": [
+        "security-sensitive"
+      ],
+      "precedence": 2,
+      "source_hash": "sha256:7dcea099c07ffa1a2b94e17fc2d0b2ff03fe9ab6fc6c2c0051ba199859fe9846"
+    },
+    {
+      "name": "exec-testing",
+      "roles": [
+        "planner",
+        "executor",
+        "reviewer",
+        "coordinator"
+      ],
+      "phases": [
+        "planning",
+        "implementation",
+        "repair",
+        "completion"
+      ],
+      "technologies": [],
+      "requires": [
+        "coverage-required"
+      ],
+      "precedence": 2,
+      "source_hash": "sha256:bb4715a8a3b9d7166f1e8ad1357a2d5e0d2ed99f7196ebf6140923176343313f"
+    },
+    {
+      "name": "exec-ui-ux",
+      "roles": [
+        "planner",
+        "executor",
+        "reviewer",
+        "coordinator"
+      ],
+      "phases": [
+        "planning",
+        "implementation",
+        "repair",
+        "completion"
+      ],
+      "technologies": [],
+      "requires": [
+        "ui"
+      ],
+      "precedence": 2,
+      "source_hash": "sha256:a86041157ef72ba89687fdc8a8c7a929693faee2b8071f89d465536c6c3e5237"
+    },
+    {
+      "name": "exec-verification",
+      "roles": [
+        "planner",
+        "executor",
+        "reviewer",
+        "coordinator"
+      ],
+      "phases": [
+        "completion"
+      ],
+      "technologies": [],
+      "requires": [],
+      "precedence": 2,
+      "source_hash": "sha256:45475cba690cbcc699e248cf789e57bf452234ffd63b85e60beb77c726b37e64"
+    },
+    {
+      "name": "tech-docker",
+      "roles": [
+        "executor",
+        "reviewer"
+      ],
+      "phases": [
+        "planning",
+        "implementation",
+        "repair",
+        "completion"
+      ],
+      "technologies": [
+        "docker"
+      ],
+      "requires": [],
+      "precedence": 1,
+      "source_hash": "sha256:32a03b9e54490e74e1f93cec181a68252b74b79c22880543d418312536633125"
+    },
+    {
+      "name": "tech-flutter",
+      "roles": [
+        "executor",
+        "reviewer"
+      ],
+      "phases": [
+        "planning",
+        "implementation",
+        "repair",
+        "completion"
+      ],
+      "technologies": [
+        "flutter"
+      ],
+      "requires": [],
+      "precedence": 1,
+      "source_hash": "sha256:08860e609c0d078966e38a61b1f6b0c2a73466f20094b8aee95b47cab8b0d201"
+    },
+    {
+      "name": "tech-go",
+      "roles": [
+        "executor",
+        "reviewer"
+      ],
+      "phases": [
+        "planning",
+        "implementation",
+        "repair",
+        "completion"
+      ],
+      "technologies": [
+        "go"
+      ],
+      "requires": [],
+      "precedence": 1,
+      "source_hash": "sha256:9ef8fc7c64244ba8fbd4b9f037f24f4cddc84fe41675d8a31f9b83bfe613067d"
+    },
+    {
+      "name": "tech-graphql",
+      "roles": [
+        "executor",
+        "reviewer"
+      ],
+      "phases": [
+        "planning",
+        "implementation",
+        "repair",
+        "completion"
+      ],
+      "technologies": [
+        "graphql"
+      ],
+      "requires": [],
+      "precedence": 1,
+      "source_hash": "sha256:045c082c75e9ba5b854cedd5a200c54b52031972459c82e07ed34009a72907f3"
+    },
+    {
+      "name": "tech-kotlin",
+      "roles": [
+        "executor",
+        "reviewer"
+      ],
+      "phases": [
+        "planning",
+        "implementation",
+        "repair",
+        "completion"
+      ],
+      "technologies": [
+        "kotlin"
+      ],
+      "requires": [],
+      "precedence": 1,
+      "source_hash": "sha256:89644e2a59480ba2f14d1832a7e48d928f3eaf1b76f7d87eb929ffcb6cf16f6d"
+    },
+    {
+      "name": "tech-nextjs",
+      "roles": [
+        "executor",
+        "reviewer"
+      ],
+      "phases": [
+        "planning",
+        "implementation",
+        "repair",
+        "completion"
+      ],
+      "technologies": [
+        "nextjs"
+      ],
+      "requires": [],
+      "precedence": 1,
+      "source_hash": "sha256:19633a2688ecc050b0198b9024bf99b9ef3861840505150cb8fe29d6477dc122"
+    },
+    {
+      "name": "tech-node",
+      "roles": [
+        "executor",
+        "reviewer"
+      ],
+      "phases": [
+        "planning",
+        "implementation",
+        "repair",
+        "completion"
+      ],
+      "technologies": [
+        "node"
+      ],
+      "requires": [],
+      "precedence": 1,
+      "source_hash": "sha256:9bc455bdc1011723ec58b560f4116986869cd3aa9fc011dbafc0dccf6760bee8"
+    },
+    {
+      "name": "tech-postgres",
+      "roles": [
+        "executor",
+        "reviewer"
+      ],
+      "phases": [
+        "planning",
+        "implementation",
+        "repair",
+        "completion"
+      ],
+      "technologies": [
+        "postgres"
+      ],
+      "requires": [],
+      "precedence": 1,
+      "source_hash": "sha256:5f6c945b32e8596a96021e69f1eaa0205afcddfe5d5224a4ffee437c6f181c0e"
+    },
+    {
+      "name": "tech-python",
+      "roles": [
+        "executor",
+        "reviewer"
+      ],
+      "phases": [
+        "planning",
+        "implementation",
+        "repair",
+        "completion"
+      ],
+      "technologies": [
+        "python"
+      ],
+      "requires": [],
+      "precedence": 1,
+      "source_hash": "sha256:a5160d6ac269126c89b1e84f31cddce7331179b6e952b14c14ce452b8eb03324"
+    },
+    {
+      "name": "tech-react",
+      "roles": [
+        "executor",
+        "reviewer"
+      ],
+      "phases": [
+        "planning",
+        "implementation",
+        "repair",
+        "completion"
+      ],
+      "technologies": [
+        "react"
+      ],
+      "requires": [],
+      "precedence": 1,
+      "source_hash": "sha256:644658e50e4b5cc1d4f031f723acf9b940cd769c449ed75292e2fd20e7fd5637"
+    },
+    {
+      "name": "tech-rust",
+      "roles": [
+        "executor",
+        "reviewer"
+      ],
+      "phases": [
+        "planning",
+        "implementation",
+        "repair",
+        "completion"
+      ],
+      "technologies": [
+        "rust"
+      ],
+      "requires": [],
+      "precedence": 1,
+      "source_hash": "sha256:b0136698b420528ba9ad4379e253255ef88e7bea2ce793aa5aac170a48429ef5"
+    },
+    {
+      "name": "tech-swift",
+      "roles": [
+        "executor",
+        "reviewer"
+      ],
+      "phases": [
+        "planning",
+        "implementation",
+        "repair",
+        "completion"
+      ],
+      "technologies": [
+        "swift"
+      ],
+      "requires": [],
+      "precedence": 1,
+      "source_hash": "sha256:1510d735593f7e69209501ca633335b0fe50efd3520e490b85e6634e6b854418"
+    },
+    {
+      "name": "tech-tailwind",
+      "roles": [
+        "executor",
+        "reviewer"
+      ],
+      "phases": [
+        "planning",
+        "implementation",
+        "repair",
+        "completion"
+      ],
+      "technologies": [
+        "tailwind"
+      ],
+      "requires": [],
+      "precedence": 1,
+      "source_hash": "sha256:3350ed100604d0461f9360d9d043092d46e675f090fb75a32322fd58c54e3960"
+    },
+    {
+      "name": "tech-typescript",
+      "roles": [
+        "executor",
+        "reviewer"
+      ],
+      "phases": [
+        "planning",
+        "implementation",
+        "repair",
+        "completion"
+      ],
+      "technologies": [
+        "typescript"
+      ],
+      "requires": [],
+      "precedence": 1,
+      "source_hash": "sha256:16058f9f3dc0f18881ae8e0dd956241b76238d14d1cbfdbfee20141a34ae2c19"
+    },
+    {
+      "name": "tech-vue",
+      "roles": [
+        "executor",
+        "reviewer"
+      ],
+      "phases": [
+        "planning",
+        "implementation",
+        "repair",
+        "completion"
+      ],
+      "technologies": [
+        "vue"
+      ],
+      "requires": [],
+      "precedence": 1,
+      "source_hash": "sha256:91ad8350366b27d8a4f1e6601f63ed577223d07313dc61a2e314001e70e0086e"
+    }
+  ]
+}

@@ -1,0 +1,125 @@
+{
+  "schema_version": 2,
+  "version": "2.0.0",
+  "revision": "2026-09-09.1",
+  "contracts": {
+    "core_policy": {
+      "path": "core-policy-contract.json",
+      "schema_versions": [
+        1
+      ],
+      "sha256": "a045ff0d5b069f1b4f75851a6dc64c35241b34408b0d495cafdb2aa2a9a552c4"
+    },
+    "context_management": {
+      "path": "context-management-contract.json",
+      "schema_versions": [
+        1
+      ],
+      "sha256": "2dbca6f3a323c09234bdd689d41dd60625f60be6c600d09de62bf1a4e5acde28"
+    },
+    "command_registry": {
+      "path": "contracts/command-registry.v2.json",
+      "schema_versions": [
+        2
+      ],
+      "sha256": "0fd4735baadc65e60409232f45327cf8fddcd8098e276a89adac62fd66b6df4e"
+    },
+    "legacy_commands": {
+      "path": "commands.json",
+      "schema_versions": [
+        1
+      ],
+      "sha256": "6cbcd567cfa8a47ef1d87f1edd26f5ad27afca03c765c4a032b8a6e0de629b57"
+    },
+    "workflow": {
+      "path": "workflow-contract.json",
+      "schema_versions": [
+        1
+      ],
+      "sha256": "66b04141cb345ff6459c3b7643928244faafc1d545389546692d8644b439d053"
+    },
+    "issue_workflow": {
+      "path": "issue-workflow-contract.json",
+      "schema_versions": [
+        1
+      ],
+      "sha256": "7d4ae92067f0e6529a50ead6698304925d080089bf7352a2563db44cfd7c2674"
+    },
+    "execution": {
+      "path": "execution-contract.json",
+      "schema_versions": [
+        1
+      ],
+      "sha256": "f75dfb50d4847c5509649a4ad6c61be3889b1b42f0a0e7ca434353d57b6478d0"
+    },
+    "routing": {
+      "path": "routing-contract.json",
+      "schema_versions": [
+        1
+      ],
+      "sha256": "594ded18da0bda7ff31d537ba29577af3beb4d6494c7e1fe8cb7dee2df1522e6"
+    },
+    "repository_scan": {
+      "path": "repository-scan-contract.json",
+      "schema_versions": [
+        1
+      ],
+      "sha256": "081c298200c14e41286d1a27aa03ef7dac5df037003eed89714050e9035432d3"
+    },
+    "project_epoch": {
+      "path": "project-epoch-contract.json",
+      "schema_versions": [
+        1
+      ],
+      "sha256": "dfda8313899f8b3e8cde3d17cf7e657a2776acf73766b88ddb8b8559bcd70c5e"
+    },
+    "parallel_execution": {
+      "path": "parallel-execution-contract.json",
+      "schema_versions": [
+        1
+      ],
+      "sha256": "5daa626230ca763ffe1527dc1c5a6bc06e651a93da40a3cb4150af11648d71a0"
+    },
+    "project_orchestration": {
+      "path": "project-orchestration-contract.json",
+      "schema_versions": [
+        1
+      ],
+      "sha256": "a983a375a5325bea2f614c3ff5407f506b92bfa30370f9269539466f1e9bd8ce"
+    },
+    "milestone_orchestration": {
+      "path": "milestone-orchestration-contract.json",
+      "schema_versions": [
+        1
+      ],
+      "sha256": "4816e979f06bbfddce044c5b9d9b3a14291ee8fc43b3f8f256011cae7253cbb4"
+    },
+    "human_verification": {
+      "path": "human-verification-contract.json",
+      "schema_versions": [
+        1
+      ],
+      "sha256": "29e960e26b409c6795bf81e98dad6bd95016261c2d7fc93c705474cb1d59f0ce"
+    },
+    "milestone_review": {
+      "path": "milestone-review-contract.json",
+      "schema_versions": [
+        2
+      ],
+      "sha256": "45227abedbb7f199a02fcf5afcbda4e82856edb748ca9b4b180b6764827a40a5"
+    },
+    "milestone_runtime": {
+      "path": "milestone-runtime-contract.json",
+      "schema_versions": [
+        1
+      ],
+      "sha256": "33befc353bc910744f5e8a6fcb201d58334db157805c156bfa602ba6727a9d33"
+    }
+  },
+  "artifact_integrity": {
+    "algorithm": "sha256",
+    "canonicalization": "json-sort-keys-utf8-v1",
+    "future_version_policy": "reject",
+    "migration_policy": "authorized-write-only"
+  }
+}

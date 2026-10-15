@@ -1,0 +1,11 @@
+{
+  "cycles": 100,
+  "measurement_kind": "deterministic workflow replay; model invocation requests, not model telemetry",
+  "ceilings": {
+    "planner_runs": 0,
+    "reviewer_runs": 0,
+    "context_bytes": 8000,
+    "duplicate_writes": 0,
+    "repeated_analysis": 0
+  }
+}

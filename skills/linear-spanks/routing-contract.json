@@ -1,0 +1,572 @@
+{
+  "schema_version": 1,
+  "roles": [
+    "planner",
+    "executor",
+    "reviewer"
+  ],
+  "strengths": [
+    "low",
+    "medium",
+    "high"
+  ],
+  "harness_capabilities": [
+    "enforced",
+    "inherited-model",
+    "advisory-only"
+  ],
+  "hierarchical_orchestration_contract": "project-orchestration-contract.json",
+  "detected_drift_values": {
+    "legacy": [
+      false,
+      true
+    ],
+    "scoped": [
+      "valid",
+      "safe-refresh",
+      "material"
+    ],
+    "legacy_true_semantics": "material",
+    "scoped_results": {
+      "valid": null,
+      "safe-refresh": "SAFE_REFRESH_REQUIRED",
+      "material": "REPLAN_REQUIRED"
+    }
+  },
+  "assurance": {
+    "schema_version": 1,
+    "values": [
+      "fast",
+      "balanced",
+      "strict"
+    ],
+    "default": "balanced",
+    "task_optimized_commands": [
+      "refine-task",
+      "plan-task",
+      "plan-tasks",
+      "run-task",
+      "replan-task",
+      "verify-task",
+      "implement-next",
+      "implement-wave",
+      "reconcile-wave"
+    ],
+    "profiles": {
+      "fast": {
+        "eligibility": "deterministic-low-risk-only",
+        "planner": "coordinator",
+        "review": "executor-self-verification",
+        "context_mode": "compact-direct-caps",
+        "mutation_verification": "pre-write-refresh-and-final-read-back"
+      },
+      "balanced": {
+        "eligibility": "default",
+        "planner": "coordinator-for-low-high-for-medium-high-or-uncertain",
+        "review": "risk-based",
+        "context_mode": "compact-exact-on-trigger",
+        "mutation_verification": "pre-write-refresh-and-final-read-back"
+      },
+      "strict": {
+        "eligibility": "always",
+        "planner": "high",
+        "review": "independent-high-review",
+        "context_mode": "full-exact-packets",
+        "mutation_verification": "per-write-refresh-and-read-back"
+      }
+    },
+    "strict_escalation_dimensions": [
+      "architecture_ambiguity",
+      "contract_or_schema_change",
+      "security_privacy_or_auth",
+      "irreversible_migration",
+      "migration",
+      "concurrency_or_distributed_state",
+      "public_compatibility",
+      "cross_repository_coordination",
+      "broad_refactor",
+      "unclear_failure_cause"
+    ],
+    "strict_escalation_conditions": [
+      "uncertainty",
+      "detected_drift"
+    ],
+    "exact_context_triggers": [
+      "repository_batch",
+      "large_matrix",
+      "near_limit",
+      "strict_profile"
+    ],
+    "safety_invariants": [
+      "project_scoping",
+      "approval_gates",
+      "blocker_readiness",
+      "idempotency",
+      "repository_exclusions",
+      "drift_rejection",
+      "fresh_verification_before_done",
+      "final_durable_read_back"
+    ],
+    "linear_verification": {
+      "fast": "mutation-acknowledgement-then-final-entity-read",
+      "balanced": "mutation-acknowledgement-then-final-entity-read",
+      "strict": "per-write-reread-and-read-back",
+      "bulk_fast_balanced": "single-reconciliation-query-then-targeted-mismatch-reads"
+    }
+  },
+  "planner": {
+    "strength": "high",
+    "access": "read-only",
+    "output": "structured-plan-packet-only",
+    "context": {
+      "max_input_tokens": 10000,
+      "max_repository_files": 24,
+      "max_target_modules": 8,
+      "max_call_sites": 12,
+      "max_test_files": 12,
+      "max_manifest_files": 6,
+      "max_blocker_outputs": 6,
+      "max_current_plan_revisions": 1,
+      "max_raw_log_characters": 2000
+    },
+    "required_repository_evidence": [
+      "target_modules",
+      "relevant_call_sites_and_interfaces",
+      "nearby_tests",
+      "manifests_and_toolchain_versions",
+      "relevant_blocker_outputs",
+      "authoritative_current_plan"
+    ],
+    "overflow_result": "CONTEXT_OVERFLOW"
+  },
+  "assessment": {
+    "schema_version": 1,
+    "required_fields": [
+      "schema_version",
+      "localized_established_pattern",
+      "deterministic_focused_verification",
+      "uncertainty",
+      "dimensions"
+    ],
+    "dimensions": {
+      "architecture_ambiguity": {
+        "severity": "critical",
+        "review_trigger": false
+      },
+      "contract_or_schema_change": {
+        "severity": "critical",
+        "review_trigger": false
+      },
+      "security_privacy_or_auth": {
+        "severity": "critical",
+        "review_trigger": false
+      },
+      "irreversible_migration": {
+        "severity": "critical",
+        "review_trigger": false
+      },
+      "concurrency_or_distributed_state": {
+        "severity": "critical",
+        "review_trigger": false
+      },
+      "public_compatibility": {
+        "severity": "critical",
+        "review_trigger": false
+      },
+      "cross_repository_coordination": {
+        "severity": "critical",
+        "review_trigger": false
+      },
+      "broad_refactor": {
+        "severity": "critical",
+        "review_trigger": false
+      },
+      "unclear_failure_cause": {
+        "severity": "critical",
+        "review_trigger": false
+      },
+      "interface_change": {
+        "severity": "medium",
+        "review_trigger": true
+      },
+      "migration": {
+        "severity": "medium",
+        "review_trigger": true
+      },
+      "nondeterministic_debugging": {
+        "severity": "medium",
+        "review_trigger": true
+      },
+      "operational_risk": {
+        "severity": "medium",
+        "review_trigger": true
+      },
+      "multi_module_change": {
+        "severity": "medium",
+        "review_trigger": false
+      },
+      "new_dependency": {
+        "severity": "medium",
+        "review_trigger": false
+      }
+    }
+  },
+  "tier_rules": {
+    "low_requires": [
+      "localized_established_pattern",
+      "deterministic_focused_verification",
+      "no_active_dimensions"
+    ],
+    "high_on_any_severity": "critical",
+    "high_on_medium_dimension_count": 2,
+    "default_tier": "medium",
+    "uncertainty_escalates_one_tier": true,
+    "worker_may_downgrade": false
+  },
+  "review_policy": {
+    "low": {
+      "required": false,
+      "mode": "executor-self-verification",
+      "strength": null
+    },
+    "medium": {
+      "required": "when-review-trigger-dimension-is-active",
+      "mode": "independent-review",
+      "strength": "medium"
+    },
+    "high": {
+      "required": true,
+      "mode": "independent-review",
+      "strength": "high"
+    }
+  },
+  "plan_packet": {
+    "required_fields": [
+      "plan_revision",
+      "planner_strength",
+      "source_revision",
+      "repository_evidence",
+      "complexity_assessment",
+      "executor_tier",
+      "tier_rationale",
+      "escalation_triggers",
+      "reviewer_requirement",
+      "implementation_steps",
+      "affected_interfaces",
+      "verification_commands",
+      "stop_replan_conditions",
+      "selected_skills",
+      "execution_footprint"
+    ]
+  },
+  "worker_handoff": {
+    "required_fields": [
+      "plan_revision",
+      "source_revision",
+      "stable_task_contract",
+      "relevant_blocker_outputs",
+      "selected_skills",
+      "repository_evidence_pointers",
+      "acceptance_criteria",
+      "required_verification",
+      "executor_tier",
+      "stop_replan_conditions"
+    ],
+    "drift_fields": [
+      "scope",
+      "interface",
+      "dependency",
+      "evidence"
+    ],
+    "drift_result": "REPLAN_REQUIRED",
+    "worker_may_downgrade": false
+  },
+  "completion_receipt": {
+    "required_routing_fields": [
+      "harness",
+      "worker_role",
+      "configured_model_when_observable",
+      "tier_enforcement_status",
+      "requested_strength",
+      "review_result",
+      "requested_assurance",
+      "effective_assurance",
+      "assurance_escalation_reason",
+      "planner_runs",
+      "reviewer_runs",
+      "delegated_roles",
+      "linear_reads",
+      "linear_writes",
+      "linear_read_backs",
+      "context_bytes",
+      "preflight_reused"
+    ],
+    "task_completion": "optional schema 1 binding: task_id, candidate_commit, material_binding, policy_hash, issue_status Done, issue_revision, completion_ref, read_back true"
+  },
+  "preflight_receipt": {
+    "schema_version": 1,
+    "required_fields": [
+      "schema_version",
+      "target_id",
+      "target_revision",
+      "blocker_revision",
+      "plan_revision",
+      "repository_revision",
+      "harness",
+      "requested_assurance",
+      "effective_assurance",
+      "scan_tier"
+    ],
+    "drift_fields": [
+      "target_id",
+      "target_revision",
+      "blocker_revision",
+      "plan_revision",
+      "harness",
+      "requested_assurance",
+      "effective_assurance",
+      "scan_tier"
+    ],
+    "trace_fields": [
+      "repository_revision"
+    ],
+    "valid_for": [
+      "implement-next",
+      "run-task"
+    ],
+    "invalid_result": "PREFLIGHT_INVALIDATED"
+  },
+  "planner_batching": {
+    "balanced_max_tasks": 4,
+    "grouping": "dependency-adjacent",
+    "per_task_outputs": [
+      "plan_packet",
+      "executor_tier",
+      "plan_revision",
+      "acceptance_mapping"
+    ],
+    "strict_mode": "one-high-planner-assessment-per-task"
+  },
+  "linear_reconciliation": {
+    "schema_version": 1,
+    "operation_fields": [
+      "entity_id",
+      "expected_revision",
+      "write_acknowledged"
+    ],
+    "optional_operation_fields": [
+      "written_fields"
+    ],
+    "readback_identity_fields": [
+      "id",
+      "revision"
+    ],
+    "projection": "when an operation declares written_fields, read back only those fields plus identity and revision; without it the plan requires the previous full-entity read",
+    "strict": "per-write-read-back",
+    "fast_balanced_bulk": "one-reconciliation-query-then-targeted-recovery-reads",
+    "fast_balanced_single": "one-final-entity-read"
+  },
+  "coordinator_owns": [
+    "project_resolution",
+    "approvals",
+    "linear_reads_and_writes",
+    "git_strategy_enforcement",
+    "lifecycle_transitions",
+    "durable_plan_persistence",
+    "final_read_back"
+  ],
+  "orchestration_profiles": {
+    "task-intake": {
+      "roles": {
+        "planner": {
+          "required": false,
+          "strength": "high",
+          "access": "read-only"
+        },
+        "executor": {
+          "required": false,
+          "strength": "plan-recommended",
+          "access": "workspace-write"
+        },
+        "reviewer": {
+          "required": false,
+          "strength": "risk-based",
+          "access": "read-only"
+        }
+      },
+      "delegation_policy": "coordinator-only",
+      "fallback_behavior": "no-delegation-required",
+      "review_policy": "risk-screen-resolves-assurance-only",
+      "recompute_tier": false
+    },
+    "planning": {
+      "roles": {
+        "planner": {
+          "required": true,
+          "strength": "high",
+          "access": "read-only"
+        },
+        "executor": {
+          "required": false,
+          "strength": "plan-recommended",
+          "access": "workspace-write"
+        },
+        "reviewer": {
+          "required": false,
+          "strength": "risk-based",
+          "access": "read-only"
+        }
+      },
+      "delegation_policy": "delegate-planner-when-supported",
+      "fallback_behavior": "run-planner-role-in-current-harness-and-report-tier-as-advisory",
+      "review_policy": "computed-and-persisted-for-later-execution",
+      "recompute_tier": true
+    },
+    "task-execution": {
+      "roles": {
+        "planner": {
+          "required": "when-plan-is-missing-or-stale",
+          "strength": "high",
+          "access": "read-only"
+        },
+        "executor": {
+          "required": true,
+          "strength": "plan-recommended",
+          "access": "workspace-write"
+        },
+        "reviewer": {
+          "required": "risk-based",
+          "strength": "plan-recommended",
+          "access": "read-only"
+        }
+      },
+      "delegation_policy": "one-task-executor; independent-review-only-when-policy-requires",
+      "fallback_behavior": "delegate-with-inherited-model-or-run-advisory-role-and-report-fallback",
+      "review_policy": "risk-based-independent-review",
+      "recompute_tier": false
+    },
+    "task-verification": {
+      "roles": {
+        "planner": {
+          "required": false,
+          "strength": "high",
+          "access": "read-only"
+        },
+        "executor": {
+          "required": "when-independent-review-is-not-required",
+          "strength": "plan-recommended",
+          "access": "workspace-write"
+        },
+        "reviewer": {
+          "required": "risk-based",
+          "strength": "plan-recommended",
+          "access": "read-only"
+        }
+      },
+      "delegation_policy": "delegate-required-reviewer-when-supported",
+      "fallback_behavior": "run-verification-with-inherited-model-or-advisory-tier-and-report-fallback",
+      "review_policy": "risk-based-independent-review",
+      "recompute_tier": false
+    },
+    "parallel-execution": {
+      "roles": {
+        "planner": {
+          "required": false,
+          "strength": "high",
+          "access": "read-only"
+        },
+        "executor": {
+          "required": true,
+          "strength": "plan-recommended",
+          "access": "workspace-write"
+        },
+        "reviewer": {
+          "required": "risk-based",
+          "strength": "plan-recommended",
+          "access": "read-only"
+        }
+      },
+      "delegation_policy": "delegate-one-executor-per-isolated-task-worktree-up-to-effective-capacity",
+      "fallback_behavior": "return-PARALLEL_CAPACITY_UNAVAILABLE-below-two-workers",
+      "review_policy": "strict-assurance-independent-task-review",
+      "recompute_tier": false
+    },
+    "wave-reconciliation": {
+      "roles": {
+        "planner": {
+          "required": false,
+          "strength": "high",
+          "access": "read-only"
+        },
+        "executor": {
+          "required": false,
+          "strength": "plan-recommended",
+          "access": "workspace-write"
+        },
+        "reviewer": {
+          "required": "when-required-by-integrated-plan",
+          "strength": "plan-recommended",
+          "access": "read-only"
+        }
+      },
+      "delegation_policy": "coordinator-owns-ordered-merges-and-may-delegate-read-only-review",
+      "fallback_behavior": "coordinator-reconciles-sequentially-after-approved-preview",
+      "review_policy": "candidate-verification-plus-combined-verification",
+      "recompute_tier": false
+    }
+  },
+  "harnesses": {
+    "codex": {
+      "capability": "enforced",
+      "delegation": "custom-agent",
+      "configuration": "agent-toml"
+    },
+    "claude": {
+      "capability": "enforced",
+      "delegation": "custom-subagent",
+      "configuration": "agent-markdown"
+    },
+    "opencode": {
+      "capability": "enforced",
+      "delegation": "custom-subagent",
+      "configuration": "agent-markdown"
+    },
+    "openclaude": {
+      "capability": "enforced",
+      "delegation": "settings-agent-routing",
+      "configuration": "openclaude-json"
+    },
+    "antigravity": {
+      "capability": "inherited-model",
+      "delegation": "isolated-subagent",
+      "configuration": "dynamic-subagent"
+    },
+    "kimi": {
+      "capability": "advisory-only",
+      "delegation": "built-in-profile",
+      "configuration": "built-in-profiles",
+      "profiles": {
+        "planner": "plan",
+        "executor": "coder",
+        "reviewer": "explore"
+      }
+    }
+  },
+  "task_workflow": {
+    "schema_version": 1,
+    "default": "automatic-small-change-within-balanced",
+    "eligibility": "localized-established-pattern, deterministic-focused-verification, no-risk-dimensions, no-material-drift",
+    "decision": "runtime task-next",
+    "policy": "routing task-policy",
+    "safe_refresh": "reviews refresh-prepare; coordinator guarded write and read-back then recompile in the same run",
+    "plan": "reuse material plan; coordinator compact plan when absent; explicit plan commands stay planning-only",
+    "verification": "one final self-review for low risk; required independent review for risky or strict work; affected checks after repairs",
+    "completion": "isolated integration receipt, or standalone configured nonisolated completion/read-back receipt",
+    "reuse": "independently bound observations; load selected skills once per session and source hash",
+    "new_task_handoff_schema": 2,
+    "new_attempt_schema": 2,
+    "new_verification_ledger_schema": 2,
+    "legacy": "read existing artifacts conservatively; legacy unclassified findings block; no bulk migration",
+    "verification_binding": "candidate, material/target evidence, effective policy, current observations and required commands; old evidence is never relabeled"
+  }
+}

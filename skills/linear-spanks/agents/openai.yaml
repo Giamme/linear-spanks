@@ -1,0 +1,4 @@
+interface:
+  display_name: "Linear Spanks"
+  short_description: "Refine and orchestrate Linear work"
+  default_prompt: "Use $linear-spanks to refine, organize, plan, or execute this Linear work safely."

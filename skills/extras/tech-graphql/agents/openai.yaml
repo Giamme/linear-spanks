@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tech Graphql"
+  short_description: "Help with Tech Graphql tasks"
+  default_prompt: "Use $tech-graphql to apply project-compatible technology guidance."

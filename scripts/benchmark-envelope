@@ -1,0 +1,16 @@
+#!/usr/bin/env python3
+"""Replay the governance-overhead workload and emit measured per-command maxima as JSON."""
+
+import json
+import sys
+import unittest
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from tests.test_envelope_overhead import EnvelopeOverheadTest
+
+case = EnvelopeOverheadTest("test_governance_overhead_stays_within_recorded_ceilings")
+result = unittest.TextTestRunner(stream=sys.stderr).run(unittest.TestSuite([case]))
+if result.wasSuccessful():
+    print(json.dumps({"status": "passed", **EnvelopeOverheadTest.envelope_metrics}, sort_keys=True))
+sys.exit(0 if result.wasSuccessful() else 1)
